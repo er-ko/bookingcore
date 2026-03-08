@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Domain\Booking\Actions;
+
+use App\Domain\Booking\DTO\CreateBookingData;
+use App\Domain\Booking\Services\BookingService;
+use App\Models\Booking;
+
+final class CreateBooking
+{
+    public function __construct(
+        private readonly BookingService $bookingService,
+    ) {
+    }
+
+    public function __invoke(CreateBookingData $data): Booking
+    {
+        return $this->bookingService->create($data);
+    }
+}
