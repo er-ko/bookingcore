@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Api\Booking;
 
-use App\Models\Activity;
-use App\Models\Branch;
-use App\Models\Resource;
+use App\Models\Booking\Activity;
+use App\Models\Booking\Branch;
+use App\Models\Booking\Resource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

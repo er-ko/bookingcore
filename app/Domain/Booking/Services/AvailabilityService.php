@@ -5,8 +5,8 @@ namespace App\Domain\Booking\Services;
 use App\Domain\Booking\DTO\AvailabilityQuery;
 use App\Domain\Booking\Support\TimeRange;
 use App\Infrastructure\Booking\Repositories\AvailabilityRepository;
-use App\Models\Booking;
-use App\Models\WorkingHour;
+use App\Models\Booking\Booking;
+use App\Models\Booking\WorkingHour;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 

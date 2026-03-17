@@ -28,28 +28,28 @@ function formatDate(value) {
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Customer
                     </th>
-                    <th class="px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Activity
                     </th>
-                    <th class="px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Resource
                     </th>
-                    <th class="px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Branch
                     </th>
-                    <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Starts at
                     </th>
-                    <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Ends at
                     </th>
-                    <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Status
                     </th>
-                    <th class="px-6 py-3 text-end text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    <th class="px-6 py-4 text-end text-xs font-semibold uppercase tracking-wide text-gray-500">
                         Actions
                     </th>
                 </tr>

@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Branch;
+use App\Models\Booking\Branch;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

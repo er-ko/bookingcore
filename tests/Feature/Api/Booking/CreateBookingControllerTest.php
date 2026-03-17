@@ -1,12 +1,12 @@
 <?php
 
 use App\Enums\BookingStatus;
-use App\Models\Activity;
-use App\Models\ActivityAssignment;
-use App\Models\Booking;
-use App\Models\Branch;
+use App\Models\Booking\Activity;
+use App\Models\Booking\ActivityAssignment;
+use App\Models\Booking\Booking;
+use App\Models\Booking\Branch;
+use App\Models\Booking\Resource;
 use App\Models\Customer;
-use App\Models\Resource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);

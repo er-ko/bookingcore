@@ -5,10 +5,10 @@ namespace App\Infrastructure\Booking\Repositories;
 use App\Domain\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\DTO\CustomerData;
 use App\Enums\BookingStatus;
-use App\Models\Activity;
-use App\Models\Booking;
 use App\Models\Customer;
-use App\Models\Resource;
+use App\Models\Booking\Activity;
+use App\Models\Booking\Booking;
+use App\Models\Booking\Resource;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 

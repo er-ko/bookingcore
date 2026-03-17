@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('user_id')->nullable()->after('id')->constrained()->nullOnDelete();
+
             $table->string('name', 255);
             $table->string('timezone', 64)->default('UTC');
 

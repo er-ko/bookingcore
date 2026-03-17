@@ -1,5 +1,8 @@
 <?php
 
+use App\Application\Integration\Actions\CancelBookingCalendarEvent;
+use App\Application\Integration\Actions\CreateBookingCalendarEvent;
+use App\Application\Integration\Actions\UpdateBookingCalendarEvent;
 use App\Domain\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\DTO\CustomerData;
 use App\Domain\Booking\Exceptions\BookingConflictException;
@@ -8,12 +11,13 @@ use App\Domain\Booking\Exceptions\SlotUnavailableException;
 use App\Domain\Booking\Services\BookingService;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
 use App\Enums\BookingStatus;
-use App\Models\Activity;
-use App\Models\ActivityAssignment;
-use App\Models\Booking;
-use App\Models\Branch;
+use App\Models\Booking\Activity;
+use App\Models\Booking\ActivityAssignment;
+use App\Models\Booking\Booking;
+use App\Models\Booking\Branch;
+use App\Models\Booking\Resource;
+use App\Models\Integration\BookingCalendarEvent;
 use App\Models\Customer;
-use App\Models\Resource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -330,5 +334,12 @@ function createBookingData(
  */
 function createBookingService(): BookingService
 {
-    return new BookingService(new BookingRepository());
+    return new BookingService(
+        new BookingRepository(),
+        app(\App\Infrastructure\Integration\Repositories\IntegrationRepository::class),
+        app(\App\Domain\Integration\Policies\BookingCalendarSyncPolicy::class),
+        app(CreateBookingCalendarEvent::class),
+        app(CancelBookingCalendarEvent::class),
+        app(UpdateBookingCalendarEvent::class),
+    );
 }

@@ -37,7 +37,7 @@ const config = computed(() => {
 
 <template>
     <span
-        class="inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset"
+        class="inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset select-none"
         :class="config.classes"
     >
         <span class="mr-1.5 h-1.5 w-1.5 rounded-full bg-current"></span>

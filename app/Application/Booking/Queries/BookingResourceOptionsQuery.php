@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Resource;
+use App\Models\Booking\Resource;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

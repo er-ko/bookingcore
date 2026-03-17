@@ -4,11 +4,11 @@ namespace App\Infrastructure\Booking\Repositories;
 
 use App\Domain\Booking\DTO\AvailabilityQuery;
 use App\Enums\BookingStatus;
-use App\Models\Activity;
-use App\Models\Booking;
-use App\Models\RecurringTimeOff;
-use App\Models\TimeOff;
-use App\Models\WorkingHour;
+use App\Models\Booking\Activity;
+use App\Models\Booking\Booking;
+use App\Models\Booking\RecurringTimeOff;
+use App\Models\Booking\TimeOff;
+use App\Models\Booking\WorkingHour;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 

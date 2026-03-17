@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Booking\{
+use App\Http\Controllers\Booking\Api\{
     CreateBookingController,
     CancelBookingController,
     UpdateBookingStatusController,

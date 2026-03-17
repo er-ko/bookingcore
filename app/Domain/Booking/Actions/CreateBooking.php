@@ -4,7 +4,7 @@ namespace App\Domain\Booking\Actions;
 
 use App\Domain\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\Services\BookingService;
-use App\Models\Booking;
+use App\Models\Booking\Booking;
 
 final class CreateBooking
 {

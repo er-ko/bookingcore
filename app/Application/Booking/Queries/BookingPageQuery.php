@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Booking;
+use App\Models\Booking\Booking;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**

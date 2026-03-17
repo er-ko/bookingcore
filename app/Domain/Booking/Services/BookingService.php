@@ -2,22 +2,34 @@
 
 namespace App\Domain\Booking\Services;
 
+use App\Application\Integration\Actions\CancelBookingCalendarEvent;
+use App\Application\Integration\Actions\CreateBookingCalendarEvent;
+use App\Application\Integration\Actions\UpdateBookingCalendarEvent;
 use App\Domain\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\Exceptions\BookingConflictException;
 use App\Domain\Booking\Exceptions\BookingStatusException;
 use App\Domain\Booking\Exceptions\BookingValidationException;
 use App\Domain\Booking\Exceptions\SlotUnavailableException;
+use App\Domain\Integration\Policies\BookingCalendarSyncPolicy;
 use App\Enums\BookingStatus;
+use App\Enums\IntegrationProvider;
+use App\Enums\IntegrationType;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
-use App\Models\Activity;
-use App\Models\Booking;
-use App\Models\Resource;
+use App\Infrastructure\Integration\Repositories\IntegrationRepository;
+use App\Models\Booking\Activity;
+use App\Models\Booking\Booking;
+use App\Models\Booking\Resource;
 use Carbon\CarbonInterface;
 
 final class BookingService
 {
     public function __construct(
         private readonly BookingRepository $bookingRepository,
+        private readonly IntegrationRepository $integrationRepository,
+        private readonly BookingCalendarSyncPolicy $bookingCalendarSyncPolicy,
+        private readonly CreateBookingCalendarEvent $createBookingCalendarEvent,
+        private readonly CancelBookingCalendarEvent $cancelBookingCalendarEvent,
+        private readonly UpdateBookingCalendarEvent $updateBookingCalendarEvent,
     ) {
     }
 
@@ -46,13 +58,21 @@ final class BookingService
 
         $customer = $this->bookingRepository->findOrCreateCustomer($data->customer);
 
-        return $this->bookingRepository->createBooking(
+        $booking = $this->bookingRepository->createBooking(
             data: $data,
             customer: $customer,
             endsAt: $endsAt,
             status: BookingStatus::Pending,
             confirmedAt: null,
         );
+
+        try {
+            ($this->createBookingCalendarEvent)($booking);
+        } catch (\Throwable $exception) {
+            $this->handleCalendarSyncException($booking, $exception);
+        }
+
+        return $booking;
     }
 
     /**
@@ -64,7 +84,15 @@ final class BookingService
             throw BookingStatusException::alreadyCancelled();
         }
 
-        return $this->bookingRepository->cancelBooking($booking);
+        $booking = $this->bookingRepository->cancelBooking($booking);
+
+        try {
+            ($this->cancelBookingCalendarEvent)($booking);
+        } catch (\Throwable $exception) {
+            $this->handleCalendarSyncException($booking, $exception);
+        }
+
+        return $booking;
     }
 
     /**
@@ -90,11 +118,19 @@ final class BookingService
             $confirmedAt = now();
         }
 
-        return $this->bookingRepository->updateBookingStatus(
+        $booking = $this->bookingRepository->updateBookingStatus(
             booking: $booking,
             status: $status,
             confirmedAt: $confirmedAt,
         );
+
+        try {
+            ($this->updateBookingCalendarEvent)($booking);
+        } catch (\Throwable $exception) {
+            $this->handleCalendarSyncException($booking, $exception);
+        }
+
+        return $booking;
     }
 
     /**
@@ -162,5 +198,45 @@ final class BookingService
         if ($hasConflict) {
             throw BookingConflictException::resourceAlreadyBooked();
         }
+    }
+
+    /**
+     * Handle a calendar sync exception according to the configured sync mode.
+     */
+    private function handleCalendarSyncException(Booking $booking, \Throwable $exception): void
+    {
+        if ($this->shouldUseStrictCalendarSync($booking)) {
+            throw $exception;
+        }
+
+        report($exception);
+    }
+
+    /**
+     * Determine whether strict calendar sync mode is enabled for the booking owner.
+     */
+    private function shouldUseStrictCalendarSync(Booking $booking): bool
+    {
+        $ownerUserId = $this->resolveOwnerUserId($booking);
+
+        if (! $ownerUserId) {
+            return false;
+        }
+
+        $integration = $this->integrationRepository->findPrimary(
+            userId: $ownerUserId,
+            type: IntegrationType::Calendar,
+            provider: IntegrationProvider::Google,
+        );
+
+        return $this->bookingCalendarSyncPolicy->isStrict($integration);
+    }
+
+    /**
+     * Resolve the BookingCore owner user ID for the booking.
+     */
+    private function resolveOwnerUserId(Booking $booking): ?int
+    {
+        return $booking->branch?->user_id;
     }
 }

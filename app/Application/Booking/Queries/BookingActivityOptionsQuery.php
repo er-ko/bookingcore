@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Activity;
+use App\Models\Booking\Activity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
