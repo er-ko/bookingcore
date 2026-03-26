@@ -2,6 +2,7 @@
 
 namespace App\Models\Booking;
 
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Carbon\CarbonInterface;
 class TimeOff extends Model
 {
     protected $fillable = [
-        'resource_id',
+        'unit_id',
         'starts_at',
         'ends_at',
         'reason',
@@ -22,19 +23,19 @@ class TimeOff extends Model
     ];
 
     /**
-     * Resource associated with the time off period.
+     * Unit associated with the time off period.
      */
-    public function resource(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Unit::class);
     }
 
     /**
-     * Scope query to a specific resource.
+     * Scope query to a specific unit.
      */
-    public function scopeForResource(Builder $query, int $resourceId): Builder
+    public function scopeForUnit(Builder $query, int $unitId): Builder
     {
-        return $query->where('resource_id', $resourceId);
+        return $query->where('unit_id', $unitId);
     }
 
     /**

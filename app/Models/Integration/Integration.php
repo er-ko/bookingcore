@@ -46,7 +46,7 @@ final class Integration extends Model
             'provider' => IntegrationProvider::class,
             'access_token' => 'encrypted',
             'refresh_token' => 'encrypted',
-            'token_expires_at' => 'datetime',
+            'token_expires_at' => 'immutable_datetime',
             'scopes' => 'array',
             'meta' => 'array',
             'is_active' => 'boolean',

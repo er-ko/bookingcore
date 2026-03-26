@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+            $table->string('public_id', 32);
+
             $table->string('name', 255);
             $table->unsignedSmallInteger('duration_minutes');
             $table->unsignedSmallInteger('buffer_before_minutes')->default(0);
@@ -23,7 +27,9 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index('is_active');
+            $table->index(['user_id', 'is_active']);
+
+            $table->unique('public_id');
         });
     }
 

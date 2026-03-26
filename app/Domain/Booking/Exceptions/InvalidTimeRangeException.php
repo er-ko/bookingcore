@@ -8,6 +8,6 @@ final class InvalidTimeRangeException extends DomainException
 {
     public static function invalidRange(): self
     {
-        return new self(__('booking/errors.invalid_time_range'));
+        return new self(__('booking.errors.invalid_time_range'));
     }
 }

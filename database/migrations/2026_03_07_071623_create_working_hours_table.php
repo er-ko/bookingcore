@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('working_hours', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
 
             $table->unsignedTinyInteger('day_of_week');
             $table->time('start_time');
@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index(['resource_id', 'day_of_week', 'is_active']);
+            $table->index(['unit_id', 'day_of_week', 'is_active']);
         });
     }
 

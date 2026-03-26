@@ -41,9 +41,9 @@ final class UpdateBookingStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'status.required' => __('booking/errors.messages.status_required'),
-            'status.string' => __('booking/errors.messages.status_invalid'),
-            'status.in' => __('booking/errors.messages.status_not_allowed'),
+            'status.required' => __('booking.validation.status_required'),
+            'status.string' => __('booking.validation.status_invalid'),
+            'status.in' => __('booking.validation.status_not_allowed'),
         ];
     }
 

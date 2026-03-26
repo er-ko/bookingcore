@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Booking\Api;
 
 use App\Application\Booking\Queries\BookingActivityOptionsQuery;
-use App\Application\Booking\Queries\BookingResourceOptionsQuery;
+use App\Application\Booking\Queries\BookingUnitOptionsQuery;
 use App\Application\Booking\Queries\BookingSlotOptionsQuery;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\ActivityOptionsRequest;
-use App\Http\Requests\Booking\ResourceOptionsRequest;
+use App\Http\Requests\Booking\UnitOptionsRequest;
 use App\Http\Requests\Booking\SlotOptionsRequest;
 use Illuminate\Http\JsonResponse;
 
 final class BookingOptionsController extends Controller
 {
     /**
-     * Return active resources for the selected branch.
+     * Return active units for the selected branch.
      */
-    public function resources(
-        ResourceOptionsRequest $request,
-        BookingResourceOptionsQuery $query,
+    public function units(
+        UnitOptionsRequest $request,
+        BookingUnitOptionsQuery $query,
     ): JsonResponse {
         return response()->json([
             'data' => $query->getList(
@@ -36,7 +36,7 @@ final class BookingOptionsController extends Controller
     ): JsonResponse {
         return response()->json([
             'data' => $query->getList(
-                resourceId: $request->resourceId(),
+                unitId: $request->unitId(),
             ),
         ], 200);
     }
@@ -51,7 +51,7 @@ final class BookingOptionsController extends Controller
         return response()->json([
             'data' => $query->getList(
                 branchId: $request->branchId(),
-                resourceId: $request->resourceId(),
+                unitId: $request->unitId(),
                 activityId: $request->activityId(),
                 date: $request->availabilityDate(),
             ),

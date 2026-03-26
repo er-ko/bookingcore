@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Booking\Api;
 
-use App\Domain\Booking\Actions\CancelBooking;
+use App\Application\Booking\Actions\CancelBooking;
 use App\Http\Controllers\Controller;
 use App\Models\Booking\Booking;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +17,7 @@ final class CancelBookingController extends Controller
         $booking = $cancelBooking($booking);
 
         return response()->json([
-            'message' => __('booking/messages.cancelled'),
+            'message' => __('booking.messages.cancelled'),
             'data' => $booking,
         ], 200);
     }

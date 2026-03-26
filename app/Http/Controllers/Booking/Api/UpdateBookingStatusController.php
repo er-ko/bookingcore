@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Booking\Api;
 
-use App\Domain\Booking\Actions\UpdateBookingStatus;
+use App\Application\Booking\Actions\UpdateBookingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\UpdateBookingStatusRequest;
 use App\Models\Booking\Booking;
@@ -24,7 +24,7 @@ final class UpdateBookingStatusController extends Controller
         );
 
         return response()->json([
-            'message' => __('booking/messages.status_updated'),
+            'message' => __('booking.messages.status_updated'),
             'data' => $booking,
         ], 200);
     }

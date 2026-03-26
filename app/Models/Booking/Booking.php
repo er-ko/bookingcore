@@ -3,7 +3,10 @@
 namespace App\Models\Booking;
 
 use App\Enums\BookingStatus;
+use App\Models\Activity;
+use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Unit;
 use App\Models\Integration\BookingCalendarEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +18,7 @@ class Booking extends Model
 {
     protected $fillable = [
         'branch_id',
-        'resource_id',
+        'unit_id',
         'activity_id',
         'customer_id',
         'starts_at',
@@ -43,11 +46,11 @@ class Booking extends Model
     }
 
     /**
-     * Resource associated with the booking.
+     * Unit associated with the booking.
      */
-    public function resource(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Unit::class);
     }
 
     /**

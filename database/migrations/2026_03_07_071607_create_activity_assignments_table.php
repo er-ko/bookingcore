@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('activity_id')->constrained('activities')->cascadeOnDelete();
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
 
             $table->timestamps();
 
-            $table->unique(['activity_id', 'resource_id']);
+            $table->unique(['activity_id', 'unit_id']);
         });
     }
 

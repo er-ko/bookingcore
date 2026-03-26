@@ -11,6 +11,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    translations: {
+        type: Object,
+        required: true,
+    },
 })
 
 const items = computed(() => props.bookings?.data ?? [])
@@ -19,27 +23,27 @@ const hasPagination = computed(() => links.value.length > 3)
 </script>
 
 <template>
-    <Head title="Bookings" />
+    <Head :title="translations.title" />
 
     <AppLayout>
         <div class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">
-                        Bookings
+                        {{ translations.title }}
                     </h1>
 
                     <p class="mt-1 text-sm text-gray-600">
-                        Overview of created bookings, including their current status and related entities.
+                        {{ translations.description }}
                     </p>
                 </div>
 
                 <div>
                     <Link
                         :href="route('bookings.create')"
-                        class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+                        class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-nowrap select-none text-white transition hover:bg-gray-800"
                     >
-                        Create booking
+                        {{ translations.create_booking }}
                     </Link>
                 </div>
             </div>
@@ -50,11 +54,11 @@ const hasPagination = computed(() => links.value.length > 3)
                     class="flex flex-col items-center justify-center px-6 py-16 text-center"
                 >
                     <h2 class="text-lg font-semibold text-gray-900">
-                        No bookings found
+                        {{ translations.no_bookings_found }}
                     </h2>
 
                     <p class="mt-2 max-w-md text-sm text-gray-600">
-                        There are no bookings to display yet. Create the first booking to start working with the system.
+                        {{ translations.no_bookings_text }}
                     </p>
 
                     <div class="mt-6">
@@ -62,13 +66,13 @@ const hasPagination = computed(() => links.value.length > 3)
                             :href="route('bookings.create')"
                             class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                         >
-                            Create first booking
+                            {{ translations.create_first_booking }}
                         </Link>
                     </div>
                 </div>
 
                 <template v-else>
-                    <BookingTable :bookings="items" />
+                    <BookingTable :bookings="items" :translations="translations" />
 
                     <div
                         v-if="hasPagination"

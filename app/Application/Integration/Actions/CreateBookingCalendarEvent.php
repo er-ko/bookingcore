@@ -2,7 +2,7 @@
 
 namespace App\Application\Integration\Actions;
 
-use App\Domain\Integration\DTO\CalendarEventData;
+use App\Application\Integration\DTO\CalendarEventData;
 use App\Domain\Integration\Policies\BookingCalendarSyncPolicy;
 use App\Enums\IntegrationProvider;
 use App\Enums\IntegrationType;

@@ -7,7 +7,6 @@ use App\Enums\IntegrationProvider;
 use App\Infrastructure\Integration\Providers\AppleCalendarProvider;
 use App\Infrastructure\Integration\Providers\GoogleCalendarProvider;
 use App\Infrastructure\Integration\Providers\MicrosoftCalendarProvider;
-use InvalidArgumentException;
 
 final class CalendarProviderResolver
 {

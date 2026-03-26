@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Booking\Repositories;
 
-use App\Domain\Booking\DTO\CreateBookingData;
-use App\Domain\Booking\DTO\CustomerData;
+use App\Application\Booking\DTO\CreateBookingData;
+use App\Application\Booking\DTO\CustomerData;
 use App\Enums\BookingStatus;
-use App\Models\Customer;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\Booking;
-use App\Models\Booking\Resource;
+use App\Models\Customer;
+use App\Models\Unit;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -25,24 +25,24 @@ final class BookingRepository
     }
 
     /**
-     * Get an active resource by its identifier and branch.
+     * Get an active unit by its identifier and branch.
      */
-    public function getActiveResourceForBranch(int $resourceId, int $branchId): ?Resource
+    public function getActiveUnitForBranch(int $unitId, int $branchId): ?Unit
     {
-        return Resource::query()
+        return Unit::query()
             ->active()
-            ->whereKey($resourceId)
+            ->whereKey($unitId)
             ->where('branch_id', $branchId)
             ->first();
     }
 
     /**
-     * Determine whether the activity is assigned to the resource.
+     * Determine whether the activity is assigned to the unit.
      */
-    public function isActivityAssignedToResource(int $activityId, int $resourceId): bool
+    public function isActivityAssignedToUnit(int $activityId, int $unitId): bool
     {
-        return Resource::query()
-            ->whereKey($resourceId)
+        return Unit::query()
+            ->whereKey($unitId)
             ->whereHas('activities', function (Builder $query) use ($activityId) {
                 $query->whereKey($activityId);
             })
@@ -73,17 +73,17 @@ final class BookingRepository
 
     /**
      * Determine whether an overlapping non-cancelled booking exists
-     * for the resource within the given blocked interval.
+     * for the unit within the given blocked interval.
      */
     public function hasConflict(
         int $branchId,
-        int $resourceId,
+        int $unitId,
         CarbonInterface $blockedStart,
         CarbonInterface $blockedEnd,
     ): bool {
         return Booking::query()
             ->where('branch_id', $branchId)
-            ->where('resource_id', $resourceId)
+            ->where('unit_id', $unitId)
             ->where('status', '!=', BookingStatus::Cancelled->value)
             ->where(function (Builder $query) use ($blockedStart, $blockedEnd) {
                 $query->where('starts_at', '<', $blockedEnd)
@@ -104,7 +104,7 @@ final class BookingRepository
     ): Booking {
         return Booking::create([
             'branch_id' => $data->branchId,
-            'resource_id' => $data->resourceId,
+            'unit_id' => $data->unitId,
             'activity_id' => $data->activityId,
             'customer_id' => $customer->id,
             'starts_at' => $data->startsAt,

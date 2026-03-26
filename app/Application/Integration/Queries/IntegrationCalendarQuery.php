@@ -34,17 +34,40 @@ final class IntegrationCalendarQuery
                 'integration' => null,
                 'account' => null,
                 'calendars' => [],
+                'connection_error' => null,
             ];
         }
 
         $integration->loadMissing('calendarSettings');
 
         $calendarSettings = $integration->calendarSettings;
-
         $provider = $this->calendarProviderResolver->resolve($integration->provider);
 
-        $account = $provider->getAccount($integration);
-        $calendars = $provider->listCalendars($integration);
+        try {
+            $account = $provider->getAccount($integration);
+            $calendars = $provider->listCalendars($integration);
+        } catch (\RuntimeException $e) {
+            return [
+                'integration' => [
+                    'id' => $integration->id,
+                    'type' => $integration->type->value,
+                    'provider' => $integration->provider->value,
+                    'email' => $integration->email,
+                    'name' => $integration->name,
+                    'is_active' => false,
+                    'is_primary' => $integration->is_primary,
+                    'meta' => $integration->meta,
+                    'calendar_settings' => $calendarSettings ? [
+                        'selected_calendar_id' => $calendarSettings->selected_calendar_id,
+                        'sync_bookings' => $calendarSettings->sync_bookings,
+                        'sync_mode' => $calendarSettings->sync_mode,
+                    ] : null,
+                ],
+                'account' => null,
+                'calendars' => [],
+                'connection_error' => $e->getMessage(),
+            ];
+        }
 
         return [
             'integration' => [
@@ -67,6 +90,7 @@ final class IntegrationCalendarQuery
                 static fn ($calendar) => $calendar->toArray(),
                 $calendars,
             ),
+            'connection_error' => null,
         ];
     }
 }

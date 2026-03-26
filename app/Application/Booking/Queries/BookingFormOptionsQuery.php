@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Booking\Branch;
+use App\Models\Branch;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -14,7 +14,7 @@ final class BookingFormOptionsQuery
     /**
      * Retrieve initial data required for the booking creation form.
      *
-     * Only active branches are returned. Resources and activities
+     * Only active branches are returned. Units and activities
      * are loaded dynamically based on user selection.
      *
      * @return array{branches: Collection<int, Branch>}

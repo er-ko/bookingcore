@@ -3,32 +3,35 @@
 use App\Application\Integration\Actions\CancelBookingCalendarEvent;
 use App\Application\Integration\Actions\CreateBookingCalendarEvent;
 use App\Application\Integration\Actions\UpdateBookingCalendarEvent;
-use App\Domain\Booking\DTO\CreateBookingData;
-use App\Domain\Booking\DTO\CustomerData;
+use App\Application\Booking\DTO\CreateBookingData;
+use App\Application\Booking\DTO\CustomerData;
 use App\Domain\Booking\Exceptions\BookingConflictException;
 use App\Domain\Booking\Exceptions\BookingValidationException;
 use App\Domain\Booking\Exceptions\SlotUnavailableException;
 use App\Domain\Booking\Services\BookingService;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
 use App\Enums\BookingStatus;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
-use App\Models\Booking\Branch;
-use App\Models\Booking\Resource;
-use App\Models\Integration\BookingCalendarEvent;
+use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
 it('creates a booking successfully', function () {
     // Arrange
-    [$branch, $resource, $activity] = createBookingScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createBookingScenario($user->id);
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
         note: 'Please call before arrival.',
@@ -42,7 +45,7 @@ it('creates a booking successfully', function () {
     // Assert
     expect($booking)->toBeInstanceOf(Booking::class);
     expect($booking->branch_id)->toBe($branch->id);
-    expect($booking->resource_id)->toBe($resource->id);
+    expect($booking->unit_id)->toBe($unit->id);
     expect($booking->activity_id)->toBe($activity->id);
     expect($booking->status)->toBe(BookingStatus::Pending);
     expect($booking->starts_at->format('Y-m-d H:i:s'))->toBe('2026-03-09 10:00:00');
@@ -53,9 +56,11 @@ it('creates a booking successfully', function () {
     expect(Booking::count())->toBe(1);
 });
 
-it('throws a conflict exception when the resource is already booked', function () {
+it('throws a conflict exception when the unit is already booked', function () {
     // Arrange
-    [$branch, $resource, $activity] = createBookingScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createBookingScenario($user->id);
 
     $existingCustomer = createCustomer(
         firstName: 'Existing',
@@ -67,7 +72,7 @@ it('throws a conflict exception when the resource is already booked', function (
 
     Booking::create([
         'branch_id' => $branch->id,
-        'resource_id' => $resource->id,
+        'unit_id' => $unit->id,
         'activity_id' => $activity->id,
         'customer_id' => $existingCustomer->id,
         'starts_at' => '2026-03-09 10:00:00',
@@ -80,7 +85,7 @@ it('throws a conflict exception when the resource is already booked', function (
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
     );
@@ -91,13 +96,16 @@ it('throws a conflict exception when the resource is already booked', function (
     $service->create($data);
 })->throws(BookingConflictException::class);
 
-it('throws a slot unavailable exception when the activity is not assigned to the resource', function () {
+it('throws a slot unavailable exception when the activity is not assigned to the unit', function () {
     // Arrange
-    $branch = createBranch();
+    $user = User::factory()->create();
 
-    $resource = createResource($branch->id);
+    $branch = createBranch($user->id);
+
+    $unit = createUnit($user->id, $branch->id);
 
     $activity = createActivity(
+        userId: $user->id,
         durationMinutes: 60,
         bufferBeforeMinutes: 10,
         bufferAfterMinutes: 5,
@@ -106,7 +114,7 @@ it('throws a slot unavailable exception when the activity is not assigned to the
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
     );
@@ -119,7 +127,9 @@ it('throws a slot unavailable exception when the activity is not assigned to the
 
 it('reuses an existing customer by email', function () {
     // Arrange
-    [$branch, $resource, $activity] = createBookingScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createBookingScenario($user->id);
 
     $existingCustomer = createCustomer(
         firstName: 'John',
@@ -131,7 +141,7 @@ it('reuses an existing customer by email', function () {
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
     );
@@ -148,22 +158,25 @@ it('reuses an existing customer by email', function () {
 
 it('throws an exception when the activity is inactive', function () {
     // Arrange
-    $branch = createBranch();
+    $user = User::factory()->create();
 
-    $resource = createResource($branch->id);
+    $branch = createBranch($user->id);
+
+    $unit = createUnit($user->id, $branch->id);
 
     $activity = createActivity(
+        userId: $user->id,
         durationMinutes: 60,
         bufferBeforeMinutes: 10,
         bufferAfterMinutes: 5,
         isActive: false,
     );
 
-    assignActivityToResource($activity->id, $resource->id);
+    assignActivityToUnit($activity->id, $unit->id);
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
     );
@@ -174,25 +187,28 @@ it('throws an exception when the activity is inactive', function () {
     $service->create($data);
 })->throws(BookingValidationException::class, 'The selected activity does not exist or is inactive.');
 
-it('throws an exception when the resource does not belong to the given branch', function () {
+it('throws an exception when the unit does not belong to the given branch', function () {
     // Arrange
-    $branch = createBranch('Brno');
-    $otherBranch = createBranch('Prague');
+    $user = User::factory()->create();
 
-    $resource = createResource($otherBranch->id);
+    $branch = createBranch($user->id, 'Brno');
+    $otherBranch = createBranch($user->id, 'Prague');
+
+    $unit = createUnit($user->id, $otherBranch->id);
 
     $activity = createActivity(
+        userId: $user->id,
         durationMinutes: 60,
         bufferBeforeMinutes: 10,
         bufferAfterMinutes: 5,
         isActive: true,
     );
 
-    assignActivityToResource($activity->id, $resource->id);
+    assignActivityToUnit($activity->id, $unit->id);
 
     $data = createBookingData(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         startsAt: '2026-03-09 10:00:00',
     );
@@ -203,51 +219,61 @@ it('throws an exception when the resource does not belong to the given branch', 
     $service->create($data);
 })->throws(
     BookingValidationException::class,
-    'The selected resource does not exist, is inactive, or does not belong to the given branch.'
+    'The selected unit does not exist, is inactive, or does not belong to the given branch.'
 );
 
 /**
- * Create a complete booking scenario with branch, resource, activity,
+ * Create a complete booking scenario with branch, unit, activity,
  * and activity assignment.
  *
- * @return array{0: Branch, 1: Resource, 2: Activity}
+ * @return array{0: Branch, 1: Unit, 2: Activity}
  */
-function createBookingScenario(): array
+function createBookingScenario(int $userId): array
 {
-    $branch = createBranch();
+    $branch = createBranch($userId);
 
-    $resource = createResource($branch->id);
+    $unit = createUnit($userId, $branch->id);
 
     $activity = createActivity(
+        userId: $userId,
         durationMinutes: 60,
         bufferBeforeMinutes: 10,
         bufferAfterMinutes: 5,
         isActive: true,
     );
 
-    assignActivityToResource($activity->id, $resource->id);
+    assignActivityToUnit($activity->id, $unit->id);
 
-    return [$branch, $resource, $activity];
+    return [$branch, $unit, $activity];
 }
 
 /**
  * Create a branch for booking tests.
  */
-function createBranch(string $name = 'Brno'): Branch
+function createBranch(int $userId, string $name = 'Brno'): Branch
 {
     return Branch::create([
+        'user_id' => $userId,
+        'public_id' => 'br_' . Str::random(10),
         'name' => $name,
+        'address_line_1' => 'Street 1',
+        'address_line_2' => 'Street 2',
+        'city' => 'City',
+        'postcode' => '10000',
+        'country_code' => 'CZ',
         'timezone' => 'Europe/Prague',
         'is_active' => true,
     ]);
 }
 
 /**
- * Create a resource for a branch.
+ * Create a unit for a branch.
  */
-function createResource(int $branchId): Resource
+function createUnit(int $userId, int $branchId): Unit
 {
-    return Resource::create([
+    return Unit::create([
+        'user_id' => $userId,
+        'public_id' => 'un_' . Str::random(10),
         'branch_id' => $branchId,
         'name' => 'Chair A',
         'description' => null,
@@ -259,12 +285,15 @@ function createResource(int $branchId): Resource
  * Create an activity for booking tests.
  */
 function createActivity(
+    int $userId,
     int $durationMinutes,
     int $bufferBeforeMinutes,
     int $bufferAfterMinutes,
     bool $isActive,
 ): Activity {
     return Activity::create([
+        'user_id' => $userId,
+        'public_id' => 'ac_' . Str::random(10),
         'name' => 'Consultation',
         'duration_minutes' => $durationMinutes,
         'buffer_before_minutes' => $bufferBeforeMinutes,
@@ -274,13 +303,13 @@ function createActivity(
 }
 
 /**
- * Assign an activity to a resource.
+ * Assign an activity to a unit.
  */
-function assignActivityToResource(int $activityId, int $resourceId): ActivityAssignment
+function assignActivityToUnit(int $activityId, int $unitId): ActivityAssignment
 {
     return ActivityAssignment::create([
         'activity_id' => $activityId,
-        'resource_id' => $resourceId,
+        'unit_id' => $unitId,
     ]);
 }
 
@@ -308,14 +337,14 @@ function createCustomer(
  */
 function createBookingData(
     int $branchId,
-    int $resourceId,
+    int $unitId,
     int $activityId,
     string $startsAt,
     ?string $note = null,
 ): CreateBookingData {
     return CreateBookingData::from(
         branchId: $branchId,
-        resourceId: $resourceId,
+        unitId: $unitId,
         activityId: $activityId,
         startsAt: $startsAt,
         customer: CustomerData::from(

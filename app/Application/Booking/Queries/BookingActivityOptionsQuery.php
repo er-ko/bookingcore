@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -13,16 +13,16 @@ use Illuminate\Database\Eloquent\Collection;
 final class BookingActivityOptionsQuery
 {
     /**
-     * Retrieve active activities assigned to the selected resource.
+     * Retrieve active activities assigned to the selected unit.
      *
      * @return Collection<int, Activity>
      */
-    public function getList(int $resourceId): Collection
+    public function getList(int $unitId): Collection
     {
         return Activity::query()
             ->active()
-            ->whereHas('resources', function (Builder $query) use ($resourceId) {
-                $query->where('resources.id', $resourceId);
+            ->whereHas('units', function (Builder $query) use ($unitId) {
+                $query->where('units.id', $unitId);
             })
             ->orderBy('name')
             ->get(['activities.id', 'activities.name', 'activities.duration_minutes']);

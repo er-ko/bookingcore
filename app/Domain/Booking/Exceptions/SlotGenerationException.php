@@ -8,17 +8,17 @@ final class SlotGenerationException extends DomainException
 {
 //     public static function invalidActivityMinutes(): self
 //     {
-//         return new self(__('booking/errors.invalid_activity_minutes'));
+//         return new self(__('booking.errors.invalid_activity_minutes'));
 //     }
 
 //     public static function negativeBufferMinutes(): self
 //     {
-//         return new self(__('booking/errors.negative_buffer_minutes'));
+//         return new self(__('booking.errors.negative_buffer_minutes'));
 //     }
 
 //     public static function invalidBlockMinutes(): self
 //     {
-//         return new self(__('booking/errors.invalid_slot_block'));
+//         return new self(__('booking.errors.invalid_slot_block'));
 //     }
 
     public static function invalidActivityMinutes(): self

@@ -5,7 +5,7 @@ namespace App\Domain\Booking\Services;
 use App\Application\Integration\Actions\CancelBookingCalendarEvent;
 use App\Application\Integration\Actions\CreateBookingCalendarEvent;
 use App\Application\Integration\Actions\UpdateBookingCalendarEvent;
-use App\Domain\Booking\DTO\CreateBookingData;
+use App\Application\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\Exceptions\BookingConflictException;
 use App\Domain\Booking\Exceptions\BookingStatusException;
 use App\Domain\Booking\Exceptions\BookingValidationException;
@@ -16,9 +16,9 @@ use App\Enums\IntegrationProvider;
 use App\Enums\IntegrationType;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
 use App\Infrastructure\Integration\Repositories\IntegrationRepository;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\Booking;
-use App\Models\Booking\Resource;
+use App\Models\Unit;
 use Carbon\CarbonInterface;
 
 final class BookingService
@@ -39,9 +39,9 @@ final class BookingService
     public function create(CreateBookingData $data): Booking
     {
         $activity = $this->resolveActiveActivity($data->activityId);
-        $resource = $this->resolveActiveResource($data->resourceId, $data->branchId);
+        $unit = $this->resolveActiveUnit($data->unitId, $data->branchId);
 
-        $this->ensureActivityAssignedToResource($activity->id, $resource->id);
+        $this->ensureActivityAssignedToUnit($activity->id, $unit->id);
 
         $startsAt = $data->startsAt;
         $endsAt = $startsAt->addMinutes($activity->duration_minutes);
@@ -51,7 +51,7 @@ final class BookingService
 
         $this->ensureNoConflict(
             branchId: $data->branchId,
-            resourceId: $resource->id,
+            unitId: $unit->id,
             blockedStart: $blockedStart,
             blockedEnd: $blockedEnd,
         );
@@ -148,30 +148,30 @@ final class BookingService
     }
 
     /**
-     * Resolve an active resource for the given branch.
+     * Resolve an active unit for the given branch.
      */
-    private function resolveActiveResource(int $resourceId, int $branchId): Resource
+    private function resolveActiveUnit(int $unitId, int $branchId): Unit
     {
-        $resource = $this->bookingRepository->getActiveResourceForBranch(
-            resourceId: $resourceId,
+        $unit = $this->bookingRepository->getActiveUnitForBranch(
+            unitId: $unitId,
             branchId: $branchId,
         );
 
-        if (! $resource) {
-            throw BookingValidationException::resourceInvalid();
+        if (! $unit) {
+            throw BookingValidationException::unitInvalid();
         }
 
-        return $resource;
+        return $unit;
     }
 
     /**
-     * Ensure the activity is assigned to the resource.
+     * Ensure the activity is assigned to the unit.
      */
-    private function ensureActivityAssignedToResource(int $activityId, int $resourceId): void
+    private function ensureActivityAssignedToUnit(int $activityId, int $unitId): void
     {
-        $isAssigned = $this->bookingRepository->isActivityAssignedToResource(
+        $isAssigned = $this->bookingRepository->isActivityAssignedToUnit(
             activityId: $activityId,
-            resourceId: $resourceId,
+            unitId: $unitId,
         );
 
         if (! $isAssigned) {
@@ -180,23 +180,23 @@ final class BookingService
     }
 
     /**
-     * Ensure no overlapping booking exists for the resource.
+     * Ensure no overlapping booking exists for the unit.
      */
     private function ensureNoConflict(
         int $branchId,
-        int $resourceId,
+        int $unitId,
         CarbonInterface $blockedStart,
         CarbonInterface $blockedEnd,
     ): void {
         $hasConflict = $this->bookingRepository->hasConflict(
             branchId: $branchId,
-            resourceId: $resourceId,
+            unitId: $unitId,
             blockedStart: $blockedStart,
             blockedEnd: $blockedEnd,
         );
 
         if ($hasConflict) {
-            throw BookingConflictException::resourceAlreadyBooked();
+            throw BookingConflictException::unitAlreadyBooked();
         }
     }
 

@@ -6,11 +6,11 @@ final class BookingConflictException extends BookingException
 {
     public static function overlappingBooking(): self
     {
-        return new self(__('booking/errors.booking_conflict'));
+        return new self(__('booking.errors.booking_conflict'));
     }
 
-    public static function resourceAlreadyBooked(): self
+    public static function unitAlreadyBooked(): self
     {
-        return new self(__('booking/errors.resource_already_booked'));
+        return new self(__('booking.errors.unit_already_booked'));
     }
 }

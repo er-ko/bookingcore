@@ -4,12 +4,12 @@ import { router, useForm } from '@inertiajs/vue3'
 export function useBookingForm() {
     const route = inject('route')
 
-    const resources = ref([])
+    const units = ref([])
     const activities = ref([])
     const slots = ref([])
     const selectedDate = ref('')
 
-    const loadingResources = ref(false)
+    const loadingUnits = ref(false)
     const loadingActivities = ref(false)
     const loadingSlots = ref(false)
 
@@ -26,7 +26,7 @@ export function useBookingForm() {
 
     const form = useForm({
         branch_id: '',
-        resource_id: '',
+        unit_id: '',
         activity_id: '',
         starts_at: '',
         customer: {
@@ -39,9 +39,9 @@ export function useBookingForm() {
         note: '',
     })
 
-    function resetResources() {
-        resources.value = []
-        form.resource_id = ''
+    function resetUnits() {
+        units.value = []
+        form.unit_id = ''
     }
 
     function resetActivities() {
@@ -66,8 +66,8 @@ export function useBookingForm() {
         return response.json()
     }
 
-    async function loadResources(branchId) {
-        resetResources()
+    async function loadUnits(branchId) {
+        resetUnits()
         resetActivities()
         resetSlots()
 
@@ -75,27 +75,27 @@ export function useBookingForm() {
             return
         }
 
-        loadingResources.value = true
+        loadingUnits.value = true
 
         try {
             const payload = await fetchJson(
-                `${route('api.booking-options.resources')}?branch_id=${encodeURIComponent(branchId)}`
+                `${route('api.booking-options.units')}?branch_id=${encodeURIComponent(branchId)}`
             )
 
-            resources.value = payload.data ?? []
+            units.value = payload.data ?? []
         } catch (error) {
-            console.error('Failed to load resources.', error)
-            resources.value = []
+            console.error('Failed to load units.', error)
+            units.value = []
         } finally {
-            loadingResources.value = false
+            loadingUnits.value = false
         }
     }
 
-    async function loadActivities(resourceId) {
+    async function loadActivities(unitId) {
         resetActivities()
         resetSlots()
 
-        if (!resourceId) {
+        if (!unitId) {
             return
         }
 
@@ -103,7 +103,7 @@ export function useBookingForm() {
 
         try {
             const payload = await fetchJson(
-                `${route('api.booking-options.activities')}?resource_id=${encodeURIComponent(resourceId)}`
+                `${route('api.booking-options.activities')}?unit_id=${encodeURIComponent(unitId)}`
             )
 
             activities.value = payload.data ?? []
@@ -118,7 +118,7 @@ export function useBookingForm() {
     async function loadSlots() {
         resetSlots()
 
-        if (!form.branch_id || !form.resource_id || !form.activity_id || !selectedDate.value) {
+        if (!form.branch_id || !form.unit_id || !form.activity_id || !selectedDate.value) {
             return
         }
 
@@ -127,7 +127,7 @@ export function useBookingForm() {
         try {
             const query = new URLSearchParams({
                 branch_id: String(form.branch_id),
-                resource_id: String(form.resource_id),
+                unit_id: String(form.unit_id),
                 activity_id: String(form.activity_id),
                 date: selectedDate.value,
             })
@@ -151,15 +151,15 @@ export function useBookingForm() {
         () => form.branch_id,
         async (branchId) => {
             selectedDate.value = ''
-            await loadResources(branchId)
+            await loadUnits(branchId)
         }
     )
 
     watch(
-        () => form.resource_id,
-        async (resourceId) => {
+        () => form.unit_id,
+        async (unitId) => {
             selectedDate.value = ''
-            await loadActivities(resourceId)
+            await loadActivities(unitId)
         }
     )
 
@@ -208,12 +208,12 @@ export function useBookingForm() {
 
     return {
         form,
-        resources,
+        units,
         activities,
         slots,
         slotMeta,
         selectedDate,
-        loadingResources,
+        loadingUnits,
         loadingActivities,
         loadingSlots,
         submit,

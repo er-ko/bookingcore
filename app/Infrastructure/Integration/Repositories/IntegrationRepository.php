@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Integration\Repositories;
 
-use App\Domain\Integration\DTO\CalendarAccountData;
+use App\Application\Integration\DTO\CalendarAccountData;
 use App\Enums\IntegrationProvider;
 use App\Enums\IntegrationType;
 use App\Models\Integration\Integration;

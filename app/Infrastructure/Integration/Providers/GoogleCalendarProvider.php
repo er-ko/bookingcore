@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Integration\Providers;
 
+use App\Application\Integration\DTO\CalendarAccountData;
+use App\Application\Integration\DTO\CalendarData;
+use App\Application\Integration\DTO\CalendarEventData;
 use App\Domain\Integration\Contracts\CalendarProvider;
-use App\Domain\Integration\DTO\CalendarAccountData;
-use App\Domain\Integration\DTO\CalendarData;
-use App\Domain\Integration\DTO\CalendarEventData;
 use App\Enums\IntegrationProvider;
 use App\Models\Integration\Integration;
 use Carbon\CarbonImmutable;
@@ -118,12 +118,25 @@ final class GoogleCalendarProvider implements CalendarProvider
         }
 
         $client = $this->makeClient();
-        $client->refreshToken($integration->refresh_token);
 
-        $tokenData = $client->getAccessToken();
+        $tokenData = $client->fetchAccessTokenWithRefreshToken($integration->refresh_token);
 
-        if (! is_array($tokenData) || ! isset($tokenData['access_token'])) {
-            throw new RuntimeException('Failed to refresh the Google access token.');
+        if (! is_array($tokenData) || isset($tokenData['error'])) {
+            $message = 'Failed to refresh the Google access token.';
+
+            if (is_array($tokenData) && isset($tokenData['error'])) {
+                $message .= ' Google error: ' . $tokenData['error'];
+
+                if (! empty($tokenData['error_description'])) {
+                    $message .= ' - ' . $tokenData['error_description'];
+                }
+            }
+
+            throw new RuntimeException($message);
+        }
+
+        if (! isset($tokenData['access_token'])) {
+            throw new RuntimeException('Failed to refresh the Google access token: missing access_token in response.');
         }
 
         $expiresAt = null;
@@ -140,7 +153,6 @@ final class GoogleCalendarProvider implements CalendarProvider
 
         return $integration->refresh();
     }
-
     private function calendarService(Integration $integration): GoogleCalendarService
     {
         $this->assertGoogleIntegration($integration);

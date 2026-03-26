@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('recurring_time_offs', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
 
             $table->unsignedTinyInteger('day_of_week');
 
@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index(['resource_id', 'day_of_week', 'is_active']);
+            $table->index(['unit_id', 'day_of_week', 'is_active']);
         });
     }
 

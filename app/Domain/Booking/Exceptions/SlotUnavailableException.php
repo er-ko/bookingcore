@@ -6,21 +6,21 @@ final class SlotUnavailableException extends BookingException
 {
     public static function dueToOverlap(): self
     {
-        return new self(__('booking/errors.slot_overlap'));
+        return new self(__('booking.errors.slot_overlap'));
     }
 
     public static function outsideWorkingHours(): self
     {
-        return new self(__('booking/errors.outside_working_hours'));
+        return new self(__('booking.errors.outside_working_hours'));
     }
 
     public static function duringTimeOff(): self
     {
-        return new self(__('booking/errors.during_time_off'));
+        return new self(__('booking.errors.during_time_off'));
     }
 
     public static function activityNotAssigned(): self
     {
-        return new self(__('booking/errors.activity_not_assigned'));
+        return new self(__('booking.errors.activity_not_assigned'));
     }
 }

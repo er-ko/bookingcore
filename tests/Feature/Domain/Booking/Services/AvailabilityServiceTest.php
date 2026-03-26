@@ -1,29 +1,32 @@
 <?php
 
-use App\Domain\Booking\DTO\AvailabilityQuery;
+use App\Application\Booking\DTO\AvailabilityQuery;
 use App\Domain\Booking\Services\AvailabilityService;
 use App\Domain\Booking\Services\SlotGenerator;
 use App\Infrastructure\Booking\Repositories\AvailabilityRepository;
 use App\Enums\BookingStatus;
 use App\Enums\DayOfWeek;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
-use App\Models\Booking\Branch;
-use App\Models\Booking\Resource;
 use App\Models\Booking\TimeOff;
 use App\Models\Booking\WorkingHour;
+use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('returns available slots for a resource on a given day', function () {
+it('returns available slots for a unit on a given day', function () {
     // Arrange
-    [$branch, $resource, $activity] = createAvailabilityScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createAvailabilityScenario($user->id);
 
     createWorkingHour(
-        resourceId: $resource->id,
+        unitId: $unit->id,
         dayOfWeek: DayOfWeek::Monday,
         startTime: '09:00:00',
         endTime: '12:00:00',
@@ -31,7 +34,7 @@ it('returns available slots for a resource on a given day', function () {
 
     $query = createAvailabilityQuery(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         date: '2026-03-09',
     );
@@ -53,17 +56,19 @@ it('returns available slots for a resource on a given day', function () {
 
 it('splits availability by time off periods', function () {
     // Arrange
-    [$branch, $resource, $activity] = createAvailabilityScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createAvailabilityScenario($user->id);
 
     createWorkingHour(
-        resourceId: $resource->id,
+        unitId: $unit->id,
         dayOfWeek: DayOfWeek::Monday,
         startTime: '09:00:00',
         endTime: '17:00:00',
     );
 
     TimeOff::create([
-        'resource_id' => $resource->id,
+        'unit_id' => $unit->id,
         'starts_at' => '2026-03-09 12:00:00',
         'ends_at' => '2026-03-09 13:00:00',
         'reason' => 'Lunch break',
@@ -71,7 +76,7 @@ it('splits availability by time off periods', function () {
 
     $query = createAvailabilityQuery(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         date: '2026-03-09',
     );
@@ -102,10 +107,12 @@ it('splits availability by time off periods', function () {
 
 it('excludes slots that conflict with existing bookings', function () {
     // Arrange
-    [$branch, $resource, $activity] = createAvailabilityScenario();
+    $user = User::factory()->create();
+
+    [$branch, $unit, $activity] = createAvailabilityScenario($user->id);
 
     createWorkingHour(
-        resourceId: $resource->id,
+        unitId: $unit->id,
         dayOfWeek: DayOfWeek::Monday,
         startTime: '09:00:00',
         endTime: '12:00:00',
@@ -121,7 +128,7 @@ it('excludes slots that conflict with existing bookings', function () {
 
     Booking::create([
         'branch_id' => $branch->id,
-        'resource_id' => $resource->id,
+        'unit_id' => $unit->id,
         'activity_id' => $activity->id,
         'customer_id' => $customer->id,
         'starts_at' => '2026-03-09 10:25:00',
@@ -134,7 +141,7 @@ it('excludes slots that conflict with existing bookings', function () {
 
     $query = createAvailabilityQuery(
         branchId: $branch->id,
-        resourceId: $resource->id,
+        unitId: $unit->id,
         activityId: $activity->id,
         date: '2026-03-09',
     );
@@ -152,20 +159,29 @@ it('excludes slots that conflict with existing bookings', function () {
 });
 
 /**
- * Create a complete availability test scenario with branch, resource, activity,
+ * Create a complete availability test scenario with branch, unit, activity,
  * and activity assignment.
  *
- * @return array{0: Branch, 1: Resource, 2: Activity}
+ * @return array{0: Branch, 1: Unit, 2: Activity}
  */
-function createAvailabilityScenario(): array
+function createAvailabilityScenario(int $userId): array
 {
     $branch = Branch::create([
+        'user_id' => $userId,
+        'public_id' => 'br_1234567890',
         'name' => 'Brno',
+        'address_line_1' => 'Street 1',
+        'address_line_2' => 'Street 2',
+        'city' => 'City',
+        'postcode' => '10000',
+        'country_code' => 'CZ',
         'timezone' => 'Europe/Prague',
         'is_active' => true,
     ]);
 
-    $resource = Resource::create([
+    $unit = Unit::create([
+        'user_id' => $userId,
+        'public_id' => 'un_1234567890',
         'branch_id' => $branch->id,
         'name' => 'Chair A',
         'description' => null,
@@ -173,6 +189,8 @@ function createAvailabilityScenario(): array
     ]);
 
     $activity = Activity::create([
+        'user_id' => $userId,
+        'public_id' => 'ac_1234567890',
         'name' => 'Consultation',
         'duration_minutes' => 60,
         'buffer_before_minutes' => 10,
@@ -182,23 +200,23 @@ function createAvailabilityScenario(): array
 
     ActivityAssignment::create([
         'activity_id' => $activity->id,
-        'resource_id' => $resource->id,
+        'unit_id' => $unit->id,
     ]);
 
-    return [$branch, $resource, $activity];
+    return [$branch, $unit, $activity];
 }
 
 /**
- * Create a working hour record for a resource.
+ * Create a working hour record for a unit.
  */
 function createWorkingHour(
-    int $resourceId,
+    int $unitId,
     DayOfWeek $dayOfWeek,
     string $startTime,
     string $endTime,
 ): WorkingHour {
     return WorkingHour::create([
-        'resource_id' => $resourceId,
+        'unit_id' => $unitId,
         'day_of_week' => $dayOfWeek->value,
         'start_time' => $startTime,
         'end_time' => $endTime,
@@ -211,13 +229,13 @@ function createWorkingHour(
  */
 function createAvailabilityQuery(
     int $branchId,
-    int $resourceId,
+    int $unitId,
     int $activityId,
     string $date,
 ): AvailabilityQuery {
     return AvailabilityQuery::from(
         branchId: $branchId,
-        resourceId: $resourceId,
+        unitId: $unitId,
         activityId: $activityId,
         date: $date,
     );

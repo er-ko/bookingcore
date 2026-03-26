@@ -1,0 +1,538 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class CountriesMetadataSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $rows = $this->metadata();
+
+        foreach ($rows as $alpha2 => $data) {
+            DB::table('countries')
+                ->where('iso_alpha2', $alpha2)
+                ->update(array_filter([
+                    'official_name' => $data['official_name'] ?? null,
+                    'local_name' => $data['local_name'] ?? null,
+                    'default_language_code' => $data['default_language_code'] ?? null,
+                    'default_currency_code' => $data['default_currency_code'] ?? null,
+                    'phone_code' => $data['phone_code'] ?? null,
+                    'updated_at' => now(),
+                ], static fn ($value) => $value !== null));
+        }
+    }
+
+    /**
+     * Curated metadata for countries.
+     *
+     * Start with countries you actively use in the app.
+     * You can extend this map gradually until all countries are covered.
+     *
+     * @return array<string, array<string, string|null>>
+     */
+    private function metadata(): array
+    {
+        return [
+            'CZ' => [
+                'official_name' => 'Czech Republic',
+                'local_name' => 'Česká republika',
+                'default_language_code' => 'cs',
+                'default_currency_code' => 'CZK',
+                'phone_code' => '420',
+            ],
+            'SK' => [
+                'official_name' => 'Slovak Republic',
+                'local_name' => 'Slovenská republika',
+                'default_language_code' => 'sk',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '421',
+            ],
+            'PL' => [
+                'official_name' => 'Republic of Poland',
+                'local_name' => 'Rzeczpospolita Polska',
+                'default_language_code' => 'pl',
+                'default_currency_code' => 'PLN',
+                'phone_code' => '48',
+            ],
+            'DE' => [
+                'official_name' => 'Federal Republic of Germany',
+                'local_name' => 'Bundesrepublik Deutschland',
+                'default_language_code' => 'de',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '49',
+            ],
+            'AT' => [
+                'official_name' => 'Republic of Austria',
+                'local_name' => 'Republik Österreich',
+                'default_language_code' => 'de',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '43',
+            ],
+            'CH' => [
+                'official_name' => 'Swiss Confederation',
+                'local_name' => 'Schweizerische Eidgenossenschaft',
+                'default_language_code' => 'de',
+                'default_currency_code' => 'CHF',
+                'phone_code' => '41',
+            ],
+            'PT' => [
+                'official_name' => 'Portuguese Republic',
+                'local_name' => 'República Portuguesa',
+                'default_language_code' => 'pt',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '351',
+            ],
+            'ES' => [
+                'official_name' => 'Kingdom of Spain',
+                'local_name' => 'Reino de España',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '34',
+            ],
+            'FR' => [
+                'official_name' => 'French Republic',
+                'local_name' => 'République française',
+                'default_language_code' => 'fr',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '33',
+            ],
+            'IT' => [
+                'official_name' => 'Italian Republic',
+                'local_name' => 'Repubblica Italiana',
+                'default_language_code' => 'it',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '39',
+            ],
+            'GB' => [
+                'official_name' => 'United Kingdom of Great Britain and Northern Ireland',
+                'local_name' => 'United Kingdom',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'GBP',
+                'phone_code' => '44',
+            ],
+            'IE' => [
+                'official_name' => 'Ireland',
+                'local_name' => 'Éire',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'EUR',
+                'phone_code' => '353',
+            ],
+            'US' => [
+                'official_name' => 'United States of America',
+                'local_name' => 'United States',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'USD',
+                'phone_code' => '1',
+            ],
+            'CA' => [
+                'official_name' => 'Canada',
+                'local_name' => 'Canada',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'CAD',
+                'phone_code' => '1',
+            ],
+            'MX' => [
+                'official_name' => 'United Mexican States',
+                'local_name' => 'Estados Unidos Mexicanos',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'MXN',
+                'phone_code' => '52',
+            ],
+            'BR' => [
+                'official_name' => 'Federative Republic of Brazil',
+                'local_name' => 'República Federativa do Brasil',
+                'default_language_code' => 'pt',
+                'default_currency_code' => 'BRL',
+                'phone_code' => '55',
+            ],
+            'AR' => [
+                'official_name' => 'Argentine Republic',
+                'local_name' => 'República Argentina',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'ARS',
+                'phone_code' => '54',
+            ],
+            'CL' => [
+                'official_name' => 'Republic of Chile',
+                'local_name' => 'República de Chile',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'CLP',
+                'phone_code' => '56',
+            ],
+            'UY' => [
+                'official_name' => 'Eastern Republic of Uruguay',
+                'local_name' => 'República Oriental del Uruguay',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'UYU',
+                'phone_code' => '598',
+            ],
+            'PY' => [
+                'official_name' => 'Republic of Paraguay',
+                'local_name' => 'República del Paraguay',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'PYG',
+                'phone_code' => '595',
+            ],
+            'BO' => [
+                'official_name' => 'Plurinational State of Bolivia',
+                'local_name' => 'Estado Plurinacional de Bolivia',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'BOB',
+                'phone_code' => '591',
+            ],
+            'PE' => [
+                'official_name' => 'Republic of Peru',
+                'local_name' => 'República del Perú',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'PEN',
+                'phone_code' => '51',
+            ],
+            'CO' => [
+                'official_name' => 'Republic of Colombia',
+                'local_name' => 'República de Colombia',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'COP',
+                'phone_code' => '57',
+            ],
+            'VE' => [
+                'official_name' => 'Bolivarian Republic of Venezuela',
+                'local_name' => 'República Bolivariana de Venezuela',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'VES',
+                'phone_code' => '58',
+            ],
+            'CR' => [
+                'official_name' => 'Republic of Costa Rica',
+                'local_name' => 'República de Costa Rica',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'CRC',
+                'phone_code' => '506',
+            ],
+            'PA' => [
+                'official_name' => 'Republic of Panama',
+                'local_name' => 'República de Panamá',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'PAB',
+                'phone_code' => '507',
+            ],
+            'NI' => [
+                'official_name' => 'Republic of Nicaragua',
+                'local_name' => 'República de Nicaragua',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'NIO',
+                'phone_code' => '505',
+            ],
+            'HN' => [
+                'official_name' => 'Republic of Honduras',
+                'local_name' => 'República de Honduras',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'HNL',
+                'phone_code' => '504',
+            ],
+            'SV' => [
+                'official_name' => 'Republic of El Salvador',
+                'local_name' => 'República de El Salvador',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'USD',
+                'phone_code' => '503',
+            ],
+            'GT' => [
+                'official_name' => 'Republic of Guatemala',
+                'local_name' => 'República de Guatemala',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'GTQ',
+                'phone_code' => '502',
+            ],
+            'DO' => [
+                'official_name' => 'Dominican Republic',
+                'local_name' => 'República Dominicana',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'DOP',
+                'phone_code' => '1',
+            ],
+            'CU' => [
+                'official_name' => 'Republic of Cuba',
+                'local_name' => 'República de Cuba',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'CUP',
+                'phone_code' => '53',
+            ],
+            'JM' => [
+                'official_name' => 'Jamaica',
+                'local_name' => 'Jamaica',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'JMD',
+                'phone_code' => '1',
+            ],
+            'PR' => [
+                'official_name' => 'Commonwealth of Puerto Rico',
+                'local_name' => 'Puerto Rico',
+                'default_language_code' => 'es',
+                'default_currency_code' => 'USD',
+                'phone_code' => '1',
+            ],
+            'AU' => [
+                'official_name' => 'Commonwealth of Australia',
+                'local_name' => 'Australia',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'AUD',
+                'phone_code' => '61',
+            ],
+            'NZ' => [
+                'official_name' => 'New Zealand',
+                'local_name' => 'New Zealand',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'NZD',
+                'phone_code' => '64',
+            ],
+            'JP' => [
+                'official_name' => 'Japan',
+                'local_name' => '日本',
+                'default_language_code' => 'ja',
+                'default_currency_code' => 'JPY',
+                'phone_code' => '81',
+            ],
+            'CN' => [
+                'official_name' => 'People\'s Republic of China',
+                'local_name' => '中华人民共和国',
+                'default_language_code' => 'zh',
+                'default_currency_code' => 'CNY',
+                'phone_code' => '86',
+            ],
+            'HK' => [
+                'official_name' => 'Hong Kong Special Administrative Region of China',
+                'local_name' => '香港',
+                'default_language_code' => 'zh',
+                'default_currency_code' => 'HKD',
+                'phone_code' => '852',
+            ],
+            'MO' => [
+                'official_name' => 'Macao Special Administrative Region of China',
+                'local_name' => '澳門',
+                'default_language_code' => 'zh',
+                'default_currency_code' => 'MOP',
+                'phone_code' => '853',
+            ],
+            'TW' => [
+                'official_name' => 'Taiwan',
+                'local_name' => '臺灣',
+                'default_language_code' => 'zh',
+                'default_currency_code' => 'TWD',
+                'phone_code' => '886',
+            ],
+            'IN' => [
+                'official_name' => 'Republic of India',
+                'local_name' => 'भारत',
+                'default_language_code' => 'hi',
+                'default_currency_code' => 'INR',
+                'phone_code' => '91',
+            ],
+            'ID' => [
+                'official_name' => 'Republic of Indonesia',
+                'local_name' => 'Indonesia',
+                'default_language_code' => 'id',
+                'default_currency_code' => 'IDR',
+                'phone_code' => '62',
+            ],
+            'TH' => [
+                'official_name' => 'Kingdom of Thailand',
+                'local_name' => 'ประเทศไทย',
+                'default_language_code' => 'th',
+                'default_currency_code' => 'THB',
+                'phone_code' => '66',
+            ],
+            'VN' => [
+                'official_name' => 'Socialist Republic of Vietnam',
+                'local_name' => 'Việt Nam',
+                'default_language_code' => 'vi',
+                'default_currency_code' => 'VND',
+                'phone_code' => '84',
+            ],
+            'PH' => [
+                'official_name' => 'Republic of the Philippines',
+                'local_name' => 'Pilipinas',
+                'default_language_code' => 'tl',
+                'default_currency_code' => 'PHP',
+                'phone_code' => '63',
+            ],
+            'MY' => [
+                'official_name' => 'Malaysia',
+                'local_name' => 'Malaysia',
+                'default_language_code' => 'ms',
+                'default_currency_code' => 'MYR',
+                'phone_code' => '60',
+            ],
+            'SG' => [
+                'official_name' => 'Republic of Singapore',
+                'local_name' => 'Singapore',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'SGD',
+                'phone_code' => '65',
+            ],
+            'KR' => [
+                'official_name' => 'Republic of Korea',
+                'local_name' => '대한민국',
+                'default_language_code' => 'ko',
+                'default_currency_code' => 'KRW',
+                'phone_code' => '82',
+            ],
+            'KZ' => [
+                'official_name' => 'Republic of Kazakhstan',
+                'local_name' => 'Қазақстан Республикасы',
+                'default_language_code' => 'kk',
+                'default_currency_code' => 'KZT',
+                'phone_code' => '7',
+            ],
+            'GE' => [
+                'official_name' => 'Georgia',
+                'local_name' => 'საქართველო',
+                'default_language_code' => 'ka',
+                'default_currency_code' => 'GEL',
+                'phone_code' => '995',
+            ],
+            'TR' => [
+                'official_name' => 'Republic of Türkiye',
+                'local_name' => 'Türkiye Cumhuriyeti',
+                'default_language_code' => 'tr',
+                'default_currency_code' => 'TRY',
+                'phone_code' => '90',
+            ],
+            'UA' => [
+                'official_name' => 'Ukraine',
+                'local_name' => 'Україна',
+                'default_language_code' => 'uk',
+                'default_currency_code' => 'UAH',
+                'phone_code' => '380',
+            ],
+            'RU' => [
+                'official_name' => 'Russian Federation',
+                'local_name' => 'Российская Федерация',
+                'default_language_code' => 'ru',
+                'default_currency_code' => 'RUB',
+                'phone_code' => '7',
+            ],
+            'IL' => [
+                'official_name' => 'State of Israel',
+                'local_name' => 'יִשְׂרָאֵל',
+                'default_language_code' => 'he',
+                'default_currency_code' => 'ILS',
+                'phone_code' => '972',
+            ],
+            'AE' => [
+                'official_name' => 'United Arab Emirates',
+                'local_name' => 'الإمارات العربية المتحدة',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'AED',
+                'phone_code' => '971',
+            ],
+            'SA' => [
+                'official_name' => 'Kingdom of Saudi Arabia',
+                'local_name' => 'المملكة العربية السعودية',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'SAR',
+                'phone_code' => '966',
+            ],
+            'QA' => [
+                'official_name' => 'State of Qatar',
+                'local_name' => 'دولة قطر',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'QAR',
+                'phone_code' => '974',
+            ],
+            'EG' => [
+                'official_name' => 'Arab Republic of Egypt',
+                'local_name' => 'جمهورية مصر العربية',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'EGP',
+                'phone_code' => '20',
+            ],
+            'MA' => [
+                'official_name' => 'Kingdom of Morocco',
+                'local_name' => 'المملكة المغربية',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'MAD',
+                'phone_code' => '212',
+            ],
+            'TN' => [
+                'official_name' => 'Republic of Tunisia',
+                'local_name' => 'الجمهورية التونسية',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'TND',
+                'phone_code' => '216',
+            ],
+            'DZ' => [
+                'official_name' => 'People\'s Democratic Republic of Algeria',
+                'local_name' => 'الجمهورية الجزائرية الديمقراطية الشعبية',
+                'default_language_code' => 'ar',
+                'default_currency_code' => 'DZD',
+                'phone_code' => '213',
+            ],
+            'ZA' => [
+                'official_name' => 'Republic of South Africa',
+                'local_name' => 'South Africa',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'ZAR',
+                'phone_code' => '27',
+            ],
+            'NG' => [
+                'official_name' => 'Federal Republic of Nigeria',
+                'local_name' => 'Nigeria',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'NGN',
+                'phone_code' => '234',
+            ],
+            'KE' => [
+                'official_name' => 'Republic of Kenya',
+                'local_name' => 'Kenya',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'KES',
+                'phone_code' => '254',
+            ],
+            'TZ' => [
+                'official_name' => 'United Republic of Tanzania',
+                'local_name' => 'Tanzania',
+                'default_language_code' => 'sw',
+                'default_currency_code' => 'TZS',
+                'phone_code' => '255',
+            ],
+            'UG' => [
+                'official_name' => 'Republic of Uganda',
+                'local_name' => 'Uganda',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'UGX',
+                'phone_code' => '256',
+            ],
+            'ZW' => [
+                'official_name' => 'Republic of Zimbabwe',
+                'local_name' => 'Zimbabwe',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'USD',
+                'phone_code' => '263',
+            ],
+            'ZM' => [
+                'official_name' => 'Republic of Zambia',
+                'local_name' => 'Zambia',
+                'default_language_code' => 'en',
+                'default_currency_code' => 'ZMW',
+                'phone_code' => '260',
+            ],
+            'AO' => [
+                'official_name' => 'Republic of Angola',
+                'local_name' => 'República de Angola',
+                'default_language_code' => 'pt',
+                'default_currency_code' => 'AOA',
+                'phone_code' => '244',
+            ],
+            'MZ' => [
+                'official_name' => 'Republic of Mozambique',
+                'local_name' => 'República de Moçambique',
+                'default_language_code' => 'pt',
+                'default_currency_code' => 'MZN',
+                'phone_code' => '258',
+            ],
+        ];
+    }
+}

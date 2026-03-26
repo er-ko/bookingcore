@@ -14,7 +14,7 @@ final class BookingPageQuery
     /**
      * Retrieve booking list data for the booking index page.
      *
-     * Only minimal relation fields are loaded to keep the response payload
+     * Only minimal relation fields are loaded to keep the unit payload
      * small and optimized for rendering the booking table in the UI.
      *
      * @return LengthAwarePaginator<int, Booking>
@@ -24,7 +24,7 @@ final class BookingPageQuery
         return Booking::query()
             ->with([
                 'branch:id,name',
-                'resource:id,name,branch_id',
+                'unit:id,name,branch_id',
                 'activity:id,name',
                 'customer:id,first_name,last_name,email',
             ])

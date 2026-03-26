@@ -1,11 +1,12 @@
 <?php
 
 use App\Enums\BookingStatus;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\Booking;
-use App\Models\Booking\Branch;
-use App\Models\Booking\Resource;
+use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -137,14 +138,16 @@ function createStatusBookingForApiTest(
     ?string $confirmedAt,
     ?string $cancelledAt,
 ): Booking {
-    $branch = createStatusApiBranch();
-    $resource = createStatusApiResource($branch->id);
-    $activity = createStatusApiActivity();
+    $user = User::factory()->create();
+
+    $branch = createStatusApiBranch($user->id);
+    $unit = createStatusApiUnit($user->id, $branch->id);
+    $activity = createStatusApiActivity($user->id);
     $customer = createStatusApiCustomer();
 
     return Booking::create([
         'branch_id' => $branch->id,
-        'resource_id' => $resource->id,
+        'unit_id' => $unit->id,
         'activity_id' => $activity->id,
         'customer_id' => $customer->id,
         'starts_at' => '2026-03-09 10:00:00',
@@ -159,21 +162,30 @@ function createStatusBookingForApiTest(
 /**
  * Create a branch for booking status API tests.
  */
-function createStatusApiBranch(): Branch
+function createStatusApiBranch(int $userId): Branch
 {
     return Branch::create([
+        'user_id' => $userId,
+        'public_id' => 'br_1234567890',
         'name' => 'Brno',
+        'address_line_1' => 'Street 1',
+        'address_line_2' => 'Street 2',
+        'city' => 'City',
+        'postcode' => '10000',
+        'country_code' => 'CZ',
         'timezone' => 'Europe/Prague',
         'is_active' => true,
     ]);
 }
 
 /**
- * Create a resource for booking status API tests.
+ * Create a unit for booking status API tests.
  */
-function createStatusApiResource(int $branchId): Resource
+function createStatusApiUnit(int $userId, int $branchId): Unit
 {
-    return Resource::create([
+    return Unit::create([
+        'user_id' => $userId,
+        'public_id' => 'un_1234567890',
         'branch_id' => $branchId,
         'name' => 'Chair A',
         'description' => null,
@@ -184,9 +196,11 @@ function createStatusApiResource(int $branchId): Resource
 /**
  * Create an activity for booking status API tests.
  */
-function createStatusApiActivity(): Activity
+function createStatusApiActivity(int $userId): Activity
 {
     return Activity::create([
+        'user_id' => $userId,
+        'public_id' => 'ac_1234567890',
         'name' => 'Consultation',
         'duration_minutes' => 60,
         'buffer_before_minutes' => 10,

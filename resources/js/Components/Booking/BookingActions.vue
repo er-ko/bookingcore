@@ -4,8 +4,12 @@ import { router } from '@inertiajs/vue3'
 
 const route = inject('route')
 
-const { booking } = defineProps({
+const { booking, translations } = defineProps({
     booking: {
+        type: Object,
+        required: true,
+    },
+    translations: {
         type: Object,
         required: true,
     },
@@ -87,7 +91,7 @@ async function cancelBooking() {
         return
     }
 
-    if (!window.confirm('Are you sure you want to cancel this booking?')) {
+    if (!window.confirm(translations.alerts.cancel_confirmation)) {
         return
     }
 
@@ -103,31 +107,31 @@ async function cancelBooking() {
             <button
                 v-if="canConfirm"
                 type="button"
-                class="select-none rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 transition hover:bg-blue-100 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+                class="select-none rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-medium text-nowrap text-blue-700 transition hover:bg-blue-100 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 :disabled="processing"
                 @click="updateStatus('confirmed')"
             >
-                Confirm
+                {{ translations.actions.confirm }}
             </button>
 
             <button
                 v-if="canComplete"
                 type="button"
-                class="select-none rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 transition hover:cursor-pointer hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60"
+                class="select-none rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-nowrap text-emerald-700 transition hover:cursor-pointer hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60"
                 :disabled="processing"
                 @click="updateStatus('completed')"
             >
-                Complete
+                {{ translations.actions.complete }}
             </button>
 
             <button
                 v-if="canCancel"
                 type="button"
-                class="select-none rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-700 transition hover:cursor-pointer hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
+                class="select-none rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-nowrap text-red-700 transition hover:cursor-pointer hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
                 :disabled="processing"
                 @click="cancelBooking"
             >
-                Cancel
+                {{ translations.actions.cancel }}
             </button>
         </div>
 

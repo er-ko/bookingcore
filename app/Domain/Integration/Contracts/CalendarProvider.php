@@ -2,9 +2,9 @@
 
 namespace App\Domain\Integration\Contracts;
 
-use App\Domain\Integration\DTO\CalendarAccountData;
-use App\Domain\Integration\DTO\CalendarData;
-use App\Domain\Integration\DTO\CalendarEventData;
+use App\Application\Integration\DTO\CalendarAccountData;
+use App\Application\Integration\DTO\CalendarData;
+use App\Application\Integration\DTO\CalendarEventData;
 use App\Models\Integration\Integration;
 
 interface CalendarProvider

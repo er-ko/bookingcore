@@ -22,7 +22,7 @@ final class ActivityOptionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'resource_id' => ['bail', 'required', 'integer', 'exists:resources,id'],
+            'unit_id' => ['bail', 'required', 'integer', 'exists:units,id'],
         ];
     }
 
@@ -34,17 +34,17 @@ final class ActivityOptionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'resource_id.required' => __('booking/errors.messages.resource_required'),
-            'resource_id.integer' => __('booking/errors.messages.resource_invalid'),
-            'resource_id.exists' => __('booking/errors.messages.resource_not_found'),
+            'unit_id.required' => __('booking.validation.unit_required'),
+            'unit_id.integer' => __('booking.validation.unit_invalid'),
+            'unit_id.exists' => __('booking.validation.unit_not_found'),
         ];
     }
 
     /**
-     * Get the validated resource identifier.
+     * Get the validated unit identifier.
      */
-    public function resourceId(): int
+    public function unitId(): int
     {
-        return (int) $this->validated('resource_id');
+        return (int) $this->validated('unit_id');
     }
 }

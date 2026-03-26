@@ -3,6 +3,7 @@
 namespace App\Models\Booking;
 
 use App\Enums\DayOfWeek;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use InvalidArgumentException;
 class WorkingHour extends Model
 {
     protected $fillable = [
-        'resource_id',
+        'unit_id',
         'day_of_week',
         'start_time',
         'end_time',
@@ -24,19 +25,19 @@ class WorkingHour extends Model
     ];
 
     /**
-     * Resource associated with the working hour.
+     * Unit associated with the working hour.
      */
-    public function resource(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Unit::class);
     }
 
     /**
-     * Scope query to a specific resource.
+     * Scope query to a specific unit.
      */
-    public function scopeForResource(Builder $query, int $resourceId): Builder
+    public function scopeForUnit(Builder $query, int $unitId): Builder
     {
-        return $query->where('resource_id', $resourceId);
+        return $query->where('unit_id', $unitId);
     }
 
     /**

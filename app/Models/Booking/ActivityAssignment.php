@@ -2,6 +2,8 @@
 
 namespace App\Models\Booking;
 
+use App\Models\Activity;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,11 +13,11 @@ class ActivityAssignment extends Model
 
     protected $fillable = [
         'activity_id',
-        'resource_id',
+        'unit_id',
     ];
 
     /**
-     * Activity assigned to the resource.
+     * Activity assigned to the unit.
      */
     public function activity(): BelongsTo
     {
@@ -23,10 +25,10 @@ class ActivityAssignment extends Model
     }
 
     /**
-     * Resource assigned to the activity.
+     * Unit assigned to the activity.
      */
-    public function resource(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Unit::class);
     }
 }

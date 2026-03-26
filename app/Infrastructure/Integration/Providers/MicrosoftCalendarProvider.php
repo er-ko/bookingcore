@@ -2,10 +2,9 @@
 
 namespace App\Infrastructure\Integration\Providers;
 
+use App\Application\Integration\DTO\CalendarAccountData;
+use App\Application\Integration\DTO\CalendarEventData;
 use App\Domain\Integration\Contracts\CalendarProvider;
-use App\Domain\Integration\DTO\CalendarAccountData;
-use App\Domain\Integration\DTO\CalendarData;
-use App\Domain\Integration\DTO\CalendarEventData;
 use App\Models\Integration\Integration;
 
 final class MicrosoftCalendarProvider implements CalendarProvider

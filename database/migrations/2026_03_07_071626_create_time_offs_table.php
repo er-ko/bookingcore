@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('time_offs', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
 
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index(['resource_id', 'starts_at', 'ends_at']);
+            $table->index(['unit_id', 'starts_at', 'ends_at']);
         });
     }
 

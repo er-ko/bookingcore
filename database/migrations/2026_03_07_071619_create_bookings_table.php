@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
             $table->foreignId('activity_id')->constrained('activities')->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
 
@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->index('status');
             $table->index('starts_at');
-            $table->index(['resource_id', 'starts_at']);
+            $table->index(['unit_id', 'starts_at']);
         });
     }
 

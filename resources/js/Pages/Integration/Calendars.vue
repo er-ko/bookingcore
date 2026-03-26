@@ -13,8 +13,10 @@ const props = defineProps({
 const integration = computed(() => props.calendarIntegration?.integration ?? null)
 const account = computed(() => props.calendarIntegration?.account ?? null)
 const calendars = computed(() => props.calendarIntegration?.calendars ?? [])
+const connectionError = computed(() => props.calendarIntegration?.connection_error ?? null)
 
 const hasIntegration = computed(() => integration.value !== null)
+const hasConnectionError = computed(() => Boolean(connectionError.value))
 const selectedCalendarId = computed(() => integration.value?.calendar_settings?.selected_calendar_id ?? null)
 
 const settingsForm = reactive({
@@ -23,7 +25,7 @@ const settingsForm = reactive({
 })
 
 const selectCalendar = (calendarId) => {
-    if (!integration.value?.id) {
+    if (!integration.value?.id || hasConnectionError.value) {
         return
     }
 
@@ -39,7 +41,7 @@ const selectCalendar = (calendarId) => {
 }
 
 const updateSettings = () => {
-    if (!integration.value?.id) {
+    if (!integration.value?.id || hasConnectionError.value) {
         return
     }
 
@@ -72,13 +74,44 @@ const updateSettings = () => {
                     </p>
                 </div>
 
-                <div v-if="!hasIntegration">
+                <div v-if="!hasIntegration || hasConnectionError">
                     <a
                         :href="route('integrations.calendar.google.redirect')"
                         class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                     >
-                        Connect Google Calendar
+                        {{ hasConnectionError ? 'Reconnect Google Calendar' : 'Connect Google Calendar' }}
                     </a>
+                </div>
+            </div>
+
+            <div
+                v-if="hasConnectionError"
+                class="overflow-hidden rounded-2xl border border-red-200 bg-red-50 shadow-sm"
+            >
+                <div class="px-6 py-5">
+                    <h2 class="text-sm font-semibold text-red-900">
+                        Google Calendar connection expired
+                    </h2>
+
+                    <p class="mt-2 text-sm text-red-800">
+                        Your Google Calendar connection is no longer valid. Please reconnect your account to continue syncing calendars and booking events.
+                    </p>
+
+                    <p
+                        v-if="connectionError"
+                        class="mt-3 text-xs text-red-700"
+                    >
+                        {{ connectionError }}
+                    </p>
+
+                    <div class="mt-5">
+                        <a
+                            :href="route('integrations.calendar.google.redirect')"
+                            class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+                        >
+                            Reconnect Google Calendar
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -106,7 +139,7 @@ const updateSettings = () => {
                 </div>
             </div>
 
-            <template v-else>
+            <template v-else-if="!hasConnectionError">
                 <div class="grid gap-6 lg:grid-cols-3">
                     <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm lg:col-span-1">
                         <div class="border-b border-gray-200 px-6 py-4">
@@ -158,7 +191,7 @@ const updateSettings = () => {
                                 </div>
                                 <div class="mt-1">
                                     <span
-                                        class="inline-flex items-center rounded-md bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
+                                        class="inline-flex items-center rounded-md bg-emerald-100 px-2.5 py-1 text-xs font-medium select-none text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
                                     >
                                         Active
                                     </span>
@@ -166,13 +199,13 @@ const updateSettings = () => {
                             </div>
                         </div>
 
-                        <div class="border-t border-gray-200 px-6 py-4">
+                        <div class="border-t border-gray-200 px-6 pt-6 pb-2">
                             <h2 class="text-sm font-semibold text-gray-900">
                                 Sync settings
                             </h2>
                         </div>
 
-                        <div class="space-y-5 px-6 py-6 text-sm text-gray-700">
+                        <div class="space-y-5 px-6 pt-4 pb-6 text-sm text-gray-700">
                             <label class="flex items-start gap-3">
                                 <input
                                     v-model="settingsForm.sync_bookings"
@@ -211,7 +244,7 @@ const updateSettings = () => {
                             <div class="pt-2">
                                 <button
                                     type="button"
-                                    class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 hover:cursor-pointer"
+                                    class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium select-none text-white transition hover:bg-gray-800 hover:cursor-pointer"
                                     @click="updateSettings"
                                 >
                                     Save settings
@@ -257,21 +290,21 @@ const updateSettings = () => {
 
                                         <span
                                             v-if="calendar.is_primary"
-                                            class="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20"
+                                            class="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-xs font-medium select-none text-blue-800 ring-1 ring-inset ring-blue-600/20"
                                         >
                                             Primary
                                         </span>
 
                                         <span
                                             v-if="calendar.is_read_only"
-                                            class="inline-flex items-center rounded-md bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 ring-1 ring-inset ring-amber-600/20"
+                                            class="inline-flex items-center rounded-md bg-amber-100 px-2 py-1 text-xs font-medium select-none text-amber-800 ring-1 ring-inset ring-amber-600/20"
                                         >
                                             Read only
                                         </span>
 
                                         <span
                                             v-if="selectedCalendarId === calendar.id"
-                                            class="inline-flex items-center rounded-md bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
+                                            class="inline-flex items-center rounded-md bg-emerald-100 px-2 py-1 text-xs font-medium select-none text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
                                         >
                                             Selected
                                         </span>

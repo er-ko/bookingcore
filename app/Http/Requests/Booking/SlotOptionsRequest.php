@@ -23,7 +23,7 @@ final class SlotOptionsRequest extends FormRequest
     {
         return [
             'branch_id' => ['bail', 'required', 'integer', 'exists:branches,id'],
-            'resource_id' => ['bail', 'required', 'integer', 'exists:resources,id'],
+            'unit_id' => ['bail', 'required', 'integer', 'exists:units,id'],
             'activity_id' => ['bail', 'required', 'integer', 'exists:activities,id'],
             'date' => ['bail', 'required', 'date_format:Y-m-d'],
         ];
@@ -37,20 +37,20 @@ final class SlotOptionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'branch_id.required' => __('booking/errors.branch_required'),
-            'branch_id.integer' => __('booking/errors.branch_invalid'),
-            'branch_id.exists' => __('booking/errors.branch_not_found'),
+            'branch_id.required' => __('booking.validation.branch_required'),
+            'branch_id.integer' => __('booking.validation.branch_invalid'),
+            'branch_id.exists' => __('booking.validation.branch_not_found'),
 
-            'resource_id.required' => __('booking/errors.resource_required'),
-            'resource_id.integer' => __('booking/errors.resource_invalid'),
-            'resource_id.exists' => __('booking/errors.resource_not_found'),
+            'unit_id.required' => __('booking.validation.unit_required'),
+            'unit_id.integer' => __('booking.validation.unit_invalid'),
+            'unit_id.exists' => __('booking.validation.unit_not_found'),
 
-            'activity_id.required' => __('booking/errors.activity_required'),
-            'activity_id.integer' => __('booking/errors.activity_invalid'),
-            'activity_id.exists' => __('booking/errors.activity_not_found'),
+            'activity_id.required' => __('booking.validation.activity_required'),
+            'activity_id.integer' => __('booking.validation.activity_invalid'),
+            'activity_id.exists' => __('booking.validation.activity_not_found'),
 
-            'date.required' => __('booking/errors.date_required'),
-            'date.date_format' => __('booking/errors.date_invalid'),
+            'date.required' => __('booking.validation.date_required'),
+            'date.date_format' => __('booking.validation.date_invalid'),
         ];
     }
 
@@ -63,11 +63,11 @@ final class SlotOptionsRequest extends FormRequest
     }
 
     /**
-     * Get the validated resource identifier.
+     * Get the validated unit identifier.
      */
-    public function resourceId(): int
+    public function unitId(): int
     {
-        return (int) $this->validated('resource_id');
+        return (int) $this->validated('unit_id');
     }
 
     /**

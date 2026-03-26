@@ -2,7 +2,7 @@
 
 namespace App\Application\Booking\Queries;
 
-use App\Domain\Booking\DTO\AvailabilityQuery;
+use App\Application\Booking\DTO\AvailabilityQuery;
 use App\Domain\Booking\Services\AvailabilityService;
 use App\Domain\Booking\Support\TimeRange;
 
@@ -31,13 +31,13 @@ final class BookingSlotOptionsQuery
      */
     public function getList(
         int $branchId,
-        int $resourceId,
+        int $unitId,
         int $activityId,
         string $date,
     ): array {
         $query = AvailabilityQuery::from(
             branchId: $branchId,
-            resourceId: $resourceId,
+            unitId: $unitId,
             activityId: $activityId,
             date: $date,
         );

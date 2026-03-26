@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Booking\Repositories;
 
-use App\Domain\Booking\DTO\AvailabilityQuery;
+use App\Application\Booking\DTO\AvailabilityQuery;
 use App\Enums\BookingStatus;
-use App\Models\Booking\Activity;
+use App\Models\Activity;
 use App\Models\Booking\Booking;
 use App\Models\Booking\RecurringTimeOff;
 use App\Models\Booking\TimeOff;
@@ -25,14 +25,14 @@ final class AvailabilityRepository
     }
 
     /**
-     * Get active working hours for the resource on the selected day of week.
+     * Get active working hours for the unit on the selected day of week.
      *
      * @return Collection<int, WorkingHour>
      */
     public function getWorkingHours(AvailabilityQuery $query): Collection
     {
         return WorkingHour::query()
-            ->forResource($query->resourceId)
+            ->forUnit($query->unitId)
             ->active()
             ->dayOfWeek($query->date->dayOfWeekIso)
             ->orderBy('start_time')
@@ -40,7 +40,7 @@ final class AvailabilityRepository
     }
 
     /**
-     * Get active recurring time-off periods for the resource
+     * Get active recurring time-off periods for the unit
      * on the selected day of week and date.
      *
      * @return Collection<int, RecurringTimeOff>
@@ -48,7 +48,7 @@ final class AvailabilityRepository
     public function getRecurringTimeOffs(AvailabilityQuery $query): Collection
     {
         return RecurringTimeOff::query()
-            ->forResource($query->resourceId)
+            ->forUnit($query->unitId)
             ->active()
             ->dayOfWeek($query->date->dayOfWeekIso)
             ->validForDate($query->date->toDateString())
@@ -67,14 +67,14 @@ final class AvailabilityRepository
         $dayEnd = $query->date->endOfDay();
 
         return TimeOff::query()
-            ->forResource($query->resourceId)
+            ->forUnit($query->unitId)
             ->between($dayStart, $dayEnd)
             ->orderBy('starts_at')
             ->get();
     }
 
     /**
-     * Get bookings for the resource overlapping the selected day.
+     * Get bookings for the unit overlapping the selected day.
      *
      * Cancelled bookings are excluded from availability calculations.
      *
@@ -86,7 +86,7 @@ final class AvailabilityRepository
         $dayEnd = $query->date->endOfDay();
 
         return Booking::query()
-            ->where('resource_id', $query->resourceId)
+            ->where('unit_id', $query->unitId)
             ->where('branch_id', $query->branchId)
             ->where('status', '!=', BookingStatus::Cancelled->value)
             ->where(function (Builder $inner) use ($dayStart, $dayEnd) {

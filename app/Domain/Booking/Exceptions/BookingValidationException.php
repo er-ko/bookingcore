@@ -6,11 +6,11 @@ final class BookingValidationException extends BookingException
 {
     public static function activityInactive(): self
     {
-        return new self(__('booking/errors.activity_inactive'));
+        return new self(__('booking.errors.activity_inactive'));
     }
 
-    public static function resourceInvalid(): self
+    public static function unitInvalid(): self
     {
-        return new self(__('booking/errors.resource_invalid'));
+        return new self(__('booking.errors.unit_invalid'));
     }
 }
