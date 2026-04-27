@@ -8,7 +8,7 @@ uses(RefreshDatabase::class);
 
 it('updates a branch through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $branch = createBranchForUpdateTest($user->id, [
         'name' => 'Old Branch',
@@ -35,14 +35,12 @@ it('updates a branch through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->patchJson(route('api.branches.update', $branch->public_id), $payload);
+        ->patch(route('branches.update', $branch->public_id), $payload);
 
     // Assert
     $response
-        ->assertOk()
-        ->assertJson([
-            'message' => __('branch.messages.updated'),
-        ]);
+        ->assertRedirect(route('branches.index'))
+        ->assertSessionHas('success', __('branch.messages.updated'));
 
     $this->assertDatabaseHas('branches', [
         'id' => $branch->id,
@@ -60,19 +58,20 @@ it('updates a branch through the API', function () {
 
 it('returns a validation error when required data are missing', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $branch = createBranchForUpdateTest($user->id);
 
     // Act
     $response = $this
+        ->from(route('branches.edit', $branch->public_id))
         ->actingAs($user)
-        ->patchJson(route('api.branches.update', $branch->public_id), []);
+        ->patch(route('branches.update', $branch->public_id), []);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('branches.edit', $branch->public_id))
+        ->assertSessionHasErrors([
             'name',
             'timezone',
             'is_active',
@@ -81,7 +80,7 @@ it('returns a validation error when required data are missing', function () {
 
 it('normalizes country code to uppercase before updating', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $branch = createBranchForUpdateTest($user->id, [
         'country_code' => 'CZ',
@@ -101,10 +100,10 @@ it('normalizes country code to uppercase before updating', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->patchJson(route('api.branches.update', $branch->public_id), $payload);
+        ->patch(route('branches.update', $branch->public_id), $payload);
 
     // Assert
-    $response->assertOk();
+    $response->assertRedirect(route('branches.index'));
 
     $this->assertDatabaseHas('branches', [
         'id' => $branch->id,
@@ -114,7 +113,7 @@ it('normalizes country code to uppercase before updating', function () {
 
 it('returns not found when the branch does not exist', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $payload = createUpdateBranchPayload(
         name: 'Missing Branch',
@@ -130,14 +129,10 @@ it('returns not found when the branch does not exist', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->patchJson(route('api.branches.update', 'br_missing123'), $payload);
+        ->patch(route('branches.update', 'br_missing123'), $payload);
 
     // Assert
-    $response
-		->assertNotFound()
-		->assertJsonFragment([
-			'message' => 'No query results for model [App\\Models\\Branch] br_missing123',
-		]);
+    $response->assertNotFound();
 });
 
 /**

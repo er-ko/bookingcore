@@ -19,7 +19,9 @@ it('cancels a booking through the API', function () {
     );
 
     // Act
-    $response = $this->postJson("/api/bookings/{$booking->id}/cancel");
+    $response = $this
+        ->actingAs($booking->branch->user)
+        ->postJson(route('dashboard.cancel', $booking));
 
     // Assert
     $response
@@ -28,12 +30,9 @@ it('cancels a booking through the API', function () {
             'message' => 'Booking cancelled successfully.',
         ]);
 
-    $this->assertDatabaseHas('bookings', [
+    $this->assertDatabaseMissing('bookings', [
         'id' => $booking->id,
-        'status' => BookingStatus::Cancelled->value,
     ]);
-
-    expect($booking->fresh()->cancelled_at)->not->toBeNull();
 });
 
 it('returns an error when the booking is already cancelled', function () {
@@ -44,7 +43,9 @@ it('returns an error when the booking is already cancelled', function () {
     );
 
     // Act
-    $response = $this->postJson("/api/bookings/{$booking->id}/cancel");
+    $response = $this
+        ->actingAs($booking->branch->user)
+        ->postJson(route('dashboard.cancel', $booking));
 
     // Assert
     $response
@@ -61,7 +62,7 @@ function createBookingForApiTest(
     BookingStatus $status,
     ?string $cancelledAt,
 ): Booking {
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $branch = createApiTestBranch($user->id);
     $unit = createApiTestUnit($user->id, $branch->id);

@@ -37,9 +37,9 @@ final class BookingRepository
     }
 
     /**
-     * Determine whether the activity is assigned to the unit.
+     * Determine whether the activity is priced for the unit.
      */
-    public function isActivityAssignedToUnit(int $activityId, int $unitId): bool
+    public function isActivityPricedForUnit(int $activityId, int $unitId): bool
     {
         return Unit::query()
             ->whereKey($unitId)
@@ -54,12 +54,21 @@ final class BookingRepository
      */
     public function findOrCreateCustomer(CustomerData $customerData): Customer
     {
-        $customer = Customer::query()
-            ->where('email', $customerData->email)
-            ->first();
+        if ($customerData->email !== null) {
+            $customer = Customer::query()
+                ->where('email', $customerData->email)
+                ->first();
 
-        if ($customer) {
-            return $customer;
+            if ($customer) {
+                $customer->update([
+                    'first_name' => $customerData->firstName,
+                    'last_name' => $customerData->lastName,
+                    'phone_code' => $customerData->phoneCode,
+                    'phone' => $customerData->phone,
+                ]);
+
+                return $customer->refresh();
+            }
         }
 
         return Customer::create([
@@ -101,8 +110,10 @@ final class BookingRepository
         CarbonInterface $endsAt,
         BookingStatus $status,
         ?CarbonInterface $confirmedAt = null,
+        ?string $publicToken = null,
     ): Booking {
         return Booking::create([
+            'public_token' => $publicToken,
             'branch_id' => $data->branchId,
             'unit_id' => $data->unitId,
             'activity_id' => $data->activityId,
@@ -143,5 +154,13 @@ final class BookingRepository
         ]);
 
         return $booking->refresh();
+    }
+
+    /**
+     * Delete the given booking.
+     */
+    public function deleteBooking(Booking $booking): void
+    {
+        $booking->delete();
     }
 }

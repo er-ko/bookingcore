@@ -12,10 +12,10 @@ use App\Domain\Booking\Services\BookingService;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
 use App\Enums\BookingStatus;
 use App\Models\Activity;
-use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
 use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Price;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -305,11 +305,12 @@ function createActivity(
 /**
  * Assign an activity to a unit.
  */
-function assignActivityToUnit(int $activityId, int $unitId): ActivityAssignment
+function assignActivityToUnit(int $activityId, int $unitId): Price
 {
-    return ActivityAssignment::create([
+    return Price::create([
         'activity_id' => $activityId,
         'unit_id' => $unitId,
+        'price' => '100.00',
     ]);
 }
 
@@ -368,7 +369,6 @@ function createBookingService(): BookingService
         app(\App\Infrastructure\Integration\Repositories\IntegrationRepository::class),
         app(\App\Domain\Integration\Policies\BookingCalendarSyncPolicy::class),
         app(CreateBookingCalendarEvent::class),
-        app(CancelBookingCalendarEvent::class),
         app(UpdateBookingCalendarEvent::class),
     );
 }

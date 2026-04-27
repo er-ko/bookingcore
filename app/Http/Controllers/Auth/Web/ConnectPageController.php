@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth\Web;
 
 use App\Http\Controllers\Controller;
+use App\Support\Translations\ConnectTranslations;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,6 +14,8 @@ final class ConnectPageController extends Controller
      */
     public function __invoke(): Response
     {
-        return Inertia::render('Auth/Connect');
+        return Inertia::render('Auth/Connect', [
+            'translations' => ConnectTranslations::page(),
+        ]);
     }
 }

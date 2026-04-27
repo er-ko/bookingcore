@@ -32,7 +32,7 @@ final class CreateBookingRequest extends FormRequest
             'customer' => ['bail', 'required', 'array'],
             'customer.first_name' => ['bail', 'required', 'string', 'max:128'],
             'customer.last_name' => ['bail', 'required', 'string', 'max:128'],
-            'customer.email' => ['nullable', 'required', 'email', 'max:255'],
+            'customer.email' => ['bail', 'required', 'email', 'max:255'],
             'customer.phone_code' => ['bail', 'required', 'string', 'max:5'],
             'customer.phone' => ['bail', 'required', 'string', 'max:16'],
 
@@ -75,6 +75,7 @@ final class CreateBookingRequest extends FormRequest
             'customer.last_name.string' => __('booking.validation.customer_last_name_invalid'),
             'customer.last_name.max' => __('booking.validation.customer_last_name_too_long'),
 
+            'customer.email.required' => __('booking.validation.customer_email_required'),
             'customer.email.email' => __('booking.validation.customer_email_invalid'),
             'customer.email.max' => __('booking.validation.customer_email_too_long'),
 

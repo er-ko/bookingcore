@@ -20,6 +20,7 @@ final class CreateBookingCalendarEvent
         private readonly BookingCalendarEventRepository $bookingCalendarEvents,
         private readonly CalendarProviderResolver $calendarProviderResolver,
         private readonly BookingCalendarSyncPolicy $bookingCalendarSyncPolicy,
+        private readonly EnsureValidGoogleAccessTokenAction $ensureValidGoogleAccessTokenAction,
     ) {
     }
 
@@ -43,6 +44,9 @@ final class CreateBookingCalendarEvent
         if (! $this->bookingCalendarSyncPolicy->canSync($integration)) {
             return null;
         }
+
+        $integration = ($this->ensureValidGoogleAccessTokenAction)($integration);
+        $integration->loadMissing('calendarSettings');
 
         $calendarId = $this->bookingCalendarSyncPolicy->selectedCalendarId($integration);
 

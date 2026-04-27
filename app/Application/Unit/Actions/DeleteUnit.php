@@ -11,8 +11,10 @@ final class DeleteUnit
     /**
      * Delete an existing unit for the given user.
      */
-    public function __invoke(User $user, string $unitPublicId): void
-    {
+    public function __invoke(
+        User $user,
+        string $unitPublicId
+    ): void {
         $unit = Unit::query()
             ->where('public_id', $unitPublicId)
             ->where('user_id', $user->id)

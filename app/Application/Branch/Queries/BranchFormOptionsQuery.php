@@ -27,8 +27,9 @@ final class BranchFormOptionsQuery
     /**
      * @return array<int, array{value: string, label: string}>
      */
-    public function getTimezonesForCountry(string $countryCode): array
-    {
+    public function getTimezonesForCountry(
+        string $countryCode
+    ): array {
         $countryCode = strtoupper($countryCode);
 
         $country = Country::query()

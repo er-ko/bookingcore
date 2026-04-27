@@ -4,6 +4,7 @@ namespace App\Http\Requests\Unit;
 
 use App\Application\Unit\DTO\StoreUnitData;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class StoreUnitRequest extends FormRequest
 {
@@ -23,7 +24,13 @@ final class StoreUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => ['required', 'integer', 'exists:branches,id'],
+            'branch_id' => [
+                'required',
+                'integer',
+                Rule::exists('branches', 'id')->where(
+                    fn ($query) => $query->where('user_id', $this->user()->id)
+                ),
+            ],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'is_active' => ['required', 'boolean'],

@@ -1,6 +1,11 @@
 <?php
 
+use App\Enums\IntegrationProvider;
+use App\Enums\IntegrationType;
 use App\Models\Branch;
+use App\Models\Identity\UserIdentitySettings;
+use App\Models\Integration\Integration;
+use App\Models\Integration\IntegrationCalendarSetting;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +15,7 @@ uses(RefreshDatabase::class);
 
 it('updates a unit through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitUser();
 
     $branch = createUnitUpdateTestBranch($user->id, ['name' => 'Brno']);
     $otherBranch = createUnitUpdateTestBranch($user->id, ['name' => 'Ostrava']);
@@ -31,14 +36,12 @@ it('updates a unit through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->patchJson(route('api.units.update', $unit->public_id), $payload);
+        ->patch(route('units.update', $unit->public_id), $payload);
 
     // Assert
     $response
-        ->assertOk()
-        ->assertJson([
-            'message' => __('unit.messages.updated'),
-        ]);
+        ->assertRedirect(route('units.index'))
+        ->assertSessionHas('success', __('unit.messages.updated'));
 
     $this->assertDatabaseHas('units', [
         'id' => $unit->id,
@@ -52,19 +55,20 @@ it('updates a unit through the API', function () {
 
 it('returns a validation error when required data are missing', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitUser();
     $branch = createUnitUpdateTestBranch($user->id);
     $unit = createUnitForUpdateTest($user->id, $branch->id);
 
     // Act
     $response = $this
+        ->from(route('units.edit', $unit->public_id))
         ->actingAs($user)
-        ->patchJson(route('api.units.update', $unit->public_id), []);
+        ->patch(route('units.update', $unit->public_id), []);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('units.edit', $unit->public_id))
+        ->assertSessionHasErrors([
             'branch_id',
             'name',
             'is_active',
@@ -73,8 +77,8 @@ it('returns a validation error when required data are missing', function () {
 
 it('returns a validation error when branch does not belong to the authenticated user', function () {
     // Arrange
-    $user = User::factory()->create();
-    $otherUser = User::factory()->create();
+    $user = createOnboardedUnitUser();
+    $otherUser = createOnboardedUnitUser();
 
     $userBranch = createUnitUpdateTestBranch($user->id);
     $foreignBranch = createUnitUpdateTestBranch($otherUser->id);
@@ -90,20 +94,21 @@ it('returns a validation error when branch does not belong to the authenticated 
 
     // Act
     $response = $this
+        ->from(route('units.edit', $unit->public_id))
         ->actingAs($user)
-        ->patchJson(route('api.units.update', $unit->public_id), $payload);
+        ->patch(route('units.update', $unit->public_id), $payload);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('units.edit', $unit->public_id))
+        ->assertSessionHasErrors([
             'branch_id',
         ]);
 });
 
 it('returns not found when the unit does not exist', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitUser();
     $branch = createUnitUpdateTestBranch($user->id);
 
     $payload = createUpdateUnitPayload(
@@ -116,11 +121,52 @@ it('returns not found when the unit does not exist', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->patchJson(route('api.units.update', 'un_missing123'), $payload);
+        ->patch(route('units.update', 'un_missing123'), $payload);
 
     // Assert
     $response->assertNotFound();
 });
+
+/**
+ * Create a fully onboarded user for unit update API tests.
+ */
+function createOnboardedUnitUser(): User
+{
+    $user = User::factory()->create();
+
+    UserIdentitySettings::create([
+        'user_id' => $user->id,
+        'brand_name' => 'Test Brand',
+        'slug' => 'test-' . Str::random(8),
+        'default_language_code' => 'en',
+        'default_currency_code' => 'USD',
+        'default_country_code' => 'US',
+        'is_public' => true,
+    ]);
+
+    $integration = Integration::create([
+        'user_id' => $user->id,
+        'type' => IntegrationType::Calendar->value,
+        'provider' => IntegrationProvider::Google->value,
+        'provider_account_id' => 'google-' . Str::random(8),
+        'email' => $user->email,
+        'name' => $user->name,
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'token_expires_at' => now()->addHour(),
+        'scopes' => ['https://www.googleapis.com/auth/calendar'],
+        'is_active' => true,
+        'is_primary' => true,
+    ]);
+
+    IntegrationCalendarSetting::create([
+        'integration_id' => $integration->id,
+        'selected_calendar_id' => 'test-calendar@group.calendar.google.com',
+        'sync_mode' => 'soft',
+    ]);
+
+    return $user->fresh();
+}
 
 /**
  * Create a branch for update unit API tests.

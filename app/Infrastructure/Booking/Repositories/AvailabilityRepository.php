@@ -15,13 +15,18 @@ use Illuminate\Database\Eloquent\Collection;
 final class AvailabilityRepository
 {
     /**
-     * Get the active activity for the given availability query.
+     * Get the active activity for the given availability query,
+     * only if it is priced for the selected unit.
      */
     public function getActiveActivity(AvailabilityQuery $query): ?Activity
     {
         return Activity::query()
             ->active()
-            ->find($query->activityId);
+            ->whereKey($query->activityId)
+            ->whereHas('units', function (Builder $builder) use ($query) {
+                $builder->where('units.id', $query->unitId);
+            })
+            ->first();
     }
 
     /**

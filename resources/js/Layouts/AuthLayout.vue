@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
+import PublicLayout from '@/Layouts/PublicLayout.vue'
 
 defineProps({
     title: {
@@ -8,7 +9,7 @@ defineProps({
     },
     heading: {
         type: String,
-        default: 'Welcome',
+        default: 'Connect',
     },
     description: {
         type: String,
@@ -20,43 +21,36 @@ defineProps({
 <template>
     <Head :title="title" />
 
-    <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10">
-        <div class="w-full max-w-xl space-y-8">
-            <div class="text-center">
+    <PublicLayout>
+        <div class="mx-auto w-full max-w-4xl">
+            <div class="select-none text-center">
                 <Link
-                    href="/connect"
-                    class="inline-flex items-center justify-center text-3xl font-semibold tracking-tight text-gray-900"
+                    href="/"
+                    class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-black/75 transition-all duration-150 hover:gap-3 hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
                 >
+                    <span aria-hidden="true">←</span>
                     BookingCore
                 </Link>
 
-                <p class="mt-2 text-sm text-gray-600">
-                    A modern open source booking engine
+                <h1 class="mt-6 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+                    {{ heading }}
+                </h1>
+
+                <p
+                    v-if="description"
+                    class="mx-auto mt-4 max-w-2xl text-base leading-7 text-black/55 dark:text-white/55 sm:text-lg"
+                >
+                    {{ description }}
                 </p>
             </div>
 
-            <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-                <div class="space-y-3 text-center">
-                    <h1 class="text-xl font-semibold text-gray-900">
-                        {{ heading }}
-                    </h1>
-
-                    <p
-                        v-if="description"
-                        class="text-sm leading-6 text-gray-600"
-                    >
-                        {{ description }}
-                    </p>
-                </div>
-
-                <div class="mt-8">
-                    <slot />
-                </div>
+            <div class="mx-auto mt-10 max-w-4xl rounded-[2rem] border border-black/10 bg-black/[0.025] p-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.03] sm:p-8 md:p-9">
+                <slot />
             </div>
 
-            <div class="text-center text-xs text-gray-500">
-                BookingCore • Secure OAuth authentication
+            <div class="mx-auto mt-6 max-w-2xl text-center text-xs leading-5 select-none text-black/35 dark:text-white/35">
+                Secure OAuth connection. No password is stored by BookingCore.
             </div>
         </div>
-    </div>
+    </PublicLayout>
 </template>

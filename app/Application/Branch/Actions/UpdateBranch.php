@@ -5,18 +5,26 @@ namespace App\Application\Branch\Actions;
 use App\Application\Branch\DTO\UpdateBranchData;
 use App\Models\Branch;
 use App\Models\User;
+use RuntimeException;
 
 final class UpdateBranch
 {
     /**
      * Update an existing branch for the given user.
      */
-    public function __invoke(User $user, string $branchPublicId, UpdateBranchData $data): Branch
-    {
+    public function __invoke(
+        User $user,
+        string $branchPublicId,
+        UpdateBranchData $data
+    ): Branch{
         $branch = Branch::query()
             ->where('public_id', $branchPublicId)
             ->where('user_id', $user->id)
-            ->firstOrFail();
+            ->first();
+
+        if (! $branch) {
+            throw new RuntimeException(__('branch.messages.not_found'));
+        }
 
         $branch->fill([
             'name' => $data->name,

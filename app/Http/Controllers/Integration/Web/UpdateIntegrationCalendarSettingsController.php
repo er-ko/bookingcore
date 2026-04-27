@@ -4,38 +4,35 @@ namespace App\Http\Controllers\Integration\Web;
 
 use App\Application\Integration\Actions\UpdateIntegrationCalendarSettings;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Integration\UpdateIntegrationCalendarSettingsRequest;
 use App\Models\Integration\Integration;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use RuntimeException;
 
 final class UpdateIntegrationCalendarSettingsController extends Controller
 {
     /**
-     * Update booking calendar sync settings for the given integration.
+     * Update booking calendar settings for the given integration.
      */
     public function __invoke(
-        Request $request,
+        UpdateIntegrationCalendarSettingsRequest $request,
         Integration $integration,
         UpdateIntegrationCalendarSettings $updateIntegrationCalendarSettings,
     ): RedirectResponse {
-        $validated = $request->validate([
-            'sync_bookings' => ['required', 'boolean'],
-            'sync_mode' => ['required', 'string', 'in:soft,strict'],
-        ]);
-
-        /** @var User $user */
-        $user = auth()->user();
-
-        $updateIntegrationCalendarSettings(
-            $user,
-            $integration,
-            (bool) $validated['sync_bookings'],
-            $validated['sync_mode'],
-        );
+        try {
+            $updateIntegrationCalendarSettings(
+                $this->user(),
+                $integration,
+                $request->validated('sync_mode'),
+            );
+        } catch (RuntimeException $exception) {
+            return redirect()
+                ->route('integrations.calendar.index')
+                ->with('error', $exception->getMessage() ?: __('integration/calendar.messages.failed'));
+        }
 
         return redirect()
             ->route('integrations.calendar.index')
-            ->with('success', 'Calendar sync settings updated successfully.');
+            ->with('success', __('integration/calendar.messages.settings_updated'));
     }
 }

@@ -38,7 +38,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -56,23 +55,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
     }
 
     /** @test */
-    public function test_can_sync_returns_false_when_sync_bookings_is_disabled(): void
-    {
-        $integration = $this->makeIntegration();
-
-        IntegrationCalendarSetting::create([
-            'integration_id' => $integration->id,
-            'selected_calendar_id' => 'primary',
-            'sync_bookings' => false,
-            'sync_mode' => 'soft',
-        ]);
-
-        $integration->load('calendarSettings');
-
-        $this->assertFalse($this->policy->canSync($integration));
-    }
-
-    /** @test */
     public function test_can_sync_returns_false_when_selected_calendar_id_is_missing(): void
     {
         $integration = $this->makeIntegration();
@@ -80,7 +62,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => null,
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -97,7 +78,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -128,7 +108,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => '',
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -145,7 +124,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -168,7 +146,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'strict',
         ]);
 
@@ -191,7 +168,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'soft',
         ]);
 
@@ -208,7 +184,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => true,
             'sync_mode' => 'strict',
         ]);
 

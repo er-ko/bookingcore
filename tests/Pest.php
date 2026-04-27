@@ -45,3 +45,41 @@ function something()
 {
     // ..
 }
+
+function createOnboardedUser(): \App\Models\User
+{
+    $user = \App\Models\User::factory()->create();
+
+    \App\Models\Identity\UserIdentitySettings::create([
+        'user_id' => $user->id,
+        'brand_name' => 'Test Brand',
+        'slug' => 'test-' . \Illuminate\Support\Str::random(8),
+        'default_language_code' => 'en',
+        'default_currency_code' => 'USD',
+        'default_country_code' => 'US',
+        'is_public' => true,
+    ]);
+
+    $integration = \App\Models\Integration\Integration::create([
+        'user_id' => $user->id,
+        'type' => \App\Enums\IntegrationType::Calendar->value,
+        'provider' => \App\Enums\IntegrationProvider::Google->value,
+        'provider_account_id' => 'google-' . \Illuminate\Support\Str::random(8),
+        'email' => $user->email,
+        'name' => $user->name,
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'token_expires_at' => now()->addHour(),
+        'scopes' => ['https://www.googleapis.com/auth/calendar'],
+        'is_active' => true,
+        'is_primary' => true,
+    ]);
+
+    \App\Models\Integration\IntegrationCalendarSetting::create([
+        'integration_id' => $integration->id,
+        'selected_calendar_id' => 'test-calendar@group.calendar.google.com',
+        'sync_mode' => 'soft',
+    ]);
+
+    return $user->fresh();
+}

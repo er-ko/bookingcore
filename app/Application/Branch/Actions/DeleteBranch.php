@@ -11,8 +11,10 @@ final class DeleteBranch
     /**
      * Delete an existing branch for the given user.
      */
-    public function __invoke(User $user, string $branchPublicId): void
-    {
+    public function __invoke(
+        User $user,
+        string $branchPublicId
+    ): void {
         $branch = Branch::query()
             ->where('public_id', $branchPublicId)
             ->where('user_id', $user->id)

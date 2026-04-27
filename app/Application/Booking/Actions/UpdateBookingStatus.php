@@ -13,8 +13,10 @@ final class UpdateBookingStatus
     ) {
     }
 
-    public function __invoke(Booking $booking, BookingStatus $status): Booking
-    {
+    public function __invoke(
+        Booking $booking,
+        BookingStatus $status
+    ): Booking {
         return $this->bookingService->updateStatus($booking, $status);
     }
 }

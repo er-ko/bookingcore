@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Translations\LayoutTranslations;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,12 +36,32 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
 
             'app' => [
                 'name' => config('app.name'),
             ],
+            'auth' => [
+                'onboarding' => [
+                    'identity_completed' => $user
+                        ? $user->hasCompletedIdentity()
+                        : false,
+                    'calendar_completed' => $user
+                        ? $user->hasCompletedCalendarIntegration()
+                        : false,
+                    'completed' => $user
+                        ? $user->hasCompletedOnboarding()
+                        : false,
+                ],
+            ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
+            'layoutTranslations' => LayoutTranslations::shared(),
         ];
     }
 }

@@ -7,12 +7,12 @@ use App\Infrastructure\Booking\Repositories\AvailabilityRepository;
 use App\Enums\BookingStatus;
 use App\Enums\DayOfWeek;
 use App\Models\Activity;
-use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
 use App\Models\Booking\TimeOff;
 use App\Models\Booking\WorkingHour;
 use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Price;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -198,9 +198,10 @@ function createAvailabilityScenario(int $userId): array
         'is_active' => true,
     ]);
 
-    ActivityAssignment::create([
+    Price::create([
         'activity_id' => $activity->id,
         'unit_id' => $unit->id,
+        'price' => '100.00',
     ]);
 
     return [$branch, $unit, $activity];

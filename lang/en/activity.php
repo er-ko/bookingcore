@@ -2,9 +2,10 @@
 
 return [
     'messages' => [
-        'created' => 'Activity created successfully.',
-        'updated' => 'Activity updated successfully.',
-        'deleted' => 'Activity deleted successfully.',
+        'created'   => 'Activity created successfully.',
+        'updated'   => 'Activity updated successfully.',
+        'deleted'   => 'Activity deleted successfully.',
+        'failed'    => 'Failed to process the activity request.',
         'not_found' => 'Activity not found.',
         'limit_reached' => 'You have reached the maximum allowed number of activities.',
     ],
@@ -64,6 +65,7 @@ return [
             'required_title' => 'Required',
             'optional_title' => 'Optional',
             'status_title' => 'Status',
+            'status_text' => 'Inactive activities remain stored in the system but cannot be used for new bookings.',
             'active_title' => 'Active',
             'inactive_title' => 'Inactive',
             'note_title' => 'Note',

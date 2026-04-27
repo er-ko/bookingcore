@@ -1,6 +1,11 @@
 <?php
 
+use App\Enums\IntegrationProvider;
+use App\Enums\IntegrationType;
 use App\Models\Branch;
+use App\Models\Identity\UserIdentitySettings;
+use App\Models\Integration\Integration;
+use App\Models\Integration\IntegrationCalendarSetting;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +15,7 @@ uses(RefreshDatabase::class);
 
 it('creates a unit through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitCreateUser();
     $branch = createUnitTestBranch($user->id);
 
     $payload = createUnitPayload(
@@ -23,14 +28,12 @@ it('creates a unit through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->postJson(route('api.units.store'), $payload);
+        ->post(route('units.store'), $payload);
 
     // Assert
     $response
-        ->assertCreated()
-        ->assertJson([
-            'message' => __('unit.messages.created'),
-        ]);
+        ->assertRedirect(route('units.index'))
+        ->assertSessionHas('success', __('unit.messages.created'));
 
     $this->assertDatabaseCount('units', 1);
 
@@ -47,17 +50,18 @@ it('creates a unit through the API', function () {
 
 it('returns a validation error when required data are missing', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitCreateUser();
 
     // Act
     $response = $this
+        ->from(route('units.create'))
         ->actingAs($user)
-        ->postJson(route('api.units.store'), []);
+        ->post(route('units.store'), []);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('units.create'))
+        ->assertSessionHasErrors([
             'branch_id',
             'name',
             'is_active',
@@ -66,7 +70,7 @@ it('returns a validation error when required data are missing', function () {
 
 it('returns a validation error when branch does not exist', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUnitCreateUser();
 
     $payload = createUnitPayload(
         branchId: 999999,
@@ -77,13 +81,14 @@ it('returns a validation error when branch does not exist', function () {
 
     // Act
     $response = $this
+        ->from(route('units.create'))
         ->actingAs($user)
-        ->postJson(route('api.units.store'), $payload);
+        ->post(route('units.store'), $payload);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('units.create'))
+        ->assertSessionHasErrors([
             'branch_id',
         ]);
 });
@@ -105,6 +110,44 @@ function createUnitTestBranch(int $userId, array $attributes = []): Branch
         'timezone' => 'Europe/Prague',
         'is_active' => true,
     ], $attributes));
+}
+
+function createOnboardedUnitCreateUser(): User
+{
+    $user = User::factory()->create();
+
+    UserIdentitySettings::create([
+        'user_id' => $user->id,
+        'brand_name' => 'Test Brand',
+        'slug' => 'test-' . Str::random(8),
+        'default_language_code' => 'en',
+        'default_currency_code' => 'USD',
+        'default_country_code' => 'US',
+        'is_public' => true,
+    ]);
+
+    $integration = Integration::create([
+        'user_id' => $user->id,
+        'type' => IntegrationType::Calendar->value,
+        'provider' => IntegrationProvider::Google->value,
+        'provider_account_id' => 'google-' . Str::random(8),
+        'email' => $user->email,
+        'name' => $user->name,
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'token_expires_at' => now()->addHour(),
+        'scopes' => ['https://www.googleapis.com/auth/calendar'],
+        'is_active' => true,
+        'is_primary' => true,
+    ]);
+
+    IntegrationCalendarSetting::create([
+        'integration_id' => $integration->id,
+        'selected_calendar_id' => 'test-calendar@group.calendar.google.com',
+        'sync_mode' => 'soft',
+    ]);
+
+    return $user->fresh();
 }
 
 /**

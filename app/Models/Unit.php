@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Activity;
-use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
 use App\Models\Booking\RecurringTimeOff;
 use App\Models\Booking\TimeOff;
@@ -70,11 +68,11 @@ class Unit extends Model
     }
 
     /**
-     * Activity assignments for the unit.
+     * Activity prices for the unit.
      */
-    public function activityAssignments(): HasMany
+    public function prices(): HasMany
     {
-        return $this->hasMany(ActivityAssignment::class);
+        return $this->hasMany(Price::class);
     }
 
     /**
@@ -82,7 +80,9 @@ class Unit extends Model
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class, ActivityAssignment::TABLE)->withTimestamps();
+        return $this->belongsToMany(Activity::class, 'prices', 'unit_id', 'activity_id')
+            ->withPivot('id', 'price')
+            ->withTimestamps();
     }
 
     /**

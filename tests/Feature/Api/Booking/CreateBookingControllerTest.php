@@ -2,10 +2,10 @@
 
 use App\Enums\BookingStatus;
 use App\Models\Activity;
-use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
 use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Price;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +14,7 @@ uses(RefreshDatabase::class);
 
 it('creates a booking through the API', function () {
     // Arrange
-    [$branch, $unit, $activity] = createBookingApiScenario();
+    [$user, $branch, $unit, $activity] = createBookingApiScenario();
 
     $payload = createBookingPayload(
         branchId: $branch->id,
@@ -25,7 +25,9 @@ it('creates a booking through the API', function () {
     );
 
     // Act
-    $response = $this->postJson('/api/bookings/create', $payload);
+    $response = $this
+        ->actingAs($user)
+        ->postJson(route('dashboard.store'), $payload);
 
     // Assert
     $response
@@ -47,8 +49,12 @@ it('creates a booking through the API', function () {
 });
 
 it('returns a validation error when required data are missing', function () {
+    $user = createOnboardedUser();
+
     // Act
-    $response = $this->postJson('/api/bookings/create', []);
+    $response = $this
+        ->actingAs($user)
+        ->postJson(route('dashboard.store'), []);
 
     // Assert
     $response
@@ -64,7 +70,7 @@ it('returns a validation error when required data are missing', function () {
 
 it('returns a conflict error when the unit is already booked', function () {
     // Arrange
-    [$branch, $unit, $activity] = createBookingApiScenario();
+    [$user, $branch, $unit, $activity] = createBookingApiScenario();
 
     $existingCustomer = createBookingApiCustomer(
         firstName: 'Existing',
@@ -95,7 +101,9 @@ it('returns a conflict error when the unit is already booked', function () {
     );
 
     // Act
-    $response = $this->postJson('/api/bookings/create', $payload);
+    $response = $this
+        ->actingAs($user)
+        ->postJson(route('dashboard.store'), $payload);
 
     // Assert
     $response
@@ -107,7 +115,7 @@ it('returns a conflict error when the unit is already booked', function () {
 
 it('returns a slot unavailable error when the activity is not assigned to the unit', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
     $branch = createBookingApiBranch($user->id);
     $unit = createBookingApiUnit($user->id, $branch->id);
     $activity = createBookingApiActivity($user->id);
@@ -120,13 +128,15 @@ it('returns a slot unavailable error when the activity is not assigned to the un
     );
 
     // Act
-    $response = $this->postJson('/api/bookings/create', $payload);
+    $response = $this
+        ->actingAs($user)
+        ->postJson(route('dashboard.store'), $payload);
 
     // Assert
     $response
         ->assertUnprocessable()
         ->assertJson([
-            'message' => 'The selected activity is not assigned to the selected unit.',
+            'message' => 'The selected activity is not available for the selected unit.',
         ]);
 });
 
@@ -134,18 +144,18 @@ it('returns a slot unavailable error when the activity is not assigned to the un
  * Create a complete API booking scenario with branch, unit, activity,
  * and activity assignment.
  *
- * @return array{0: Branch, 1: Unit, 2: Activity}
+ * @return array{0: User, 1: Branch, 2: Unit, 3: Activity}
  */
 function createBookingApiScenario(): array
 {
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
     $branch = createBookingApiBranch($user->id);
     $unit = createBookingApiUnit($user->id, $branch->id);
     $activity = createBookingApiActivity($user->id);
 
     assignBookingApiActivityToUnit($activity->id, $unit->id);
 
-    return [$branch, $unit, $activity];
+    return [$user, $branch, $unit, $activity];
 }
 
 /**
@@ -201,11 +211,12 @@ function createBookingApiActivity(int $userId): Activity
 /**
  * Assign an activity to a unit for booking API tests.
  */
-function assignBookingApiActivityToUnit(int $activityId, int $unitId): ActivityAssignment
+function assignBookingApiActivityToUnit(int $activityId, int $unitId): Price
 {
-    return ActivityAssignment::create([
+    return Price::create([
         'activity_id' => $activityId,
         'unit_id' => $unitId,
+        'price' => '100.00',
     ]);
 }
 

@@ -5,18 +5,26 @@ namespace App\Application\Unit\Actions;
 use App\Application\Unit\DTO\UpdateUnitData;
 use App\Models\Unit;
 use App\Models\User;
+use RuntimeException;
 
 final class UpdateUnit
 {
     /**
      * Update an existing unit for the given user.
      */
-    public function __invoke(User $user, string $unitPublicId, UpdateUnitData $data): Unit
-    {
+    public function __invoke(
+        User $user,
+        string $unitPublicId,
+        UpdateUnitData $data
+    ): Unit {
         $unit = Unit::query()
             ->where('public_id', $unitPublicId)
             ->where('user_id', $user->id)
-            ->firstOrFail();
+            ->first();
+
+        if (! $unit) {
+            throw new RuntimeException(__('unit.messages.not_found'));
+        }
 
         $unit->fill([
             'branch_id' => $data->branchId,

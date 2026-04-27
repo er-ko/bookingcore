@@ -4,6 +4,7 @@ import { router, useForm } from '@inertiajs/vue3'
 export function useBranchForm(route, options = {}) {
     const mode = options.mode ?? 'create'
     const branch = options.branch ?? null
+    const translations = options.translations ?? {}
 
     const timezones = ref([])
     const loadingTimezones = ref(false)
@@ -20,20 +21,11 @@ export function useBranchForm(route, options = {}) {
         is_active: Boolean(branch?.is_active ?? true),
     })
 
-    const requiredFields = {
-        name: 'Branch name',
-        address_line_1: 'Address line 1',
-        city: 'City',
-        postcode: 'Postcode',
-        country_code: 'Country',
-        timezone: 'Timezone',
-    }
-
     const inputClass = (field) => [
-        'block w-full rounded-lg px-3 py-2 text-sm text-gray-900 shadow-xs focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 border border-gray-100',
+        'block w-full rounded-2xl bg-transparent px-4 py-3 text-sm select-none text-black transition-all duration-150 placeholder:text-black/30 focus:outline-none dark:text-white dark:placeholder:text-white/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] dark:disabled:bg-white/[0.03]',
         form.errors[field]
-            ? 'border-red-300 focus:border-red-500'
-            : 'border-gray-300 focus:border-gray-900',
+            ? 'border border-red-500/50 focus:border-red-500 dark:border-red-400/50 dark:focus:border-red-400'
+            : 'border border-black/10 focus:border-black/30 dark:border-white/10 dark:focus:border-white/30',
     ]
 
     const clearFieldError = (field) => {
@@ -45,16 +37,12 @@ export function useBranchForm(route, options = {}) {
 
         const errors = {}
 
-        for (const [field, label] of Object.entries(requiredFields)) {
-            const value = form[field]
+        if (!form.name.trim()) {
+            errors.name = translations.validation?.name_required
+        }
 
-            if (typeof value === 'string') {
-                if (!value.trim()) {
-                    errors[field] = `${label} is required.`
-                }
-            } else if (!value) {
-                errors[field] = `${label} is required.`
-            }
+        if (!form.timezone) {
+            errors.timezone = translations.validation?.timezone_required
         }
 
         if (Object.keys(errors).length > 0) {
@@ -167,7 +155,7 @@ export function useBranchForm(route, options = {}) {
         }
 
         if (mode === 'edit') {
-            form.patch(route('api.branches.update', branch?.public_id ?? branch?.id), {
+            form.patch(route('branches.update', branch?.public_id ?? branch?.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     router.visit(route('branches.index'))
@@ -177,7 +165,7 @@ export function useBranchForm(route, options = {}) {
             return
         }
 
-        form.post(route('api.branches.store'), {
+        form.post(route('branches.store'), {
             preserveScroll: true,
             onSuccess: () => {
                 router.visit(route('branches.index'))

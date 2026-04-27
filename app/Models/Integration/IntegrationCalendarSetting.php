@@ -15,21 +15,8 @@ final class IntegrationCalendarSetting extends Model
     protected $fillable = [
         'integration_id',
         'selected_calendar_id',
-        'sync_bookings',
         'sync_mode',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'sync_bookings' => 'boolean',
-        ];
-    }
 
     /**
      * Get the integration that owns the calendar settings.
@@ -37,14 +24,6 @@ final class IntegrationCalendarSetting extends Model
     public function integration(): BelongsTo
     {
         return $this->belongsTo(Integration::class);
-    }
-
-    /**
-     * Determine whether booking sync is enabled.
-     */
-    public function syncEnabled(): bool
-    {
-        return $this->sync_bookings === true;
     }
 
     /**

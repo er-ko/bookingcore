@@ -3,6 +3,7 @@
 namespace App\Application\Booking\Queries;
 
 use App\Models\Booking\Booking;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
@@ -19,9 +20,10 @@ final class BookingPageQuery
      *
      * @return LengthAwarePaginator<int, Booking>
      */
-    public function getList(): LengthAwarePaginator
+    public function getList(User $user): LengthAwarePaginator
     {
         return Booking::query()
+            ->whereHas('branch', fn ($q) => $q->where('user_id', $user->id))
             ->with([
                 'branch:id,name',
                 'unit:id,name,branch_id',

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Booking\ActivityAssignment;
 use App\Models\Booking\Booking;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -62,11 +61,11 @@ class Activity extends Model
     }
 
     /**
-     * Activity assignments for the activity.
+     * Activity prices for the activity.
      */
-    public function activityAssignments(): HasMany
+    public function prices(): HasMany
     {
-        return $this->hasMany(ActivityAssignment::class);
+        return $this->hasMany(Price::class);
     }
 
     /**
@@ -74,7 +73,9 @@ class Activity extends Model
      */
     public function units(): BelongsToMany
     {
-        return $this->belongsToMany(Unit::class, ActivityAssignment::TABLE)->withTimestamps();
+        return $this->belongsToMany(Unit::class, 'prices', 'activity_id', 'unit_id')
+            ->withPivot('id', 'price')
+            ->withTimestamps();
     }
 
     /**

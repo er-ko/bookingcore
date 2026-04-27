@@ -14,8 +14,10 @@ final class StoreActivity
     /**
      * Create a new activity for the given user.
      */
-    public function __invoke(User $user, StoreActivityData $data): Activity
-    {
+    public function __invoke(
+        User $user,
+        StoreActivityData $data
+    ): Activity {
         $activitiesCount = Activity::query()
             ->where('user_id', $user->id)
             ->count();

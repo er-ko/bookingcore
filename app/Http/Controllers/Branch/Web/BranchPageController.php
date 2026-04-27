@@ -16,8 +16,9 @@ final class BranchPageController extends Controller
     /**
      * Display a listing of branches.
      */
-    public function index(BranchPageQuery $branchPageQuery): Response
-    {
+    public function index(
+        BranchPageQuery $branchPageQuery
+    ): Response {
         $branches = $branchPageQuery->getList($this->user());
 
         return Inertia::render('Branch/Index', [
@@ -29,8 +30,9 @@ final class BranchPageController extends Controller
     /**
      * Show the branch creation page.
      */
-    public function create(BranchFormOptionsQuery $branchFormOptionsQuery): Response
-    {
+    public function create(
+        BranchFormOptionsQuery $branchFormOptionsQuery
+    ): Response {
         return Inertia::render('Branch/Create', [
             'translations' => BranchTranslations::create(),
             ...$branchFormOptionsQuery->getCreateFormData(),

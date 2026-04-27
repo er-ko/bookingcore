@@ -19,7 +19,7 @@ final class LogoutControllerTest extends TestCase
             ->actingAs($user)
             ->post(route('logout'));
 
-        $response->assertRedirect(route('connect.index'));
+        $response->assertRedirect(route('home'));
 
         $this->assertGuest();
     }

@@ -4,8 +4,8 @@ namespace App\Application\Integration\Actions;
 
 use App\Application\Integration\DTO\CalendarEventData;
 use App\Domain\Integration\Policies\BookingCalendarSyncPolicy;
-use App\Enums\IntegrationType;
 use App\Enums\IntegrationProvider;
+use App\Enums\IntegrationType;
 use App\Infrastructure\Integration\Repositories\BookingCalendarEventRepository;
 use App\Infrastructure\Integration\Repositories\IntegrationRepository;
 use App\Infrastructure\Integration\Resolvers\CalendarProviderResolver;
@@ -20,6 +20,7 @@ final class UpdateBookingCalendarEvent
         private readonly BookingCalendarEventRepository $bookingCalendarEvents,
         private readonly CalendarProviderResolver $calendarProviderResolver,
         private readonly BookingCalendarSyncPolicy $bookingCalendarSyncPolicy,
+        private readonly EnsureValidGoogleAccessTokenAction $ensureValidGoogleAccessTokenAction,
     ) {
     }
 
@@ -43,6 +44,9 @@ final class UpdateBookingCalendarEvent
         if (! $this->bookingCalendarSyncPolicy->canSync($integration)) {
             return null;
         }
+
+        $integration = ($this->ensureValidGoogleAccessTokenAction)($integration);
+        $integration->loadMissing('calendarSettings');
 
         $calendarId = $this->bookingCalendarSyncPolicy->selectedCalendarId($integration);
 

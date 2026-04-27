@@ -14,8 +14,10 @@ final class StoreBranch
     /**
      * Create a new branch for the given user.
      */
-    public function __invoke(User $user, StoreBranchData $data): Branch
-    {
+    public function __invoke(
+        User $user,
+        StoreBranchData $data
+    ): Branch {
         $branchesCount = Branch::query()
             ->where('user_id', $user->id)
             ->count();

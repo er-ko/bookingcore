@@ -11,28 +11,27 @@ use RuntimeException;
 final class UpdateIntegrationCalendarSettings
 {
     /**
-     * Update calendar sync settings for the given integration.
+     * Update calendar settings for the given integration.
      */
     public function __invoke(
         User $user,
         Integration $integration,
-        bool $syncBookings,
         string $syncMode,
     ): Integration {
         if ($integration->user_id !== $user->id) {
-            throw new RuntimeException('The selected integration does not belong to the authenticated user.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_user_mismatch'));
         }
 
         if ($integration->type !== IntegrationType::Calendar) {
-            throw new RuntimeException('The selected integration is not a calendar integration.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_not_calendar'));
         }
 
         if (! $integration->is_active) {
-            throw new RuntimeException('The selected integration is inactive.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_inactive'));
         }
 
         if (! in_array($syncMode, ['soft', 'strict'], true)) {
-            throw new RuntimeException('The selected sync mode is invalid.');
+            throw new RuntimeException(__('integration/calendar.messages.invalid_sync_mode'));
         }
 
         IntegrationCalendarSetting::query()->updateOrCreate(
@@ -41,7 +40,6 @@ final class UpdateIntegrationCalendarSettings
             ],
             [
                 'selected_calendar_id' => $integration->calendarSettings?->selected_calendar_id,
-                'sync_bookings' => $syncBookings,
                 'sync_mode' => $syncMode,
             ],
         );

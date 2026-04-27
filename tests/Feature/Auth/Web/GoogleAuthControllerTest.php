@@ -58,6 +58,6 @@ final class GoogleAuthControllerTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('connected_accounts', 1);
 
-        $response->assertRedirect(route('bookings.index'));
+        $response->assertRedirect(route('dashboard.index'));
     }
 }

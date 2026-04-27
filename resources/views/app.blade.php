@@ -7,6 +7,9 @@
 
     <title inertia>{{ config('app.name', 'Booking Core') }}</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     @vite('resources/js/app.js')
     @inertiaHead
 </head>

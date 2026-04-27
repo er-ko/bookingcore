@@ -19,8 +19,8 @@ final class SlotUnavailableException extends BookingException
         return new self(__('booking.errors.during_time_off'));
     }
 
-    public static function activityNotAssigned(): self
+    public static function activityNotAvailableForUnit(): self
     {
-        return new self(__('booking.errors.activity_not_assigned'));
+        return new self(__('booking.errors.activity_not_available_for_unit'));
     }
 }

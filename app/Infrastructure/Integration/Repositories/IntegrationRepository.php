@@ -7,6 +7,7 @@ use App\Enums\IntegrationProvider;
 use App\Enums\IntegrationType;
 use App\Models\Integration\Integration;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 final class IntegrationRepository
 {
@@ -41,6 +42,26 @@ final class IntegrationRepository
             ->where('provider', $provider instanceof IntegrationProvider ? $provider->value : $provider)
             ->primary()
             ->first();
+    }
+
+    /**
+     * Find active calendar integrations whose access token expires within the given buffer.
+     *
+     * @return Collection<int, Integration>
+     */
+    public function findExpiringCalendarIntegrations(
+        IntegrationProvider|string $provider,
+        int $bufferSeconds = 900,
+    ): Collection {
+        return Integration::query()
+            ->forType(IntegrationType::Calendar)
+            ->forProvider($provider)
+            ->active()
+            ->whereNotNull('refresh_token')
+            ->whereNotNull('token_expires_at')
+            ->where('token_expires_at', '<=', now()->addSeconds($bufferSeconds))
+            ->orderBy('id')
+            ->get();
     }
 
     /**

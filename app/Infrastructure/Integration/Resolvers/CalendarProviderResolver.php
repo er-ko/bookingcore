@@ -8,7 +8,7 @@ use App\Infrastructure\Integration\Providers\AppleCalendarProvider;
 use App\Infrastructure\Integration\Providers\GoogleCalendarProvider;
 use App\Infrastructure\Integration\Providers\MicrosoftCalendarProvider;
 
-final class CalendarProviderResolver
+class CalendarProviderResolver
 {
     public function __construct(
         private readonly GoogleCalendarProvider $googleCalendarProvider,

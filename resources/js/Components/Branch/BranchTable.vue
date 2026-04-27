@@ -20,7 +20,7 @@ const destroyBranch = (branchPublicId) => {
         return
     }
 
-    router.delete(route('api.branches.destroy', branchPublicId), {
+    router.delete(route('branches.destroy', branchPublicId), {
         preserveScroll: true,
     })
 }
@@ -28,138 +28,117 @@ const destroyBranch = (branchPublicId) => {
 
 <template>
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+        <table class="min-w-full border-collapse">
+            <thead>
+                <tr class="border-b border-black/10 dark:border-white/10">
+                    <th class="w-full px-6 py-4 text-start text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.branch }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="px-6 py-4 text-start text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.address }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="px-6 py-4 text-start text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.city }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="px-6 py-4 text-start text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.timezone }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="px-6 py-4 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.status }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="min-w-[130px] px-6 py-4 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.updated }}
                     </th>
 
-                    <th
-                        scope="col"
-                        class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-500"
-                    >
+                    <th class="px-6 py-4 text-end text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.actions }}
                     </th>
                 </tr>
             </thead>
 
-            <tbody class="divide-y divide-gray-100 bg-white">
+            <tbody>
                 <tr
                     v-for="branch in branches"
                     :key="branch.id"
-                    class="align-top"
+                    class="border-b border-black/6 transition-colors duration-150 last:border-b-0 hover:bg-black/[0.025] dark:border-white/8 dark:hover:bg-white/[0.045]"
                 >
-                    <td class="w-full px-6 py-4 align-middle">
-                        <div class="text-sm font-semibold text-nowrap text-gray-900">
+                    <td class="w-full px-6 py-5 align-middle">
+                        <div class="text-sm font-medium text-black dark:text-white">
                             {{ branch.name }}
                         </div>
 
-                        <div class="mt-0.5 text-xs text-nowrap text-gray-500">
+                        <div class="mt-1 text-xs text-black/45 dark:text-white/45">
                             {{ branch.country.flag_emoji }} {{ branch.country.local_name }}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 align-middle">
+                    <td class="px-6 py-5 align-middle">
                         <div
                             v-if="branch.address_label"
-                            class="text-sm text-nowrap text-gray-700"
+                            class="text-sm text-nowrap text-black/65 dark:text-white/65"
                         >
                             {{ branch.address_line_1 }}
                         </div>
 
                         <div
                             v-else
-                            class="text-sm text-gray-400"
+                            class="text-sm text-black/35 dark:text-white/35"
                         >
                             {{ translations.table.no_address_text }}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 align-middle">
-                        <div class="text-sm text-nowrap text-gray-700">
+                    <td class="px-6 py-5 align-middle">
+                        <div class="text-sm text-nowrap text-black/65 dark:text-white/65">
                             {{ branch.city }}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 align-middle">
-                        <div class="text-sm text-nowrap text-gray-700">
+                    <td class="px-6 py-5 align-middle">
+                        <div class="text-sm text-nowrap text-black/65 dark:text-white/65">
                             {{ branch.timezone }}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 align-middle text-center">
+                    <td class="px-6 py-5 align-middle text-center">
                         <span
                             v-if="branch.is_active"
-                            class="inline-flex items-center select-none rounded-md bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
+                            class="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-nowrap select-none text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
                         >
                             {{ translations.table.active }}
                         </span>
 
                         <span
                             v-else
-                            class="inline-flex items-center select-none rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-300"
+                            class="inline-flex items-center rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-nowrap select-none text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300"
                         >
                             {{ translations.table.inactive }}
                         </span>
                     </td>
 
-                    <td class="px-6 py-4 min-w-[130px] text-center">
-                        <div class="text-sm text-gray-700">
+                    <td class="px-6 py-5 align-middle text-center">
+                        <div class="text-sm text-black/65 dark:text-white/65">
                             {{ branch.updated_at ?? '-' }}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-5 align-middle text-end">
                         <div class="flex justify-end gap-2">
                             <Link
                                 :href="route('branches.edit', branch.public_id)"
-                                class="inline-flex items-center justify-center select-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-nowrap text-gray-700 transition hover:bg-gray-50"
+                                class="inline-flex items-center justify-center rounded-full border border-black/15 px-4 py-2 text-sm font-medium text-nowrap select-none text-black/65 transition hover:border-black/35 hover:text-black dark:border-white/15 dark:text-white/65 dark:hover:border-white/35 dark:hover:text-white"
                             >
                                 {{ translations.actions.edit }}
                             </Link>
 
                             <button
                                 type="button"
-                                class="inline-flex items-center justify-center select-none rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium text-nowrap text-red-700 transition hover:bg-red-50 hover:cursor-pointer"
+                                class="inline-flex items-center justify-center rounded-full border border-black/15 px-4 py-2 text-sm font-medium text-nowrap select-none text-black/45 transition hover:cursor-pointer hover:border-black/35 hover:text-black dark:border-white/15 dark:text-white/45 dark:hover:border-white/35 dark:hover:text-white"
                                 @click="destroyBranch(branch.public_id)"
                             >
                                 {{ translations.actions.delete }}

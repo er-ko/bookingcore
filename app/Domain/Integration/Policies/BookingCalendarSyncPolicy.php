@@ -22,10 +22,6 @@ final class BookingCalendarSyncPolicy
             return false;
         }
 
-        if (! $settings->syncEnabled()) {
-            return false;
-        }
-
         if (! $this->hasSelectedCalendar($settings)) {
             return false;
         }

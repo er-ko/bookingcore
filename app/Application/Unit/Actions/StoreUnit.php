@@ -14,8 +14,10 @@ final class StoreUnit
     /**
      * Create a new unit for the given user.
      */
-    public function __invoke(User $user, StoreUnitData $data): Unit
-    {
+    public function __invoke(
+        User $user,
+        StoreUnitData $data
+    ): Unit {
         $unitsCount = Unit::query()
             ->where('user_id', $user->id)
             ->count();

@@ -2,9 +2,10 @@
 
 return [
     'messages' => [
-        'created' => 'Branch created successfully.',
-        'updated' => 'Branch updated successfully.',
-        'deleted' => 'Branch deleted successfully.',
+        'created'   => 'Branch created successfully.',
+        'updated'   => 'Branch updated successfully.',
+        'deleted'   => 'Branch deleted successfully.',
+        'failed'    => 'Failed to process the branch request.',
         'not_found' => 'Branch not found.',
         'has_units' => 'The branch cannot be deleted because it still contains units.',
         'has_bookings' => 'The branch cannot be deleted because it still contains bookings.',
@@ -77,7 +78,7 @@ return [
         ],
 
         'form' => [
-            'branch_details' => 'Brach details',
+            'branch_details' => 'Branch details',
             'complete_the_form' => 'Complete the form',
             'update_the_form' => 'Update the form',
             'branch_name_title' => 'Branch name',

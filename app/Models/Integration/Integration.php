@@ -2,8 +2,8 @@
 
 namespace App\Models\Integration;
 
-use App\Enums\IntegrationType;
 use App\Enums\IntegrationProvider;
+use App\Enums\IntegrationType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -104,6 +104,18 @@ final class Integration extends Model
         }
 
         return $this->token_expires_at->isPast();
+    }
+
+    /**
+     * Determine whether the access token expires within the given buffer.
+     */
+    public function tokenExpiresSoon(int $bufferSeconds = 300): bool
+    {
+        if (! $this->token_expires_at) {
+            return false;
+        }
+
+        return $this->token_expires_at->lte(now()->addSeconds($bufferSeconds));
     }
 
     /**

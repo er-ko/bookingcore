@@ -36,6 +36,8 @@ final class ConnectedAccount extends Model
     protected function casts(): array
     {
         return [
+            'access_token' => 'encrypted',
+            'refresh_token' => 'encrypted',
             'token_expires_at' => 'datetime',
             'scopes' => 'array',
             'meta' => 'array',

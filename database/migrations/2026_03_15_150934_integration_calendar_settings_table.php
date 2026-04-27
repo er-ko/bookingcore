@@ -18,14 +18,11 @@ return new class extends Migration
 
             $table->string('selected_calendar_id', 191)->nullable();
 
-            $table->boolean('sync_bookings')->default(false);
-
             $table->string('sync_mode', 16)->default('soft');
 
             $table->timestamps();
 
             $table->unique('integration_id', 'ics_integration_unique');
-            $table->index('sync_bookings', 'ics_sync_bookings_index');
             $table->index('sync_mode', 'ics_sync_mode_index');
         });
     }

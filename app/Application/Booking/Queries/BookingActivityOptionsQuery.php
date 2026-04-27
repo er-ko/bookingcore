@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Query object responsible for retrieving active activity options
- * for the booking creation form.
+ * available for the selected unit in the booking form.
  */
 final class BookingActivityOptionsQuery
 {
     /**
-     * Retrieve active activities assigned to the selected unit.
+     * Retrieve active activities priced for the selected unit.
      *
      * @return Collection<int, Activity>
      */
-    public function getList(int $unitId): Collection
-    {
+    public function getList(
+        int $unitId
+    ): Collection {
         return Activity::query()
             ->active()
             ->whereHas('units', function (Builder $query) use ($unitId) {

@@ -8,7 +8,7 @@ uses(RefreshDatabase::class);
 
 it('creates a branch through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $payload = createBranchPayload(
         name: 'Brno',
@@ -24,14 +24,12 @@ it('creates a branch through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->postJson(route('api.branches.store'), $payload);
+        ->post(route('branches.store'), $payload);
 
     // Assert
     $response
-        ->assertCreated()
-        ->assertJson([
-            'message' => __('branch.messages.created'),
-        ]);
+        ->assertRedirect(route('branches.index'))
+        ->assertSessionHas('success', __('branch.messages.created'));
 
     $this->assertDatabaseCount('branches', 1);
 
@@ -52,17 +50,18 @@ it('creates a branch through the API', function () {
 
 it('returns a validation error when required data are missing', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     // Act
     $response = $this
+        ->from(route('branches.create'))
         ->actingAs($user)
-        ->postJson(route('api.branches.store'), []);
+        ->post(route('branches.store'), []);
 
     // Assert
     $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors([
+        ->assertRedirect(route('branches.create'))
+        ->assertSessionHasErrors([
             'name',
             'timezone',
             'is_active',
@@ -71,7 +70,7 @@ it('returns a validation error when required data are missing', function () {
 
 it('normalizes country code to uppercase before storing', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $payload = createBranchPayload(
         name: 'Praha',
@@ -87,10 +86,10 @@ it('normalizes country code to uppercase before storing', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->postJson(route('api.branches.store'), $payload);
+        ->post(route('branches.store'), $payload);
 
     // Assert
-    $response->assertCreated();
+    $response->assertRedirect(route('branches.index'));
 
     $this->assertDatabaseHas('branches', [
         'user_id' => $user->id,
@@ -101,7 +100,7 @@ it('normalizes country code to uppercase before storing', function () {
 
 it('creates an inactive branch through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $payload = createBranchPayload(
         name: 'Ostrava',
@@ -117,10 +116,10 @@ it('creates an inactive branch through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->postJson(route('api.branches.store'), $payload);
+        ->post(route('branches.store'), $payload);
 
     // Assert
-    $response->assertCreated();
+    $response->assertRedirect(route('branches.index'));
 
     $this->assertDatabaseHas('branches', [
         'user_id' => $user->id,

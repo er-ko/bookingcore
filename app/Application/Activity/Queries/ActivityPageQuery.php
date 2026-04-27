@@ -17,8 +17,9 @@ final class ActivityPageQuery
      *
      * @return LengthAwarePaginator<int, Activity>
      */
-    public function getList(User $user): LengthAwarePaginator
-    {
+    public function getList(
+        User $user
+    ): LengthAwarePaginator {
         return Activity::query()
             ->where('user_id', $user->id)
             ->orderBy('name')

@@ -28,6 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
+
+        $middleware->alias([
+            'onboarding.completed' => \App\Http\Middleware\EnsureOnboardingIsCompleted::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $renderJsonException = static function (

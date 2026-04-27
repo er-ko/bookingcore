@@ -4,6 +4,7 @@ namespace App\Infrastructure\Integration\Providers;
 
 use App\Application\Integration\DTO\CalendarAccountData;
 use App\Application\Integration\DTO\CalendarEventData;
+use App\Application\Integration\DTO\RefreshedAccessTokenData;
 use App\Domain\Integration\Contracts\CalendarProvider;
 use App\Models\Integration\Integration;
 
@@ -44,7 +45,7 @@ final class AppleCalendarProvider implements CalendarProvider
         throw new \RuntimeException('Apple calendar provider is not implemented yet.');
     }
 
-    public function refreshAccessToken(Integration $integration): Integration
+    public function refreshAccessToken(Integration $integration): RefreshedAccessTokenData
     {
         throw new \RuntimeException('Apple calendar provider refresh is not implemented yet.');
     }

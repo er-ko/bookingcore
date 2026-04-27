@@ -1,9 +1,11 @@
+import axios from 'axios'
 import { computed } from 'vue'
 import { router, useForm } from '@inertiajs/vue3'
 
 export function useUnitForm(route, options = {}) {
     const mode = options.mode ?? 'create'
     const unit = options.unit ?? null
+    const translations = options.translations ?? {}
 
     const form = useForm({
         branch_id: unit?.branch_id ?? '',
@@ -12,16 +14,11 @@ export function useUnitForm(route, options = {}) {
         is_active: Boolean(unit?.is_active ?? true),
     })
 
-    const requiredFields = {
-        branch_id: 'Branch',
-        name: 'Unit name',
-    }
-
     const inputClass = (field) => [
-        'block w-full rounded-lg px-3 py-2 text-sm text-gray-900 shadow-xs focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 border border-gray-100',
+        'block w-full rounded-2xl bg-transparent px-4 py-3 text-sm select-none text-black transition-all duration-150 placeholder:text-black/30 focus:outline-none dark:text-white dark:placeholder:text-white/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] dark:disabled:bg-white/[0.03]',
         form.errors[field]
-            ? 'border-red-300 focus:border-red-500'
-            : 'border-gray-300 focus:border-gray-900',
+            ? 'border border-red-500/50 focus:border-red-500 dark:border-red-400/50 dark:focus:border-red-400'
+            : 'border border-black/10 focus:border-black/30 dark:border-white/10 dark:focus:border-white/30',
     ]
 
     const clearFieldError = (field) => {
@@ -33,16 +30,12 @@ export function useUnitForm(route, options = {}) {
 
         const errors = {}
 
-        for (const [field, label] of Object.entries(requiredFields)) {
-            const value = form[field]
+        if (String(form.branch_id).trim() === '') {
+            errors.branch_id = translations.validation?.branch_id_required
+        }
 
-            if (typeof value === 'string') {
-                if (!value.trim()) {
-                    errors[field] = `${label} is required.`
-                }
-            } else if (!value) {
-                errors[field] = `${label} is required.`
-            }
+        if (!form.name.trim()) {
+            errors.name = translations.validation?.name_required
         }
 
         if (Object.keys(errors).length > 0) {
@@ -55,33 +48,67 @@ export function useUnitForm(route, options = {}) {
 
     const isFormValid = computed(() => {
         return (
-            String(form.branch_id).trim() &&
-            form.name.trim()
+            String(form.branch_id).trim() !== '' &&
+            form.name.trim() !== ''
         )
     })
 
-    const submit = () => {
+    const submit = async () => {
         if (!validateForm()) {
             return
         }
 
         if (mode === 'edit') {
-            form.patch(route('api.units.update', unit?.public_id ?? unit?.id), {
+            form.patch(route('units.update', unit?.public_id ?? unit?.id), {
                 preserveScroll: true,
-                onSuccess: () => {
-                    router.visit(route('units.index'))
-                },
             })
 
             return
         }
 
-        form.post(route('api.units.store'), {
-            preserveScroll: true,
-            onSuccess: () => {
-                router.visit(route('units.index'))
-            },
-        })
+        form.processing = true
+
+        try {
+            const response = await axios.post(route('units.store'), {
+                branch_id: form.branch_id,
+                name: form.name,
+                description: form.description,
+                is_active: form.is_active,
+            })
+
+            form.clearErrors()
+
+            const redirectTo = response.data?.redirect_to
+
+            if (redirectTo) {
+                router.visit(redirectTo)
+                return
+            }
+
+            router.visit(route('units.index'))
+        } catch (error) {
+            if (error.response?.status === 422) {
+                const responseErrors = error.response?.data?.errors
+
+                if (responseErrors && typeof responseErrors === 'object') {
+                    form.setError(responseErrors)
+                }
+
+                const message = error.response?.data?.message
+
+                if (message && !responseErrors) {
+                    form.setError({
+                        name: message,
+                    })
+                }
+
+                return
+            }
+
+            throw error
+        } finally {
+            form.processing = false
+        }
     }
 
     return {

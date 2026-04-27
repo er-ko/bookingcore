@@ -34,6 +34,7 @@ final class BranchTranslations
                 ]
             ),
             'form' => self::form(),
+            'validation' => self::validation(),
             'actions' => self::formActions(),
         ];
     }
@@ -58,6 +59,7 @@ final class BranchTranslations
                 ]
             ),
             'form' => self::form(),
+            'validation' => self::validation(),
             'actions' => self::formActions(),
         ];
     }
@@ -69,6 +71,7 @@ final class BranchTranslations
             'address' => __('branch.view.table.address'),
             'city' => __('branch.view.table.city'),
             'timezone' => __('branch.view.table.timezone'),
+            'no_address_text' => __('branch.view.table.no_address_text'),
             'status' => __('branch.view.table.status'),
             'updated' => __('branch.view.table.updated'),
             'actions' => __('branch.view.table.actions'),
@@ -135,6 +138,14 @@ final class BranchTranslations
 			'loading_timezones' => __('branch.view.form.loading_timezones'),
             'active_title' => __('branch.view.form.active_title'),
             'active_text' => __('branch.view.form.active_text'),
+        ];
+    }
+
+    private static function validation(): array
+    {
+        return [
+            'name_required' => __('branch.validation.name_required'),
+            'timezone_required' => __('branch.validation.timezone_required'),
         ];
     }
 }

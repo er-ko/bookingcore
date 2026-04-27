@@ -2,17 +2,21 @@
 
 namespace App\Application\Integration\Queries;
 
+use App\Application\Integration\Actions\EnsureValidGoogleAccessTokenAction;
 use App\Enums\IntegrationProvider;
 use App\Enums\IntegrationType;
 use App\Infrastructure\Integration\Repositories\IntegrationRepository;
 use App\Infrastructure\Integration\Resolvers\CalendarProviderResolver;
+use App\Models\Integration\Integration;
 use App\Models\User;
+use Throwable;
 
 final class IntegrationCalendarQuery
 {
     public function __construct(
         private readonly IntegrationRepository $integrations,
         private readonly CalendarProviderResolver $calendarProviderResolver,
+        private readonly EnsureValidGoogleAccessTokenAction $ensureValidGoogleAccessTokenAction,
     ) {
     }
 
@@ -21,8 +25,9 @@ final class IntegrationCalendarQuery
      *
      * @return array<string, mixed>
      */
-    public function __invoke(User $user): array
-    {
+    public function __invoke(
+        User $user
+    ): array {
         $integration = $this->integrations->findPrimary(
             userId: $user->id,
             type: IntegrationType::Calendar,
@@ -40,57 +45,59 @@ final class IntegrationCalendarQuery
 
         $integration->loadMissing('calendarSettings');
 
-        $calendarSettings = $integration->calendarSettings;
         $provider = $this->calendarProviderResolver->resolve($integration->provider);
 
         try {
+            $integration = ($this->ensureValidGoogleAccessTokenAction)($integration);
+            $integration->loadMissing('calendarSettings');
+
             $account = $provider->getAccount($integration);
             $calendars = $provider->listCalendars($integration);
-        } catch (\RuntimeException $e) {
+        } catch (Throwable $exception) {
+            report($exception);
+
             return [
-                'integration' => [
-                    'id' => $integration->id,
-                    'type' => $integration->type->value,
-                    'provider' => $integration->provider->value,
-                    'email' => $integration->email,
-                    'name' => $integration->name,
-                    'is_active' => false,
-                    'is_primary' => $integration->is_primary,
-                    'meta' => $integration->meta,
-                    'calendar_settings' => $calendarSettings ? [
-                        'selected_calendar_id' => $calendarSettings->selected_calendar_id,
-                        'sync_bookings' => $calendarSettings->sync_bookings,
-                        'sync_mode' => $calendarSettings->sync_mode,
-                    ] : null,
-                ],
+                'integration' => $this->formatIntegration($integration),
                 'account' => null,
                 'calendars' => [],
-                'connection_error' => $e->getMessage(),
+                'connection_error' => __('integration/calendar.messages.connection_error'),
             ];
         }
 
         return [
-            'integration' => [
-                'id' => $integration->id,
-                'type' => $integration->type->value,
-                'provider' => $integration->provider->value,
-                'email' => $integration->email,
-                'name' => $integration->name,
-                'is_active' => $integration->is_active,
-                'is_primary' => $integration->is_primary,
-                'meta' => $integration->meta,
-                'calendar_settings' => $calendarSettings ? [
-                    'selected_calendar_id' => $calendarSettings->selected_calendar_id,
-                    'sync_bookings' => $calendarSettings->sync_bookings,
-                    'sync_mode' => $calendarSettings->sync_mode,
-                ] : null,
-            ],
+            'integration' => $this->formatIntegration($integration),
             'account' => $account->toArray(),
             'calendars' => array_map(
                 static fn ($calendar) => $calendar->toArray(),
                 $calendars,
             ),
             'connection_error' => null,
+        ];
+    }
+
+    /**
+     * Format integration data for the frontend.
+     *
+     * @return array<string, mixed>
+     */
+    private function formatIntegration(
+        Integration $integration
+    ): array {
+        $calendarSettings = $integration->calendarSettings;
+
+        return [
+            'id' => $integration->id,
+            'type' => $integration->type->value,
+            'provider' => $integration->provider->value,
+            'email' => $integration->email,
+            'name' => $integration->name,
+            'is_active' => $integration->is_active,
+            'is_primary' => $integration->is_primary,
+            'meta' => $integration->meta,
+            'calendar_settings' => $calendarSettings ? [
+                'selected_calendar_id' => $calendarSettings->selected_calendar_id,
+                'sync_mode' => $calendarSettings->sync_mode,
+            ] : null,
         ];
     }
 }

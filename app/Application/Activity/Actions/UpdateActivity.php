@@ -5,18 +5,26 @@ namespace App\Application\Activity\Actions;
 use App\Application\Activity\DTO\UpdateActivityData;
 use App\Models\Activity;
 use App\Models\User;
+use RuntimeException;
 
 final class UpdateActivity
 {
     /**
      * Update an existing activity for the given user.
      */
-    public function __invoke(User $user, string $activityPublicId, UpdateActivityData $data): Activity
-    {
+    public function __invoke(
+        User $user,
+        string $activityPublicId,
+        UpdateActivityData $data
+    ): Activity {
         $activity = Activity::query()
             ->where('public_id', $activityPublicId)
             ->where('user_id', $user->id)
-            ->firstOrFail();
+            ->first();
+
+        if (! $activity) {
+            throw new RuntimeException(__('activity.messages.not_found'));
+        }
 
         $activity->fill([
             'name' => $data->name,

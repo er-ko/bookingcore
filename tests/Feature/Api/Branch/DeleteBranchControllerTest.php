@@ -8,7 +8,7 @@ uses(RefreshDatabase::class);
 
 it('deletes a branch through the API', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     $branch = createBranchForDeleteTest($user->id, [
         'name' => 'Brno Branch',
@@ -17,14 +17,12 @@ it('deletes a branch through the API', function () {
     // Act
     $response = $this
         ->actingAs($user)
-        ->deleteJson(route('api.branches.destroy', $branch->public_id));
+        ->delete(route('branches.destroy', $branch->public_id));
 
     // Assert
     $response
-        ->assertOk()
-        ->assertJson([
-            'message' => __('branch.messages.deleted'),
-        ]);
+        ->assertRedirect(route('branches.index'))
+        ->assertSessionHas('success', __('branch.messages.deleted'));
 
     $this->assertDatabaseMissing('branches', [
         'id' => $branch->id,
@@ -33,12 +31,12 @@ it('deletes a branch through the API', function () {
 
 it('returns not found when the branch does not exist', function () {
     // Arrange
-    $user = User::factory()->create();
+    $user = createOnboardedUser();
 
     // Act
     $response = $this
         ->actingAs($user)
-        ->deleteJson(route('api.branches.destroy', 'br_missing123'));
+        ->delete(route('branches.destroy', 'br_missing123'));
 
     // Assert
     $response->assertNotFound();

@@ -8,6 +8,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    translations: {
+        type: Object,
+        required: true,
+    },
 })
 
 const integration = computed(() => props.calendarIntegration?.integration ?? null)
@@ -20,9 +24,14 @@ const hasConnectionError = computed(() => Boolean(connectionError.value))
 const selectedCalendarId = computed(() => integration.value?.calendar_settings?.selected_calendar_id ?? null)
 
 const settingsForm = reactive({
-    sync_bookings: integration.value?.calendar_settings?.sync_bookings ?? false,
     sync_mode: integration.value?.calendar_settings?.sync_mode ?? 'soft',
 })
+
+const fieldClass = [
+    'block w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 text-sm select-none text-black transition-all duration-150 focus:border-black/30 focus:outline-none dark:border-white/10 dark:text-white dark:focus:border-white/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] dark:disabled:bg-white/[0.03]',
+]
+
+const labelClass = 'block text-[11px] font-medium uppercase tracking-[0.2em] text-black/45 dark:text-white/45'
 
 const selectCalendar = (calendarId) => {
     if (!integration.value?.id || hasConnectionError.value) {
@@ -48,7 +57,6 @@ const updateSettings = () => {
     router.patch(
         `/integrations/calendar/${integration.value.id}/settings`,
         {
-            sync_bookings: settingsForm.sync_bookings,
             sync_mode: settingsForm.sync_mode,
         },
         {
@@ -59,298 +67,289 @@ const updateSettings = () => {
 </script>
 
 <template>
-    <Head title="Calendar Integrations" />
+    <Head :title="translations.title" />
 
     <AppLayout>
-        <div class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">
-                        Calendar integrations
-                    </h1>
+        <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+            <div class="space-y-8">
+                <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <h1 class="text-3xl font-semibold tracking-tight text-black dark:text-white sm:text-4xl">
+                            {{ translations.title }}
+                        </h1>
 
-                    <p class="mt-1 text-sm text-gray-600">
-                        Connect your external calendar account and choose where BookingCore should create booking events.
-                    </p>
-                </div>
+                        <p class="mt-3 text-sm leading-6 text-black/55 dark:text-white/55 sm:text-base">
+                            {{ translations.description }}
+                        </p>
+                    </div>
 
-                <div v-if="!hasIntegration || hasConnectionError">
-                    <a
-                        :href="route('integrations.calendar.google.redirect')"
-                        class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
-                    >
-                        {{ hasConnectionError ? 'Reconnect Google Calendar' : 'Connect Google Calendar' }}
-                    </a>
-                </div>
-            </div>
-
-            <div
-                v-if="hasConnectionError"
-                class="overflow-hidden rounded-2xl border border-red-200 bg-red-50 shadow-sm"
-            >
-                <div class="px-6 py-5">
-                    <h2 class="text-sm font-semibold text-red-900">
-                        Google Calendar connection expired
-                    </h2>
-
-                    <p class="mt-2 text-sm text-red-800">
-                        Your Google Calendar connection is no longer valid. Please reconnect your account to continue syncing calendars and booking events.
-                    </p>
-
-                    <p
-                        v-if="connectionError"
-                        class="mt-3 text-xs text-red-700"
-                    >
-                        {{ connectionError }}
-                    </p>
-
-                    <div class="mt-5">
+                    <div v-if="!hasIntegration || hasConnectionError">
                         <a
                             :href="route('integrations.calendar.google.redirect')"
-                            class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+                            class="inline-flex items-center rounded-full border border-dashed border-black/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-black/75 transition hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/75 dark:hover:border-white/45 dark:hover:text-white"
                         >
-                            Reconnect Google Calendar
+                            {{ hasConnectionError ? translations.actions.reconnect_google : translations.actions.connect_google }}
                         </a>
                     </div>
                 </div>
-            </div>
 
-            <div
-                v-if="!hasIntegration"
-                class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
-            >
-                <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
-                    <h2 class="text-lg font-semibold text-gray-900">
-                        No calendar connected
-                    </h2>
-
-                    <p class="mt-2 max-w-md text-sm text-gray-600">
-                        You have not connected any calendar yet. Connect Google Calendar to start syncing booking events.
-                    </p>
-
-                    <div class="mt-6">
-                        <a
-                            :href="route('integrations.calendar.google.redirect')"
-                            class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
-                        >
-                            Connect Google Calendar
-                        </a>
+                <div
+                    v-if="hasConnectionError"
+                    class="overflow-hidden rounded-3xl border border-red-500/20 bg-red-500/5 backdrop-blur-sm"
+                >
+                    <div class="border-b border-red-500/20 px-6 py-4">
+                        <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-red-700 dark:text-red-300">
+                            {{ translations.states.connection_expired_title }}
+                        </h2>
                     </div>
-                </div>
-            </div>
 
-            <template v-else-if="!hasConnectionError">
-                <div class="grid gap-6 lg:grid-cols-3">
-                    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm lg:col-span-1">
-                        <div class="border-b border-gray-200 px-6 py-4">
-                            <h2 class="text-sm font-semibold text-gray-900">
-                                Connected account
-                            </h2>
+                    <div class="space-y-5 px-6 py-6">
+                        <p class="text-sm leading-6 text-red-800 dark:text-red-200">
+                            {{ translations.states.connection_expired_text }}
+                        </p>
+
+                        <p
+                            v-if="connectionError"
+                            class="text-xs leading-5 text-red-700/80 dark:text-red-300/80"
+                        >
+                            {{ connectionError }}
+                        </p>
+
+                        <div>
+                            <a
+                                :href="route('integrations.calendar.google.redirect')"
+                                class="inline-flex items-center rounded-full border border-red-500/25 px-5 py-2.5 text-sm font-medium text-red-800 transition hover:border-red-500/50 hover:text-red-900 dark:text-red-200 dark:hover:text-white"
+                            >
+                                {{ translations.actions.reconnect_google }}
+                            </a>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="space-y-4 px-6 py-6 text-sm text-gray-700">
-                            <div>
-                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Provider
-                                </div>
-                                <div class="mt-1 text-gray-900">
-                                    {{ integration.provider }}
-                                </div>
+                <div
+                    v-else-if="!hasIntegration"
+                    class="overflow-hidden rounded-3xl border border-black/10 backdrop-blur-sm dark:border-white/10"
+                >
+                    <div class="flex flex-col items-center justify-center px-6 py-20 text-center">
+                        <h2 class="text-xl font-semibold tracking-tight text-black dark:text-white">
+                            {{ translations.states.no_calendar_connected_title }}
+                        </h2>
+
+                        <p class="mt-3 max-w-md text-sm leading-6 text-black/50 dark:text-white/50">
+                            {{ translations.states.no_calendar_connected_text }}
+                        </p>
+
+                        <div class="mt-8">
+                            <a
+                                :href="route('integrations.calendar.google.redirect')"
+                                class="inline-flex items-center rounded-full border border-dashed border-black/20 px-5 py-2.5 text-sm font-medium text-black/75 transition hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/75 dark:hover:border-white/45 dark:hover:text-white"
+                            >
+                                {{ translations.actions.connect_google }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <template v-else>
+                    <div class="grid gap-6 xl:grid-cols-[0.95fr_1.55fr]">
+                        <aside class="h-fit overflow-hidden rounded-3xl border border-black/10 backdrop-blur-sm dark:border-white/10">
+                            <div class="border-b border-black/10 px-6 py-4 dark:border-white/10">
+                                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
+                                    {{ translations.overview.connected_account_title }}
+                                </h2>
                             </div>
 
-                            <div v-if="account?.name">
-                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Name
+                            <div class="space-y-7 px-6 py-6">
+                                <div>
+                                    <div :class="labelClass">
+                                        {{ translations.overview.provider_title }}
+                                    </div>
+                                    <div class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ integration.provider }}
+                                    </div>
                                 </div>
-                                <div class="mt-1 text-gray-900">
-                                    {{ account.name }}
+
+                                <div v-if="account?.name">
+                                    <div :class="labelClass">
+                                        {{ translations.overview.name_title }}
+                                    </div>
+                                    <div class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ account.name }}
+                                    </div>
+                                </div>
+
+                                <div v-if="account?.email">
+                                    <div :class="labelClass">
+                                        {{ translations.overview.email_title }}
+                                    </div>
+                                    <div class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ account.email }}
+                                    </div>
+                                </div>
+
+                                <div v-if="account?.timezone">
+                                    <div :class="labelClass">
+                                        {{ translations.overview.timezone_title }}
+                                    </div>
+                                    <div class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ account.timezone }}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div :class="labelClass">
+                                        {{ translations.overview.status_title }}
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <span
+                                            class="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-nowrap select-none text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
+                                        >
+                                            {{ translations.overview.active_title }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-black/10 pt-8 dark:border-white/10">
+                                    <h3 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
+                                        {{ translations.overview.calendar_settings_title }}
+                                    </h3>
+
+                                    <div class="mt-6 space-y-6">
+                                        <div class="space-y-2">
+                                            <label for="sync_mode" :class="labelClass">
+                                                {{ translations.form.sync_mode_title }}
+                                            </label>
+
+                                            <select
+                                                id="sync_mode"
+                                                v-model="settingsForm.sync_mode"
+                                                :class="fieldClass"
+                                            >
+                                                <option value="soft">{{ translations.form.sync_mode_soft_title }}</option>
+                                                <option value="strict">{{ translations.form.sync_mode_strict_title }}</option>
+                                            </select>
+
+                                            <p class="text-sm leading-6 text-black/45 dark:text-white/45">
+                                                {{ translations.form.sync_mode_help }}
+                                            </p>
+                                        </div>
+
+                                        <div class="pt-1">
+                                            <button
+                                                type="button"
+                                                class="inline-flex items-center justify-center rounded-full border border-black/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-black/80 transition hover:cursor-pointer hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/80 dark:hover:border-white/45 dark:hover:text-white"
+                                                @click="updateSettings"
+                                            >
+                                                {{ translations.actions.save_settings }}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </aside>
 
-                            <div v-if="account?.email">
-                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Email
-                                </div>
-                                <div class="mt-1 text-gray-900">
-                                    {{ account.email }}
-                                </div>
-                            </div>
+                        <div class="h-fit overflow-hidden rounded-3xl border border-black/10 backdrop-blur-sm dark:border-white/10">
+                            <div class="border-b border-black/10 px-6 py-4 dark:border-white/10">
+                                <div class="flex items-center justify-between gap-3">
+                                    <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
+                                        {{ translations.overview.available_calendars_title }}
+                                    </h2>
 
-                            <div v-if="account?.timezone">
-                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Timezone
-                                </div>
-                                <div class="mt-1 text-gray-900">
-                                    {{ account.timezone }}
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Status
-                                </div>
-                                <div class="mt-1">
-                                    <span
-                                        class="inline-flex items-center rounded-md bg-emerald-100 px-2.5 py-1 text-xs font-medium select-none text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
-                                    >
-                                        Active
+                                    <span class="text-xs text-black/35 dark:text-white/35">
+                                        {{ calendars.length }} {{ translations.states.calendar_count_suffix }}
                                     </span>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="border-t border-gray-200 px-6 pt-6 pb-2">
-                            <h2 class="text-sm font-semibold text-gray-900">
-                                Sync settings
-                            </h2>
-                        </div>
+                            <div v-if="calendars.length === 0" class="px-6 py-16 text-center">
+                                <h3 class="text-xl font-semibold tracking-tight text-black dark:text-white">
+                                    {{ translations.states.no_calendars_found_title }}
+                                </h3>
 
-                        <div class="space-y-5 px-6 pt-4 pb-6 text-sm text-gray-700">
-                            <label class="flex items-start gap-3">
-                                <input
-                                    v-model="settingsForm.sync_bookings"
-                                    type="checkbox"
-                                    class="mt-0.5 h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                                >
-                                <div>
-                                    <div class="font-medium text-gray-900">
-                                        Sync bookings
-                                    </div>
-                                    <p class="mt-1 text-sm text-gray-600">
-                                        Enable synchronization between BookingCore and the selected calendar.
-                                    </p>
-                                </div>
-                            </label>
-
-                            <div class="space-y-2">
-                                <label for="sync_mode" class="block text-sm font-medium text-gray-700">
-                                    Synchronization mode
-                                </label>
-
-                                <select
-                                    id="sync_mode"
-                                    v-model="settingsForm.sync_mode"
-                                    class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                                >
-                                    <option value="soft">Soft</option>
-                                    <option value="strict">Strict</option>
-                                </select>
-
-                                <p class="text-xs text-gray-500">
-                                    Soft keeps BookingCore working even if calendar sync fails. Strict is intended for stronger consistency.
+                                <p class="mt-3 text-sm leading-6 text-black/50 dark:text-white/50">
+                                    {{ translations.states.no_calendars_found_text }}
                                 </p>
                             </div>
 
-                            <div class="pt-2">
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium select-none text-white transition hover:bg-gray-800 hover:cursor-pointer"
-                                    @click="updateSettings"
+                            <div v-else>
+                                <div
+                                    v-for="calendar in calendars"
+                                    :key="calendar.id"
+                                    class="border-b border-black/6 px-6 py-5 transition-colors duration-150 last:border-b-0 hover:bg-black/[0.025] dark:border-white/8 dark:hover:bg-white/[0.045]"
                                 >
-                                    Save settings
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                        <div class="min-w-0 space-y-2">
+                                            <div class="flex flex-wrap items-center gap-2">
+                                                <h3 class="text-sm font-medium text-black dark:text-white">
+                                                    {{ calendar.name }}
+                                                </h3>
 
-                    <div class="h-fit overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm lg:col-span-2">
-                        <div class="border-b border-gray-200 px-6 py-4">
-                            <div class="flex items-center justify-between gap-3">
-                                <h2 class="text-sm font-semibold text-gray-900">
-                                    Available calendars
-                                </h2>
+                                                <span
+                                                    v-if="calendar.is_primary"
+                                                    class="inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-xs font-medium select-none text-sky-700 dark:border-sky-400/20 dark:bg-sky-400/10 dark:text-sky-300"
+                                                >
+                                                    {{ translations.states.primary_badge }}
+                                                </span>
 
-                                <span class="text-xs text-gray-500">
-                                    {{ calendars.length }} calendar(s)
-                                </span>
-                            </div>
-                        </div>
+                                                <span
+                                                    v-if="calendar.is_read_only"
+                                                    class="inline-flex items-center rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium select-none text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300"
+                                                >
+                                                    {{ translations.states.read_only_badge }}
+                                                </span>
 
-                        <div v-if="calendars.length === 0" class="px-6 py-12 text-center">
-                            <h3 class="text-sm font-semibold text-gray-900">
-                                No calendars found
-                            </h3>
+                                                <span
+                                                    v-if="selectedCalendarId === calendar.id"
+                                                    class="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium select-none text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
+                                                >
+                                                    {{ translations.states.selected_badge }}
+                                                </span>
+                                            </div>
 
-                            <p class="mt-2 text-sm text-gray-600">
-                                The connected account does not currently expose any calendars.
-                            </p>
-                        </div>
+                                            <p class="break-all text-xs text-black/45 dark:text-white/45">
+                                                {{ calendar.id }}
+                                            </p>
 
-                        <div v-else class="divide-y divide-gray-100">
-                            <div
-                                v-for="calendar in calendars"
-                                :key="calendar.id"
-                                class="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-start sm:justify-between"
-                            >
-                                <div class="min-w-0 space-y-1">
-                                    <div class="flex flex-wrap items-center gap-2">
-                                        <h3 class="text-sm font-semibold text-gray-900">
-                                            {{ calendar.name }}
-                                        </h3>
+                                            <p
+                                                v-if="calendar.description"
+                                                class="text-sm leading-6 text-black/60 dark:text-white/60"
+                                            >
+                                                {{ calendar.description }}
+                                            </p>
 
-                                        <span
-                                            v-if="calendar.is_primary"
-                                            class="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-xs font-medium select-none text-blue-800 ring-1 ring-inset ring-blue-600/20"
-                                        >
-                                            Primary
-                                        </span>
+                                            <p
+                                                v-if="calendar.timezone"
+                                                class="text-xs text-black/45 dark:text-white/45"
+                                            >
+                                                {{ translations.overview.timezone_prefix }} {{ calendar.timezone }}
+                                            </p>
+                                        </div>
 
-                                        <span
-                                            v-if="calendar.is_read_only"
-                                            class="inline-flex items-center rounded-md bg-amber-100 px-2 py-1 text-xs font-medium select-none text-amber-800 ring-1 ring-inset ring-amber-600/20"
-                                        >
-                                            Read only
-                                        </span>
+                                        <div class="shrink-0">
+                                            <button
+                                                v-if="selectedCalendarId !== calendar.id"
+                                                type="button"
+                                                class="inline-flex items-center justify-center rounded-full border border-black/15 px-4 py-2 text-sm font-medium text-nowrap select-none text-black/65 transition hover:cursor-pointer hover:border-black/35 hover:text-black dark:border-white/15 dark:text-white/65 dark:hover:border-white/35 dark:hover:text-white"
+                                                @click="selectCalendar(calendar.id)"
+                                            >
+                                                {{ translations.actions.select_calendar }}
+                                            </button>
 
-                                        <span
-                                            v-if="selectedCalendarId === calendar.id"
-                                            class="inline-flex items-center rounded-md bg-emerald-100 px-2 py-1 text-xs font-medium select-none text-emerald-800 ring-1 ring-inset ring-emerald-600/20"
-                                        >
-                                            Selected
-                                        </span>
+                                            <span
+                                                v-else
+                                                class="inline-flex items-center justify-center rounded-full border border-black/20 px-4 py-2 text-sm font-medium text-nowrap select-none bg-black text-white dark:bg-white dark:text-black dark:border-white/20"
+                                            >
+                                                {{ translations.actions.selected }}
+                                            </span>
+                                        </div>
                                     </div>
-
-                                    <p class="break-all text-xs text-gray-500">
-                                        {{ calendar.id }}
-                                    </p>
-
-                                    <p
-                                        v-if="calendar.description"
-                                        class="text-sm text-gray-600"
-                                    >
-                                        {{ calendar.description }}
-                                    </p>
-
-                                    <p
-                                        v-if="calendar.timezone"
-                                        class="text-xs text-gray-500"
-                                    >
-                                        Timezone: {{ calendar.timezone }}
-                                    </p>
-                                </div>
-
-                                <div class="shrink-0">
-                                    <button
-                                        v-if="selectedCalendarId !== calendar.id"
-                                        type="button"
-                                        class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium select-none text-gray-700 transition hover:cursor-pointer hover:bg-gray-50"
-                                        @click="selectCalendar(calendar.id)"
-                                    >
-                                        Select calendar
-                                    </button>
-
-                                    <span
-                                        v-else
-                                        class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium select-none text-white"
-                                    >
-                                        Selected
-                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
         </div>
     </AppLayout>
 </template>

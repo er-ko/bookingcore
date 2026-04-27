@@ -2,10 +2,9 @@
 
 namespace App\Domain\Booking\Services;
 
-use App\Application\Integration\Actions\CancelBookingCalendarEvent;
+use App\Application\Booking\DTO\CreateBookingData;
 use App\Application\Integration\Actions\CreateBookingCalendarEvent;
 use App\Application\Integration\Actions\UpdateBookingCalendarEvent;
-use App\Application\Booking\DTO\CreateBookingData;
 use App\Domain\Booking\Exceptions\BookingConflictException;
 use App\Domain\Booking\Exceptions\BookingStatusException;
 use App\Domain\Booking\Exceptions\BookingValidationException;
@@ -28,51 +27,34 @@ final class BookingService
         private readonly IntegrationRepository $integrationRepository,
         private readonly BookingCalendarSyncPolicy $bookingCalendarSyncPolicy,
         private readonly CreateBookingCalendarEvent $createBookingCalendarEvent,
-        private readonly CancelBookingCalendarEvent $cancelBookingCalendarEvent,
         private readonly UpdateBookingCalendarEvent $updateBookingCalendarEvent,
     ) {
     }
 
     /**
-     * Create a new booking.
+     * Create a new booking for internal/admin flow.
      */
     public function create(CreateBookingData $data): Booking
     {
-        $activity = $this->resolveActiveActivity($data->activityId);
-        $unit = $this->resolveActiveUnit($data->unitId, $data->branchId);
-
-        $this->ensureActivityAssignedToUnit($activity->id, $unit->id);
-
-        $startsAt = $data->startsAt;
-        $endsAt = $startsAt->addMinutes($activity->duration_minutes);
-
-        $blockedStart = $startsAt->subMinutes($activity->buffer_before_minutes);
-        $blockedEnd = $endsAt->addMinutes($activity->buffer_after_minutes);
-
-        $this->ensureNoConflict(
-            branchId: $data->branchId,
-            unitId: $unit->id,
-            blockedStart: $blockedStart,
-            blockedEnd: $blockedEnd,
-        );
-
-        $customer = $this->bookingRepository->findOrCreateCustomer($data->customer);
-
-        $booking = $this->bookingRepository->createBooking(
+        return $this->createBooking(
             data: $data,
-            customer: $customer,
-            endsAt: $endsAt,
             status: BookingStatus::Pending,
             confirmedAt: null,
+            publicToken: null,
         );
+    }
 
-        try {
-            ($this->createBookingCalendarEvent)($booking);
-        } catch (\Throwable $exception) {
-            $this->handleCalendarSyncException($booking, $exception);
-        }
-
-        return $booking;
+    /**
+     * Create a new booking for public flow.
+     */
+    public function createPublic(CreateBookingData $data): Booking
+    {
+        return $this->createBooking(
+            data: $data,
+            status: BookingStatus::Pending,
+            confirmedAt: null,
+            publicToken: $this->generateUniquePublicToken(),
+        );
     }
 
     /**
@@ -84,15 +66,13 @@ final class BookingService
             throw BookingStatusException::alreadyCancelled();
         }
 
-        $booking = $this->bookingRepository->cancelBooking($booking);
-
-        try {
-            ($this->cancelBookingCalendarEvent)($booking);
-        } catch (\Throwable $exception) {
-            $this->handleCalendarSyncException($booking, $exception);
+        if ($booking->status === BookingStatus::Completed) {
+            throw BookingStatusException::sameStatus(BookingStatus::Completed->value);
         }
 
-        return $booking;
+        $booking = $this->bookingRepository->cancelBooking($booking);
+
+        return $this->syncAndFinalizeIfNeeded($booking);
     }
 
     /**
@@ -124,13 +104,92 @@ final class BookingService
             confirmedAt: $confirmedAt,
         );
 
+        return $this->syncAndFinalizeIfNeeded($booking);
+    }
+
+    /**
+     * Create a booking with shared validation and conflict checks.
+     */
+    private function createBooking(
+        CreateBookingData $data,
+        BookingStatus $status,
+        mixed $confirmedAt,
+        ?string $publicToken,
+    ): Booking {
+        $activity = $this->resolveActiveActivity($data->activityId);
+        $unit = $this->resolveActiveUnit($data->unitId, $data->branchId);
+
+        $this->ensureActivityPricedForUnit($activity->id, $unit->id);
+
+        $startsAt = $data->startsAt;
+        $endsAt = $startsAt->addMinutes($activity->duration_minutes);
+
+        $blockedStart = $startsAt->subMinutes($activity->buffer_before_minutes);
+        $blockedEnd = $endsAt->addMinutes($activity->buffer_after_minutes);
+
+        $this->ensureNoConflict(
+            branchId: $data->branchId,
+            unitId: $unit->id,
+            blockedStart: $blockedStart,
+            blockedEnd: $blockedEnd,
+        );
+
+        $customer = $this->bookingRepository->findOrCreateCustomer($data->customer);
+
+        $booking = $this->bookingRepository->createBooking(
+            data: $data,
+            customer: $customer,
+            endsAt: $endsAt,
+            status: $status,
+            confirmedAt: $confirmedAt,
+            publicToken: $publicToken,
+        );
+
         try {
-            ($this->updateBookingCalendarEvent)($booking);
+            ($this->createBookingCalendarEvent)($booking);
         } catch (\Throwable $exception) {
             $this->handleCalendarSyncException($booking, $exception);
         }
 
         return $booking;
+    }
+
+    /**
+     * Handle calendar sync failure during booking creation.
+     */
+    private function handleCalendarSyncException(Booking $booking, \Throwable $exception): void
+    {
+        if ($this->shouldUseStrictCalendarSync($booking)) {
+            $this->bookingRepository->deleteBooking($booking);
+
+            throw $exception;
+        }
+
+        report($exception);
+    }
+
+    /**
+     * Synchronize booking state to calendar and delete terminal bookings if sync succeeds.
+     */
+    private function syncAndFinalizeIfNeeded(Booking $booking): Booking
+    {
+        try {
+            ($this->updateBookingCalendarEvent)($booking);
+
+            if ($booking->status->isTerminal()) {
+                $this->bookingRepository->deleteBooking($booking);
+            }
+
+            return $booking;
+        } catch (\Throwable $exception) {
+            if ($this->shouldUseStrictCalendarSync($booking)) {
+                throw $exception;
+            }
+
+            report($exception);
+
+            return $booking;
+        }
     }
 
     /**
@@ -165,17 +224,17 @@ final class BookingService
     }
 
     /**
-     * Ensure the activity is assigned to the unit.
+     * Ensure the activity is available for the unit.
      */
-    private function ensureActivityAssignedToUnit(int $activityId, int $unitId): void
+    private function ensureActivityPricedForUnit(int $activityId, int $unitId): void
     {
-        $isAssigned = $this->bookingRepository->isActivityAssignedToUnit(
+        $isPriced = $this->bookingRepository->isActivityPricedForUnit(
             activityId: $activityId,
             unitId: $unitId,
         );
 
-        if (! $isAssigned) {
-            throw SlotUnavailableException::activityNotAssigned();
+        if (! $isPriced) {
+            throw SlotUnavailableException::activityNotAvailableForUnit();
         }
     }
 
@@ -198,18 +257,6 @@ final class BookingService
         if ($hasConflict) {
             throw BookingConflictException::unitAlreadyBooked();
         }
-    }
-
-    /**
-     * Handle a calendar sync exception according to the configured sync mode.
-     */
-    private function handleCalendarSyncException(Booking $booking, \Throwable $exception): void
-    {
-        if ($this->shouldUseStrictCalendarSync($booking)) {
-            throw $exception;
-        }
-
-        report($exception);
     }
 
     /**
@@ -238,5 +285,19 @@ final class BookingService
     private function resolveOwnerUserId(Booking $booking): ?int
     {
         return $booking->branch?->user_id;
+    }
+
+    /**
+     * Generate a unique public booking token.
+     */
+    private function generateUniquePublicToken(): string
+    {
+        do {
+            $token = bin2hex(random_bytes(32));
+        } while (
+            Booking::query()->where('public_token', $token)->exists()
+        );
+
+        return $token;
     }
 }

@@ -11,8 +11,10 @@ final class DeleteActivity
     /**
      * Delete an existing activity for the given user.
      */
-    public function __invoke(User $user, string $activityPublicId): void
-    {
+    public function __invoke(
+        User $user,
+        string $activityPublicId
+    ): void {
         $activity = Activity::query()
             ->where('public_id', $activityPublicId)
             ->where('user_id', $user->id)

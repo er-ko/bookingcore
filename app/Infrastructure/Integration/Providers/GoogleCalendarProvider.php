@@ -5,6 +5,7 @@ namespace App\Infrastructure\Integration\Providers;
 use App\Application\Integration\DTO\CalendarAccountData;
 use App\Application\Integration\DTO\CalendarData;
 use App\Application\Integration\DTO\CalendarEventData;
+use App\Application\Integration\DTO\RefreshedAccessTokenData;
 use App\Domain\Integration\Contracts\CalendarProvider;
 use App\Enums\IntegrationProvider;
 use App\Models\Integration\Integration;
@@ -19,8 +20,9 @@ use RuntimeException;
 
 final class GoogleCalendarProvider implements CalendarProvider
 {
-    public function getAccount(Integration $integration): CalendarAccountData
-    {
+    public function getAccount(
+        Integration $integration
+    ): CalendarAccountData {
         $service = $this->calendarService($integration);
 
         $primaryCalendar = $service->calendarList->get('primary');
@@ -37,8 +39,9 @@ final class GoogleCalendarProvider implements CalendarProvider
         );
     }
 
-    public function listCalendars(Integration $integration): array
-    {
+    public function listCalendars(
+        Integration $integration
+    ): array {
         $service = $this->calendarService($integration);
 
         $result = $service->calendarList->listCalendarList([
@@ -105,16 +108,17 @@ final class GoogleCalendarProvider implements CalendarProvider
         $service->events->delete($calendarId, $eventId);
     }
 
-    public function refreshAccessToken(Integration $integration): Integration
-    {
+    public function refreshAccessToken(
+        Integration $integration
+    ): RefreshedAccessTokenData {
         $this->assertGoogleIntegration($integration);
 
         if (! $integration->is_active) {
-            throw new RuntimeException('The integration is inactive.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_inactive'));
         }
 
         if (! filled($integration->refresh_token)) {
-            throw new RuntimeException('The integration does not contain a refresh token.');
+            throw new RuntimeException(__('integration/calendar.messages.missing_refresh_token'));
         }
 
         $client = $this->makeClient();
@@ -122,21 +126,13 @@ final class GoogleCalendarProvider implements CalendarProvider
         $tokenData = $client->fetchAccessTokenWithRefreshToken($integration->refresh_token);
 
         if (! is_array($tokenData) || isset($tokenData['error'])) {
-            $message = 'Failed to refresh the Google access token.';
-
-            if (is_array($tokenData) && isset($tokenData['error'])) {
-                $message .= ' Google error: ' . $tokenData['error'];
-
-                if (! empty($tokenData['error_description'])) {
-                    $message .= ' - ' . $tokenData['error_description'];
-                }
-            }
-
-            throw new RuntimeException($message);
+            throw new RuntimeException(__('integration/calendar.messages.google_refresh_failed'));
         }
 
-        if (! isset($tokenData['access_token'])) {
-            throw new RuntimeException('Failed to refresh the Google access token: missing access_token in response.');
+        if (! isset($tokenData['access_token']) || ! is_string($tokenData['access_token'])) {
+            throw new RuntimeException(
+                __('integration/calendar.messages.google_refresh_missing_access_token')
+            );
         }
 
         $expiresAt = null;
@@ -145,41 +141,32 @@ final class GoogleCalendarProvider implements CalendarProvider
             $expiresAt = CarbonImmutable::now()->addSeconds((int) $tokenData['expires_in']);
         }
 
-        $integration->update([
-            'access_token' => $tokenData['access_token'],
-            'refresh_token' => $tokenData['refresh_token'] ?? $integration->refresh_token,
-            'token_expires_at' => $expiresAt,
-        ]);
-
-        return $integration->refresh();
+        return new RefreshedAccessTokenData(
+            accessToken: $tokenData['access_token'],
+            refreshToken: isset($tokenData['refresh_token']) && is_string($tokenData['refresh_token'])
+                ? $tokenData['refresh_token']
+                : null,
+            tokenExpiresAt: $expiresAt,
+        );
     }
-    private function calendarService(Integration $integration): GoogleCalendarService
-    {
+
+    private function calendarService(
+        Integration $integration
+    ): GoogleCalendarService {
         $this->assertGoogleIntegration($integration);
 
-        $integration = $this->ensureValidAccessToken($integration);
+        if (! $integration->is_active) {
+            throw new RuntimeException(__('integration/calendar.messages.integration_inactive'));
+        }
+
+        if (! filled($integration->access_token)) {
+            throw new RuntimeException(__('integration/calendar.messages.missing_access_token'));
+        }
 
         $client = $this->makeClient();
         $client->setAccessToken($integration->access_token);
 
         return new GoogleCalendarService($client);
-    }
-
-    private function ensureValidAccessToken(Integration $integration): Integration
-    {
-        if (! $integration->is_active) {
-            throw new RuntimeException('The integration is inactive.');
-        }
-
-        if (! filled($integration->access_token)) {
-            throw new RuntimeException('The integration does not contain an access token.');
-        }
-
-        if ($integration->tokenExpired()) {
-            return $this->refreshAccessToken($integration);
-        }
-
-        return $integration;
     }
 
     private function makeClient(): GoogleClient
@@ -192,19 +179,21 @@ final class GoogleCalendarProvider implements CalendarProvider
         return $client;
     }
 
-    private function assertGoogleIntegration(Integration $integration): void
-    {
+    private function assertGoogleIntegration(
+        Integration $integration
+    ): void {
         $provider = $integration->provider instanceof IntegrationProvider
             ? $integration->provider
             : IntegrationProvider::from($integration->provider);
 
         if ($provider !== IntegrationProvider::Google) {
-            throw new RuntimeException('The given integration is not a Google integration.');
+            throw new RuntimeException(__('integration/calendar.messages.not_google_integration'));
         }
     }
 
-    private function makeEvent(CalendarEventData $eventData): GoogleCalendarEvent
-    {
+    private function makeEvent(
+        CalendarEventData $eventData
+    ): GoogleCalendarEvent {
         $event = new GoogleCalendarEvent([
             'summary' => $eventData->title,
             'description' => $eventData->description,
@@ -233,8 +222,10 @@ final class GoogleCalendarProvider implements CalendarProvider
         return $event;
     }
 
-    private function makeEventDateTime(CarbonInterface $dateTime, ?string $timezone): GoogleCalendarEventDateTime
-    {
+    private function makeEventDateTime(
+        CarbonInterface $dateTime,
+        ?string $timezone
+    ): GoogleCalendarEventDateTime {
         $resolvedTimezone = $timezone ?: config('app.timezone');
 
         return new GoogleCalendarEventDateTime([

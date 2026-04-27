@@ -17,8 +17,9 @@ final class BranchPageQuery
      *
      * @return LengthAwarePaginator<int, Branch>
      */
-    public function getList(User $user): LengthAwarePaginator
-    {
+    public function getList(
+        User $user
+    ): LengthAwarePaginator {
         return Branch::query()
             ->with('country')
             ->where('user_id', $user->id)

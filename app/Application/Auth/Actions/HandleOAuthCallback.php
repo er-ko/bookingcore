@@ -18,8 +18,9 @@ final class HandleOAuthCallback
     /**
      * Handle the OAuth callback for the given provider.
      */
-    public function __invoke(string $provider): User
-    {
+    public function __invoke(
+        string $provider
+    ): User {
         $providerUser = $this->socialite->driver($provider)->user();
 
         $providerUserData = ProviderUserData::fromSocialite(

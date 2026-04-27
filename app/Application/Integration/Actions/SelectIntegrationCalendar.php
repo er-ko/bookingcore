@@ -13,20 +13,27 @@ final class SelectIntegrationCalendar
     /**
      * Select the target calendar for the given integration.
      */
-    public function __invoke(User $user, Integration $integration, string $calendarId): Integration
-    {
+    public function __invoke(
+        User $user,
+        Integration $integration,
+        string $calendarId
+    ): Integration {
         $calendarId = trim($calendarId);
 
+        if ($calendarId === '') {
+            throw new RuntimeException(__('integration/calendar.messages.invalid_calendar_id'));
+        }
+
         if ($integration->user_id !== $user->id) {
-            throw new RuntimeException('The selected integration does not belong to the authenticated user.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_user_mismatch'));
         }
 
         if ($integration->type !== IntegrationType::Calendar) {
-            throw new RuntimeException('The selected integration is not a calendar integration.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_not_calendar'));
         }
 
         if (! $integration->is_active) {
-            throw new RuntimeException('The selected integration is inactive.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_inactive'));
         }
 
         IntegrationCalendarSetting::query()->updateOrCreate(
@@ -35,8 +42,7 @@ final class SelectIntegrationCalendar
             ],
             [
                 'selected_calendar_id' => $calendarId,
-                'sync_bookings' => true,
-                'sync_mode' => 'soft',
+                'sync_mode' => $integration->calendarSettings?->sync_mode ?? 'soft',
             ],
         );
 

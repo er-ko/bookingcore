@@ -31,9 +31,11 @@ final class ActivityTranslations
                     'required_title' => __('activity.view.overview.required_title'),
                     'optional_title' => __('activity.view.overview.optional_title'),
                     'status_title' => __('activity.view.overview.status_title'),
+                    'status_text' => __('activity.view.overview.status_text'),
                 ]
             ),
             'form' => self::form(),
+            'validation' => self::validation(),
             'actions' => self::formActions(),
         ];
     }
@@ -58,6 +60,7 @@ final class ActivityTranslations
                 ]
             ),
             'form' => self::form(),
+            'validation' => self::validation(),
             'actions' => self::formActions(),
         ];
     }
@@ -125,6 +128,17 @@ final class ActivityTranslations
             'buffer_after_title' => __('activity.view.form.buffer_after_title'),
             'active_title' => __('activity.view.form.active_title'),
             'active_text' => __('activity.view.form.active_text'),
+        ];
+    }
+
+    private static function validation(): array
+    {
+        return [
+            'name_required' => __('activity.validation.name_required'),
+            'duration_required' => __('activity.validation.duration_required'),
+            'duration_min' => __('activity.validation.duration_min'),
+            'buffer_before_min' => __('activity.validation.buffer_before_min'),
+            'buffer_after_min' => __('activity.validation.buffer_after_min'),
         ];
     }
 }

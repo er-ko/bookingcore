@@ -1,9 +1,10 @@
 import { computed } from 'vue'
-import { router, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 
 export function useActivityForm(route, options = {}) {
     const mode = options.mode ?? 'create'
     const activity = options.activity ?? null
+    const translations = options.translations ?? {}
 
     const form = useForm({
         name: activity?.name ?? '',
@@ -13,16 +14,11 @@ export function useActivityForm(route, options = {}) {
         is_active: Boolean(activity?.is_active ?? true),
     })
 
-    const requiredFields = {
-        name: 'Activity name',
-        duration_minutes: 'Duration',
-    }
-
     const inputClass = (field) => [
-        'block w-full rounded-lg px-3 py-2 text-sm text-gray-900 shadow-xs focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 border border-gray-100',
+        'block w-full rounded-2xl bg-transparent px-4 py-3 text-sm select-none text-black transition-all duration-150 placeholder:text-black/30 focus:outline-none dark:text-white dark:placeholder:text-white/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] dark:disabled:bg-white/[0.03]',
         form.errors[field]
-            ? 'border-red-300 focus:border-red-500'
-            : 'border-gray-300 focus:border-gray-900',
+            ? 'border border-red-500/50 focus:border-red-500 dark:border-red-400/50 dark:focus:border-red-400'
+            : 'border border-black/10 focus:border-black/30 dark:border-white/10 dark:focus:border-white/30',
     ]
 
     const clearFieldError = (field) => {
@@ -34,28 +30,28 @@ export function useActivityForm(route, options = {}) {
 
         const errors = {}
 
-        for (const [field, label] of Object.entries(requiredFields)) {
-            const value = form[field]
-
-            if (typeof value === 'string') {
-                if (!value.trim()) {
-                    errors[field] = `${label} is required.`
-                }
-            } else if (value === null || value === undefined || value === '') {
-                errors[field] = `${label} is required.`
-            }
+        if (!form.name.trim()) {
+            errors.name = translations.validation?.name_required
         }
 
-        if (Number(form.duration_minutes) < 1) {
-            errors.duration_minutes = 'Duration must be at least 1 minute.'
+        if (
+            form.duration_minutes === null ||
+            form.duration_minutes === undefined ||
+            String(form.duration_minutes).trim() === ''
+        ) {
+            errors.duration_minutes = translations.validation?.duration_required
+        }
+
+        if (errors.duration_minutes === undefined && Number(form.duration_minutes) < 1) {
+            errors.duration_minutes = translations.validation?.duration_min
         }
 
         if (Number(form.buffer_before_minutes) < 0) {
-            errors.buffer_before_minutes = 'Buffer before must be 0 or more.'
+            errors.buffer_before_minutes = translations.validation?.buffer_before_min
         }
 
         if (Number(form.buffer_after_minutes) < 0) {
-            errors.buffer_after_minutes = 'Buffer after must be 0 or more.'
+            errors.buffer_after_minutes = translations.validation?.buffer_after_min
         }
 
         if (Object.keys(errors).length > 0) {
@@ -89,21 +85,15 @@ export function useActivityForm(route, options = {}) {
         }))
 
         if (mode === 'edit') {
-            form.patch(route('api.activities.update', activity?.public_id ?? activity?.id), {
+            form.patch(route('activities.update', activity?.public_id ?? activity?.id), {
                 preserveScroll: true,
-                onSuccess: () => {
-                    router.visit(route('activities.index'))
-                },
             })
 
             return
         }
 
-        form.post(route('api.activities.store'), {
+        form.post(route('activities.store'), {
             preserveScroll: true,
-            onSuccess: () => {
-                router.visit(route('activities.index'))
-            },
         })
     }
 

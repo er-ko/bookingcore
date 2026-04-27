@@ -42,7 +42,6 @@ final class SelectIntegrationCalendarTest extends TestCase
         $this->assertDatabaseHas('integration_calendar_settings', [
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => 1,
             'sync_mode' => 'soft',
         ]);
     }
@@ -56,7 +55,6 @@ final class SelectIntegrationCalendarTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'old-calendar',
-            'sync_bookings' => false,
             'sync_mode' => 'strict',
         ]);
 
@@ -69,8 +67,7 @@ final class SelectIntegrationCalendarTest extends TestCase
         $this->assertDatabaseHas('integration_calendar_settings', [
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_bookings' => 1,
-            'sync_mode' => 'soft',
+            'sync_mode' => 'strict',
         ]);
 
         $this->assertDatabaseCount('integration_calendar_settings', 1);
@@ -91,6 +88,23 @@ final class SelectIntegrationCalendarTest extends TestCase
         $this->assertTrue($result->relationLoaded('calendarSettings'));
         $this->assertNotNull($result->calendarSettings);
         $this->assertSame('primary', $result->calendarSettings->selected_calendar_id);
+        $this->assertSame('soft', $result->calendarSettings->sync_mode);
+    }
+
+    public function test_it_throws_exception_when_calendar_id_is_empty(): void
+    {
+        $user = User::factory()->create();
+
+        $integration = $this->makeIntegration($user);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The selected calendar ID is invalid.');
+
+        ($this->action)(
+            $user,
+            $integration,
+            '   ',
+        );
     }
 
     public function test_it_throws_exception_when_integration_does_not_belong_to_authenticated_user(): void

@@ -17,6 +17,7 @@ use InvalidArgumentException;
 class Booking extends Model
 {
     protected $fillable = [
+        'public_token',
         'branch_id',
         'unit_id',
         'activity_id',

@@ -2,32 +2,31 @@
 
 namespace App\Application\Integration\Actions;
 
-use App\Infrastructure\Integration\Resolvers\CalendarProviderResolver;
+use App\Domain\Integration\Services\RefreshIntegrationService;
 use App\Models\Integration\Integration;
 use RuntimeException;
 
 final class RefreshIntegrationAccessToken
 {
     public function __construct(
-        private readonly CalendarProviderResolver $calendarProviderResolver,
+        private readonly RefreshIntegrationService $refreshIntegrationService,
     ) {
     }
 
     /**
      * Refresh the access token for the given integration.
      */
-    public function __invoke(Integration $integration): Integration
-    {
+    public function __invoke(
+        Integration $integration
+    ): Integration {
         if (! $integration->is_active) {
-            throw new RuntimeException('The integration is inactive.');
+            throw new RuntimeException(__('integration/calendar.messages.integration_inactive'));
         }
 
-        if (! filled($integration->refresh_token)) {
-            throw new RuntimeException('The integration does not contain a refresh token.');
+        if (! $integration->hasRefreshToken()) {
+            throw new RuntimeException(__('integration/calendar.messages.missing_refresh_token'));
         }
 
-        $provider = $this->calendarProviderResolver->resolve($integration->provider);
-
-        return $provider->refreshAccessToken($integration);
+        return $this->refreshIntegrationService->refresh($integration);
     }
 }

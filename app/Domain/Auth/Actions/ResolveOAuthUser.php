@@ -40,7 +40,7 @@ final class ResolveOAuthUser
 
         if (! $user) {
             $user = User::create([
-                'name' => $providerUserData->name ?? 'User',
+                'name' => $providerUserData->name ?? '',
                 'email' => $providerUserData->email,
                 'password' => Str::random(32),
             ]);
@@ -50,4 +50,4 @@ final class ResolveOAuthUser
 
         return $user;
     }
-} 	
+}
