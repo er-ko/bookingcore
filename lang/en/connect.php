@@ -5,6 +5,8 @@ return [
         'title' => 'Connect to BookingCore',
         'heading' => 'Connect your calendar',
         'description' => 'Start with Google and connect your calendar to manage booking availability in a clean, open source workflow.',
+        'meta_title' => 'Connect Your Calendar | BookingCore',
+        'meta_description' => 'Connect Google Calendar to BookingCore and keep booking events, availability, and scheduling workflows in sync with secure OAuth.',
 
         'provider' => [
             'google_badge' => 'Google',

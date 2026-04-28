@@ -1,25 +1,46 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import PublicLayout from '@/Layouts/PublicLayout.vue'
 
-defineProps({
+const page = usePage()
+const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
+const authTranslations = computed(() => layoutTranslations.value.auth ?? {})
+const appName = computed(() => page.props.app?.name ?? authTranslations.value.default_title ?? 'BookingCore')
+
+const props = defineProps({
     title: {
         type: String,
-        default: 'BookingCore',
+        default: '',
     },
     heading: {
         type: String,
-        default: 'Connect',
+        default: '',
     },
     description: {
         type: String,
         default: '',
     },
+    metaDescription: {
+        type: String,
+        default: '',
+    },
 })
+
+const pageTitle = computed(() => props.title || authTranslations.value.default_title || 'BookingCore')
+const pageHeading = computed(() => props.heading || authTranslations.value.default_heading || 'Connect')
+const oauthNotice = computed(() => authTranslations.value.oauth_notice ?? 'Secure OAuth connection. No password is stored by BookingCore.')
 </script>
 
 <template>
-    <Head :title="title" />
+    <Head :title="pageTitle">
+        <meta
+            v-if="metaDescription"
+            head-key="description"
+            name="description"
+            :content="metaDescription"
+        >
+    </Head>
 
     <PublicLayout>
         <div class="mx-auto w-full max-w-4xl">
@@ -29,11 +50,11 @@ defineProps({
                     class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-black/75 transition-all duration-150 hover:gap-3 hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
                 >
                     <span aria-hidden="true">←</span>
-                    BookingCore
+                    {{ appName }}
                 </Link>
 
                 <h1 class="mt-6 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl lg:text-6xl">
-                    {{ heading }}
+                    {{ pageHeading }}
                 </h1>
 
                 <p
@@ -49,7 +70,7 @@ defineProps({
             </div>
 
             <div class="mx-auto mt-6 max-w-2xl text-center text-xs leading-5 select-none text-black/35 dark:text-white/35">
-                Secure OAuth connection. No password is stored by BookingCore.
+                {{ oauthNotice }}
             </div>
         </div>
     </PublicLayout>

@@ -18,8 +18,8 @@ return [
 		'negative_buffer_minutes' => 'Buffer minutes cannot be negative.',
 		'invalid_slot_block' => 'Total slot block must be greater than zero.',
 		'invalid_total_slot_block' => 'Total slot block must be greater than zero.',
-		'invalid_time_range' => 'TimeRange start must be earlier than end.',
-		'invalid_day_of_week' => 'Invalid day of week: :value',
+		'invalid_time_range' => 'The start of the time range must be earlier than the end.',
+		'invalid_day_of_week' => 'Invalid day of the week: :value',
 		'invalid_booking_status' => 'Invalid booking status: :value',
 	],
 

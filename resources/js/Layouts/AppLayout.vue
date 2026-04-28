@@ -1,11 +1,12 @@
 <script setup>
 import { computed, inject, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
+import { useTheme } from '@/Composables/useTheme'
 
 const route = inject('route')
 const page = usePage()
 
-const isDark = ref(true)
+const { isDark, toggleTheme } = useTheme()
 const mobileMenuOpen = ref(false)
 const openDropdown = ref(null)
 
@@ -13,6 +14,7 @@ const appName = computed(() => page.props.app?.name ?? 'BookingCore')
 const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
 const flashTranslations = computed(() => layoutTranslations.value.flash ?? {})
 const navigationTranslations = computed(() => layoutTranslations.value.navigation ?? {})
+const accessibilityTranslations = computed(() => layoutTranslations.value.accessibility ?? {})
 
 const visibleFlash = ref(null)
 const flashType = ref('success')
@@ -105,16 +107,6 @@ const homeHref = computed(() => {
     return route('identity.index')
 })
 
-function applyTheme() {
-    document.documentElement.classList.toggle('dark', isDark.value)
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-}
-
-function toggleTheme() {
-    isDark.value = !isDark.value
-    applyTheme()
-}
-
 function toggleMobileMenu() {
     mobileMenuOpen.value = !mobileMenuOpen.value
 }
@@ -140,16 +132,6 @@ function handleClickOutside(event) {
 }
 
 onMounted(() => {
-    const savedTheme = localStorage.getItem('theme')
-
-    if (savedTheme === 'dark') {
-        isDark.value = true
-    } else if (savedTheme === 'light') {
-        isDark.value = false
-    } else {
-        isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
-
     const persistedFlash = sessionStorage.getItem(FLASH_STORAGE_KEY)
 
     if (persistedFlash) {
@@ -175,7 +157,6 @@ onMounted(() => {
         }
     }
 
-    applyTheme()
     document.addEventListener('click', handleClickOutside)
     window.addEventListener(FLASH_EVENT_NAME, handleFlashEvent)
 })
@@ -435,6 +416,7 @@ const navigationGroups = computed(() => [
                 <div class="flex items-center gap-2 sm:gap-3">
                     <button
                         type="button"
+                        :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
                         class="inline-flex items-center rounded-full p-2 cursor-pointer text-black/50 transition-all duration-300 ease-in-out hover:text-black dark:text-white/50 dark:hover:text-white"
                         @click="toggleTheme"
                     >
@@ -488,6 +470,9 @@ const navigationGroups = computed(() => [
 
                     <button
                         type="button"
+                        :aria-label="mobileMenuOpen
+                            ? (accessibilityTranslations.close_navigation ?? 'Close navigation')
+                            : (accessibilityTranslations.open_navigation ?? 'Open navigation')"
                         class="inline-flex rounded-full p-2 text-black/50 transition hover:text-black dark:text-white/50 dark:hover:text-white lg:hidden"
                         @click="toggleMobileMenu"
                     >

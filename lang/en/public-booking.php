@@ -3,7 +3,7 @@
 return [
     'view' => [
         'title' => 'Book your appointment',
-        'description' => 'Choose a branch, service, date and time that works best for you.',
+        'description' => 'Choose the branch, service, date, and time that work best for you.',
 
         'form' => [
             'branch_title' => 'Branch',
@@ -45,7 +45,7 @@ return [
             'ready' => 'ready',
 
             'appointment_title' => 'Appointment details',
-            'appointment_text' => 'Choose the branch, team member, service, date, and slot that fits best.',
+            'appointment_text' => 'Choose the branch, unit, service, date, and slot that fit best.',
 
             'customer_title' => 'Customer details',
             'customer_text' => 'Add the contact details needed to confirm and recognize the booking.',
@@ -107,7 +107,7 @@ return [
         ],
 
         'detail' => [
-            'title' => 'Booking detail',
+            'title' => 'Booking details',
             'badge_created' => 'Booking created',
             'status_label' => 'Status',
             'heading' => 'Your booking is saved',
@@ -126,7 +126,7 @@ return [
             'actions' => [
                 'back' => 'Back to booking page',
                 'print' => 'Print page',
-                'calendar' => 'Import to your calendar',
+                'calendar' => 'Import into your calendar',
             ],
             'fallback' => '—',
         ],

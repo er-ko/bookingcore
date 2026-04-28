@@ -1,7 +1,7 @@
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
+import { useTheme } from '@/Composables/useTheme'
 
 const COPY_FEEDBACK_TIMEOUT = 2000
-const THEME_STORAGE_KEY = 'theme'
 
 export function usePublicBooking(options = {}) {
     const route = inject('route')
@@ -9,7 +9,7 @@ export function usePublicBooking(options = {}) {
     const identity = options.identity ?? {}
 
     const copyState = ref('idle')
-    const isDark = ref(true)
+    const { isDark, toggleTheme } = useTheme()
     let copyStateTimeoutId = null
 
     const pageName = computed(() => {
@@ -42,16 +42,6 @@ export function usePublicBooking(options = {}) {
         }
     })
 
-    function applyTheme() {
-        document.documentElement.classList.toggle('dark', isDark.value)
-        localStorage.setItem(THEME_STORAGE_KEY, isDark.value ? 'dark' : 'light')
-    }
-
-    function toggleTheme() {
-        isDark.value = !isDark.value
-        applyTheme()
-    }
-
     async function copyPublicPageUrl() {
         if (!publicPageUrl.value || !navigator?.clipboard?.writeText) {
             copyState.value = 'error'
@@ -76,20 +66,6 @@ export function usePublicBooking(options = {}) {
             return false
         }
     }
-
-    onMounted(() => {
-        const savedTheme = localStorage.getItem(THEME_STORAGE_KEY)
-
-        if (savedTheme === 'dark') {
-            isDark.value = true
-        } else if (savedTheme === 'light') {
-            isDark.value = false
-        } else {
-            isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-        }
-
-        applyTheme()
-    })
 
     return {
         copyState,

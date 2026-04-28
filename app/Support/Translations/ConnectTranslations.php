@@ -10,6 +10,8 @@ final class ConnectTranslations
             'title' => __('connect.view.title'),
             'heading' => __('connect.view.heading'),
             'description' => __('connect.view.description'),
+            'meta_title' => __('connect.view.meta_title'),
+            'meta_description' => __('connect.view.meta_description'),
             'provider' => self::provider(),
             'flow' => self::flow(),
             'tags' => self::tags(),

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('address_line_2')->nullable();
             $table->string('city')->nullable();
             $table->string('postcode', 32)->nullable();
-            $table->char('country_code', 2);
+            $table->char('country_code', 2)->nullable();
             $table->string('timezone', 64)->default('UTC');
 
             $table->boolean('is_active')->default(true);

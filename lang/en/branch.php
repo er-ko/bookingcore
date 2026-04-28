@@ -67,7 +67,7 @@ return [
             'timezone_text' => 'Based on the selected country',
             'limit_title' => 'Limit',
             'limit_text' => 'You can create up to 10 branches.',
-            'duration_text' => 'Set how long the activity should take in minutes.',
+            'duration_text' => 'Set the branch location and regional defaults.',
             'required_title' => 'Required',
             'optional_title' => 'Optional',
             'status_title' => 'Current status',

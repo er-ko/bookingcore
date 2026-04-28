@@ -1,31 +1,13 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+import { useTheme } from '@/Composables/useTheme'
 
-const isDark = ref(true)
-
-function applyTheme() {
-    document.documentElement.classList.toggle('dark', isDark.value)
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-}
-
-function toggleTheme() {
-    isDark.value = !isDark.value
-    applyTheme()
-}
-
-onMounted(() => {
-    const savedTheme = localStorage.getItem('theme')
-
-    if (savedTheme === 'dark') {
-        isDark.value = true
-    } else if (savedTheme === 'light') {
-        isDark.value = false
-    } else {
-        isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
-
-    applyTheme()
-})
+const page = usePage()
+const { isDark, toggleTheme } = useTheme()
+const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
+const publicTranslations = computed(() => layoutTranslations.value.public ?? {})
+const accessibilityTranslations = computed(() => layoutTranslations.value.accessibility ?? {})
 </script>
 
 <template>
@@ -50,20 +32,21 @@ onMounted(() => {
             <div class="relative border-t border-black/8 py-5 dark:border-white/10">
                 <div class="flex flex-col gap-3 text-xs select-none text-black/45 dark:text-white/45 sm:flex-row sm:items-center sm:justify-between">
                     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                        <span>Built for independent teams</span>
-                        <span class="hidden h-1 w-1 rounded-full bg-black/20 dark:bg-white/20 sm:block" />
-                        <span>Public code</span>
-                        <span class="hidden h-1 w-1 rounded-full bg-black/20 dark:bg-white/20 sm:block" />
-                        <span>MIT licensed</span>
+                        <span>{{ publicTranslations.created_by ?? 'Created by human' }}</span>
+                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                        <span>{{ publicTranslations.public_code ?? 'Public code' }}</span>
+                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                        <span>{{ publicTranslations.mit_licensed ?? 'MIT licensed' }}</span>
                     </div>
 
                     <div class="flex items-center justify-between gap-3 sm:justify-end">
                         <div class="text-black/35 dark:text-white/35">
-                            Theme
+                            {{ publicTranslations.theme ?? 'Theme' }}
                         </div>
 
                         <button
                             type="button"
+                            :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
                             class="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-black/55 transition-all duration-300 ease-in-out hover:cursor-pointer hover:border-black/25 hover:text-black dark:border-white/10 dark:bg-white/[0.04] dark:text-white/55 dark:hover:border-white/25 dark:hover:text-white"
                             @click="toggleTheme"
                         >

@@ -19,7 +19,6 @@ const props = defineProps({
 })
 
 const currentYear = computed(() => new Date().getFullYear())
-const capabilities = computed(() => Object.values(props.translations.hero.capabilities.items))
 const features = computed(() => Object.values(props.translations.features))
 const audiences = computed(() => {
     const items = props.translations.audience.items
@@ -31,10 +30,17 @@ const audiences = computed(() => {
 })
 
 const headTitle = computed(() => props.translations.meta.title)
+const headDescription = computed(() => props.translations.meta.description)
 </script>
 
 <template>
-    <Head :title="headTitle" />
+    <Head :title="headTitle">
+        <meta
+            head-key="description"
+            name="description"
+            :content="headDescription"
+        >
+    </Head>
 
     <PublicLayout>
         <div class="space-y-12 select-none lg:space-y-16">
@@ -42,7 +48,6 @@ const headTitle = computed(() => props.translations.meta.title)
                 :connect-url="route('connect.index')"
                 :current-year="currentYear"
                 :translations="translations.hero"
-                :capabilities="capabilities"
             />
             <OpenAccessSection :translations="translations.open_access" />
             <FeatureGrid :items="features" />

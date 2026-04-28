@@ -2,19 +2,20 @@
 
 return [
     'meta' => [
-        'title' => 'BookingCore',
+        'title' => 'BookingCore | Open Source Booking and Scheduling Engine',
+        'description' => 'BookingCore is an open source booking engine for appointments, branches, units, activities, pricing, availability, and calendar sync.',
     ],
 
     'hero' => [
         'badge' => 'Open source booking engine',
 
         'title' => [
-            'line_1' => 'Minimal booking',
-            'line_2' => 'infrastructure,',
-            'line_3' => 'built in public.',
+            'line_1' => 'The bridge between',
+            'line_2' => 'your customer',
+            'line_3' => 'and your calendar.',
         ],
 
-        'description' => 'BookingCore is a lean scheduling system for teams that need branches, units, activities, pricing, booking control, and calendar sync without the usual SaaS noise.',
+        'description' => 'A lean scheduling engine that connects your customers to your calendar, with clean rules, clear structure, and no subscription lock-in.',
 
         'actions' => [
             'get_started' => 'Get started',
@@ -27,21 +28,10 @@ return [
             'copyright' => '# Copyright :year',
         ],
 
-        'profile' => [
-            'title' => 'System profile',
-            'text_1' => 'Designed for service businesses that need real scheduling rules.',
-            'text_2' => 'Structured around branches, units, activities, prices, and calendar delivery.',
-        ],
-
-        'capabilities' => [
-            'title' => 'Capability map',
-            'version' => 'v0.x',
-            'items' => [
-                'branches' => 'Branches and resource structure',
-                'activities' => 'Activities, pricing, and booking rules',
-                'calendar' => 'Calendar sync with booking event delivery',
-                'public_booking' => 'Public booking flow for real customers',
-            ],
+        'bridge' => [
+            'customer' => 'Customer',
+            'engine' => 'BookingCore',
+            'calendar' => 'Calendar',
         ],
     ],
 
@@ -52,11 +42,11 @@ return [
         ],
         'control' => [
             'title' => 'Control',
-            'description' => 'Manage activity durations, buffers, pricing, working hours, time offs, and booking status changes.',
+            'description' => 'Manage activity durations, buffers, pricing, working hours, time-off periods, and booking status changes.',
         ],
         'delivery' => [
             'title' => 'Delivery',
-            'description' => 'Push booking events into connected calendars and keep the public booking entrypoint simple.',
+            'description' => 'Push booking events into connected calendars and keep the public booking entry point simple.',
         ],
     ],
 
@@ -128,7 +118,7 @@ return [
             ],
             'beauty' => [
                 'eyebrow' => 'Beauty & wellness',
-                'title' => 'Salons, spa, massage, cosmetics',
+                'title' => 'Salons, spas, massage, cosmetics',
                 'description' => 'For studios that need services, pricing, staff resources, and a booking flow customers can use without confusion.',
             ],
             'sport' => [
@@ -145,7 +135,7 @@ return [
     ],
 
     'closing' => [
-        'badge' => 'No subscription & no fees',
+        'badge' => 'No subscription and no fees',
         'title' => 'BookingCore',
         'description' => 'An open source scheduling foundation for teams that want clarity, control, and a booking experience they can actually shape.',
         'tags' => [

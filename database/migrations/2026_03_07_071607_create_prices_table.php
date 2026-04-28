@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('activity_id')->constrained('activities')->cascadeOnDelete();
             $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
 
-            $table->decimal('price', 10, 2);
+            $table->unsignedDecimal('price', 10, 2);
 
             $table->timestamps();
 

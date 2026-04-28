@@ -276,7 +276,7 @@ const copyrightYear = new Date().getFullYear()
 
                         <div class="flex items-center justify-between gap-3 sm:justify-end">
                             <div class="text-black/35 dark:text-white/35">
-                                &copy; {{ copyrightYear }} bookingcode.io
+                                &copy; {{ copyrightYear }} bookingcore.link
                             </div>
 
                             <div class="flex items-center gap-3">

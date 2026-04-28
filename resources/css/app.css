@@ -12,6 +12,25 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+html,
+body {
+    min-height: 100%;
+    background: #ffffff;
+    color: #000000;
+}
+
+html.dark,
+html.dark body {
+    background: #000000;
+    color: #ffffff;
+}
+
+body {
+    transition:
+        background-color 300ms,
+        color 300ms;
+}
+
 @keyframes toast-progress {
     from {
         transform: scaleX(1);
@@ -24,4 +43,12 @@
 
 .animate-toast-progress {
     animation: toast-progress 2s linear forwards;
+}
+
+.scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }

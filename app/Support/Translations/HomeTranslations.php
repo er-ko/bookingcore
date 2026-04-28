@@ -30,6 +30,7 @@ final class HomeTranslations
     {
         return [
             'title' => __('home.meta.title'),
+            'description' => __('home.meta.description'),
         ];
     }
 
@@ -62,21 +63,10 @@ final class HomeTranslations
                 'copyright' => __('home.hero.tags.copyright'),
             ],
 
-            'profile' => [
-                'title' => __('home.hero.profile.title'),
-                'text_1' => __('home.hero.profile.text_1'),
-                'text_2' => __('home.hero.profile.text_2'),
-            ],
-
-            'capabilities' => [
-                'title' => __('home.hero.capabilities.title'),
-                'version' => __('home.hero.capabilities.version'),
-                'items' => [
-                    'branches' => __('home.hero.capabilities.items.branches'),
-                    'activities' => __('home.hero.capabilities.items.activities'),
-                    'calendar' => __('home.hero.capabilities.items.calendar'),
-                    'public_booking' => __('home.hero.capabilities.items.public_booking'),
-                ],
+            'bridge' => [
+                'customer' => __('home.hero.bridge.customer'),
+                'engine' => __('home.hero.bridge.engine'),
+                'calendar' => __('home.hero.bridge.calendar'),
             ],
         ];
     }

@@ -24,4 +24,23 @@ return [
         'currencies' => 'Currencies',
         'logout' => 'Logout',
     ],
+
+    'public' => [
+        'created_by' => 'Created by a human',
+        'public_code' => 'Public code',
+        'mit_licensed' => 'MIT licensed',
+        'theme' => 'Theme',
+    ],
+
+    'auth' => [
+        'default_title' => 'BookingCore',
+        'default_heading' => 'Connect',
+        'oauth_notice' => 'Secure OAuth connection. No password is stored by :app.',
+    ],
+
+    'accessibility' => [
+        'toggle_theme' => 'Toggle theme',
+        'open_navigation' => 'Open navigation',
+        'close_navigation' => 'Close navigation',
+    ],
 ];

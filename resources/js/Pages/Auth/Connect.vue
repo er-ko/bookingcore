@@ -11,9 +11,10 @@ defineProps({
 
 <template>
     <AuthLayout
-        :title="translations.title"
+        :title="translations.meta_title"
         :heading="translations.heading"
         :description="translations.description"
+        :meta-description="translations.meta_description"
     >
         <div class="space-y-6">
             <div class="mx-auto grid max-w-3xl gap-4 lg:grid-cols-[1.08fr_0.92fr]">

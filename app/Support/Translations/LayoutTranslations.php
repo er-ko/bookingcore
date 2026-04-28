@@ -29,6 +29,24 @@ final class LayoutTranslations
                 'currencies' => __('layout.navigation.currencies'),
                 'logout' => __('layout.navigation.logout'),
             ],
+            'public' => [
+                'created_by' => __('layout.public.created_by'),
+                'public_code' => __('layout.public.public_code'),
+                'mit_licensed' => __('layout.public.mit_licensed'),
+                'theme' => __('layout.public.theme'),
+            ],
+            'auth' => [
+                'default_title' => __('layout.auth.default_title'),
+                'default_heading' => __('layout.auth.default_heading'),
+                'oauth_notice' => __('layout.auth.oauth_notice', [
+                    'app' => config('app.name'),
+                ]),
+            ],
+            'accessibility' => [
+                'toggle_theme' => __('layout.accessibility.toggle_theme'),
+                'open_navigation' => __('layout.accessibility.open_navigation'),
+                'close_navigation' => __('layout.accessibility.close_navigation'),
+            ],
         ];
     }
 }
