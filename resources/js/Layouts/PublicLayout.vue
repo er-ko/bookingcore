@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
+import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 import { useTheme } from '@/Composables/useTheme'
 
 const page = usePage()
@@ -11,7 +12,7 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
 </script>
 
 <template>
-    <div class="relative min-h-screen overflow-hidden bg-stone-50 px-6 text-black transition-colors duration-300 dark:bg-neutral-950 dark:text-white md:px-8 lg:px-12 xl:px-0">
+    <div class="relative min-h-screen overflow-hidden bg-stone-50 px-3 sm:px-6 text-black transition-colors duration-300 dark:bg-neutral-950 dark:text-white md:px-8 lg:px-12 xl:px-0">
         <div class="pointer-events-none absolute inset-0">
             <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
             <div class="absolute left-[-8rem] top-[-6rem] h-64 w-64 rounded-full bg-black/[0.035] blur-3xl dark:bg-white/[0.04]" />
@@ -40,54 +41,58 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
                     </div>
 
                     <div class="flex items-center justify-between gap-3 sm:justify-end">
-                        <div class="text-black/35 dark:text-white/35">
-                            {{ publicTranslations.theme ?? 'Theme' }}
+                        <div class="flex items-center justify-end gap-3">
+                            <div class="text-black/35 dark:text-white/35">
+                                {{ publicTranslations.theme ?? 'Theme' }}
+                            </div>
+
+                            <button
+                                type="button"
+                                :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
+                                class="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-black/55 transition-all duration-300 ease-in-out hover:cursor-pointer hover:border-black/25 hover:text-black dark:border-white/10 dark:bg-white/[0.04] dark:text-white/55 dark:hover:border-white/25 dark:hover:text-white"
+                                @click="toggleTheme"
+                            >
+                                <svg
+                                    v-if="isDark"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <circle cx="12" cy="12" r="4" />
+                                    <path d="M12 2v2" />
+                                    <path d="M12 20v2" />
+                                    <path d="m4.93 4.93 1.41 1.41" />
+                                    <path d="m17.66 17.66 1.41 1.41" />
+                                    <path d="M2 12h2" />
+                                    <path d="M20 12h2" />
+                                    <path d="m6.34 17.66-1.41 1.41" />
+                                    <path d="m19.07 4.93-1.41 1.41" />
+                                </svg>
+
+                                <svg
+                                    v-else
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+                                </svg>
+                            </button>
                         </div>
 
-                        <button
-                            type="button"
-                            :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
-                            class="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-black/55 transition-all duration-300 ease-in-out hover:cursor-pointer hover:border-black/25 hover:text-black dark:border-white/10 dark:bg-white/[0.04] dark:text-white/55 dark:hover:border-white/25 dark:hover:text-white"
-                            @click="toggleTheme"
-                        >
-                            <svg
-                                v-if="isDark"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="15"
-                                height="15"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <circle cx="12" cy="12" r="4" />
-                                <path d="M12 2v2" />
-                                <path d="M12 20v2" />
-                                <path d="m4.93 4.93 1.41 1.41" />
-                                <path d="m17.66 17.66 1.41 1.41" />
-                                <path d="M2 12h2" />
-                                <path d="M20 12h2" />
-                                <path d="m6.34 17.66-1.41 1.41" />
-                                <path d="m19.07 4.93-1.41 1.41" />
-                            </svg>
-
-                            <svg
-                                v-else
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="15"
-                                height="15"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
-                            </svg>
-                        </button>
+                        <LocaleSwitcher />
                     </div>
                 </div>
             </div>

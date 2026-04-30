@@ -25,6 +25,7 @@ use App\Http\Controllers\Identity\Web\{
     ScheduleAccountDeletionController,
     UpdateIdentityController,
 };
+use App\Http\Controllers\Locale\Web\UpdateLocaleController;
 use App\Http\Controllers\PublicBooking\Web\{
     DownloadPublicBookingCalendarController,
     PublicBookingDetailPageController,
@@ -62,6 +63,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', HomePageController::class)->name('home');
+Route::post('/locale', UpdateLocaleController::class)->name('locale.update');
 
 Route::prefix('@{slug}')
     ->name('public-booking.')

@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <section class="relative overflow-hidden px-6 py-20 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
+    <section class="relative overflow-hidden py-20 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
         <div class="pointer-events-none absolute inset-0">
             <div class="absolute left-[10%] top-[18%] h-36 w-36 rounded-full bg-black/4 blur-3xl dark:bg-white/5" />
             <div class="absolute right-[12%] top-[26%] h-40 w-40 rounded-full bg-black/3 blur-3xl dark:bg-white/4" />
@@ -16,7 +16,7 @@ defineProps({
         </div>
 
         <div class="relative flex flex-col items-center text-center">
-            <div class="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 shadow-[0_14px_30px_-18px_rgba(16,185,129,0.55)] dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-[0_14px_30px_-18px_rgba(52,211,153,0.35)]">
+            <div class="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700 shadow-[0_14px_30px_-18px_rgba(16,185,129,0.55)] dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-[0_14px_30px_-18px_rgba(52,211,153,0.35)]">
                 <span class="relative flex h-2.5 w-2.5">
                     <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/55 dark:bg-emerald-300/55" />
                     <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-600 dark:bg-emerald-300" />

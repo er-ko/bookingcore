@@ -1,6 +1,7 @@
 <script setup>
 import { computed, inject, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
+import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 import { useTheme } from '@/Composables/useTheme'
 
 const route = inject('route')
@@ -414,6 +415,8 @@ const navigationGroups = computed(() => [
                 </div>
 
                 <div class="flex items-center gap-2 sm:gap-3">
+                    <LocaleSwitcher />
+
                     <button
                         type="button"
                         :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"

@@ -1,0 +1,76 @@
+<?php
+
+return [
+    'errors' => [
+        'activity_inactive' => 'Wybrana usługa nie istnieje lub jest nieaktywna.',
+        'unit_invalid' => 'Wybrana jednostka nie istnieje, jest nieaktywna albo nie należy do podanego oddziału.',
+        'activity_not_available_for_unit' => 'Wybrana usługa nie jest dostępna dla wybranej jednostki.',
+        'unit_already_booked' => 'Wybrana jednostka jest już zarezerwowana w podanym przedziale czasowym.',
+        'booking_conflict' => 'Rezerwacja koliduje z istniejącą rezerwacją.',
+        'slot_overlap' => 'Wybrany termin rezerwacji nakłada się na istniejącą rezerwację.',
+        'outside_working_hours' => 'Wybrany termin rezerwacji znajduje się poza godzinami pracy.',
+        'during_time_off' => 'Wybrany termin rezerwacji przypada w zablokowanym okresie niedostępności.',
+        'already_cancelled' => 'Rezerwacja została już anulowana.',
+        'cancelled_cannot_be_updated' => 'Anulowanych rezerwacji nie można aktualizować.',
+        'same_status' => 'Rezerwacja ma już status: :status.',
+        'use_cancel_action' => 'Aby anulować rezerwację, należy użyć akcji anulowania rezerwacji.',
+        'invalid_activity_minutes' => 'Czas trwania usługi w minutach musi być większy niż zero.',
+        'negative_buffer_minutes' => 'Czas bufora w minutach nie może być ujemny.',
+        'invalid_slot_block' => 'Całkowity blok terminu musi być większy niż zero.',
+        'invalid_total_slot_block' => 'Całkowity blok terminu musi być większy niż zero.',
+        'invalid_time_range' => 'Początek przedziału czasowego musi być wcześniejszy niż jego koniec.',
+        'invalid_day_of_week' => 'Nieprawidłowy dzień tygodnia: :value',
+        'invalid_booking_status' => 'Nieprawidłowy status rezerwacji: :value',
+    ],
+
+    'validation' => [
+        'branch_required' => 'Oddział jest wymagany.',
+        'branch_invalid' => 'Identyfikator oddziału jest nieprawidłowy.',
+        'branch_not_found' => 'Wybrany oddział nie istnieje.',
+
+        'unit_required' => 'Jednostka jest wymagana.',
+        'unit_invalid' => 'Identyfikator jednostki jest nieprawidłowy.',
+        'unit_not_found' => 'Wybrana jednostka nie istnieje.',
+
+        'activity_required' => 'Usługa jest wymagana.',
+        'activity_invalid' => 'Identyfikator usługi jest nieprawidłowy.',
+        'activity_not_found' => 'Wybrana usługa nie istnieje.',
+
+        'activity_not_available_for_unit' => 'Wybrana usługa nie jest dostępna dla wybranej jednostki.',
+
+        'starts_at_required' => 'Godzina rozpoczęcia jest wymagana.',
+        'starts_at_invalid' => 'Format godziny rozpoczęcia jest nieprawidłowy.',
+
+        'customer_required' => 'Informacje o kliencie są wymagane.',
+        'customer_invalid' => 'Format danych klienta jest nieprawidłowy.',
+
+        'customer_first_name_required' => 'Imię klienta jest wymagane.',
+        'customer_first_name_invalid' => 'Imię klienta musi być ciągiem znaków.',
+        'customer_first_name_too_long' => 'Imię klienta jest zbyt długie.',
+
+        'customer_last_name_required' => 'Nazwisko klienta jest wymagane.',
+        'customer_last_name_invalid' => 'Nazwisko klienta musi być ciągiem znaków.',
+        'customer_last_name_too_long' => 'Nazwisko klienta jest zbyt długie.',
+
+        'customer_email_required' => 'Adres e-mail klienta jest wymagany.',
+        'customer_email_invalid' => 'Adres e-mail klienta musi być prawidłowym adresem e-mail.',
+        'customer_email_too_long' => 'Adres e-mail klienta jest zbyt długi.',
+
+        'customer_phone_code_required' => 'Numer kierunkowy jest wymagany.',
+        'customer_phone_code_invalid' => 'Numer kierunkowy musi być ciągiem znaków.',
+        'customer_phone_code_too_long' => 'Numer kierunkowy jest zbyt długi.',
+
+        'customer_phone_required' => 'Numer telefonu jest wymagany.',
+        'customer_phone_invalid' => 'Numer telefonu musi być ciągiem znaków.',
+        'customer_phone_too_long' => 'Numer telefonu jest zbyt długi.',
+
+        'note_invalid' => 'Notatka musi być ciągiem znaków.',
+
+        'status_required' => 'Status rezerwacji jest wymagany.',
+        'status_invalid' => 'Format statusu rezerwacji jest nieprawidłowy.',
+        'status_not_allowed' => 'Wybrany status rezerwacji jest niedozwolony.',
+
+        'date_required' => 'Data jest wymagana.',
+        'date_invalid' => 'Format daty jest nieprawidłowy.',
+    ],
+];

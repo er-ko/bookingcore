@@ -23,7 +23,7 @@ const copyrightTag = computed(() =>
 </script>
 
 <template>
-    <section class="flex flex-col items-center space-y-10 text-center lg:space-y-12 py-16">
+    <section class="flex flex-col items-center space-y-10 text-center lg:space-y-12 py-16 px-3">
         <!-- Eyebrow -->
         <div class="flex flex-wrap items-center justify-center gap-3">
             <Link
@@ -51,7 +51,7 @@ const copyrightTag = computed(() =>
         </div>
 
         <!-- Bridge visual -->
-        <div class="w-full max-w-lg overflow-x-auto scrollbar-hidden">
+        <div class="w-full max-w-lg overflow-x-auto scrollbar-hidden hidden md:block">
             <div class="w-full flex items-center justify-start gap-6">
                 <!-- Customer node -->
                 <div class="relative w-full max-w-1/2 rounded-2xl border border-black/10 bg-white/80 p-4 text-center backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
@@ -125,7 +125,7 @@ const copyrightTag = computed(() =>
         </div>
 
         <!-- Tags -->
-        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.18em] text-black/38 dark:text-white/38">
+        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.18em] text-black/38 dark:text-white/38 mt-6 md:mt-0">
             <span>{{ translations.tags.mit_license }}</span>
             <span>{{ translations.tags.public_code }}</span>
             <span>{{ copyrightTag }}</span>

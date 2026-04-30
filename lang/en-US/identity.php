@@ -59,7 +59,7 @@ return [
             'brand_name_placeholder' => 'BookingCore Studio',
             'public_slug_title' => 'Public slug',
             'public_slug_placeholder' => 'your-slug',
-            'public_slug_prefix' => 'bookingcore.io/@',
+            'public_slug_prefix' => 'bookingcore.link/@',
             'default_language_title' => 'Default language',
             'select_language_title' => 'Select language',
             'default_currency_title' => 'Default currency',

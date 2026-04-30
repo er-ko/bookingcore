@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Locale\LocaleResolver;
 use App\Support\Translations\LayoutTranslations;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -43,6 +44,10 @@ class HandleInertiaRequests extends Middleware
 
             'app' => [
                 'name' => config('app.name'),
+            ],
+            'locale' => [
+                'current' => app()->getLocale(),
+                'supported' => app(LocaleResolver::class)->supportedLocalesForDisplay(),
             ],
             'auth' => [
                 'onboarding' => [
