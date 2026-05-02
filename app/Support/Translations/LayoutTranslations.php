@@ -30,7 +30,6 @@ final class LayoutTranslations
                 'logout' => __('layout.navigation.logout'),
             ],
             'public' => [
-                'created_by' => __('layout.public.created_by'),
                 'public_code' => __('layout.public.public_code'),
                 'mit_licensed' => __('layout.public.mit_licensed'),
                 'theme' => __('layout.public.theme'),

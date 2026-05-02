@@ -26,7 +26,6 @@ return [
     ],
 
     'public' => [
-        'created_by' => 'Gemaakt door een mens',
         'public_code' => 'Openbare code',
         'mit_licensed' => 'MIT-gelicentieerd',
         'theme' => 'Thema',

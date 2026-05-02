@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 import { useTheme } from '@/Composables/useTheme'
 
@@ -33,11 +33,23 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
             <div class="relative border-t border-black/8 py-5 dark:border-white/10">
                 <div class="flex flex-col gap-3 text-xs select-none text-black/45 dark:text-white/45 sm:flex-row sm:items-center sm:justify-between">
                     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                        <span>{{ publicTranslations.created_by ?? 'Created by human' }}</span>
-                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                         <span>{{ publicTranslations.public_code ?? 'Public code' }}</span>
                         <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                         <span>{{ publicTranslations.mit_licensed ?? 'MIT licensed' }}</span>
+                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                        <Link
+                            href="/privacy-policy"
+                            class="transition hover:text-black dark:hover:text-white"
+                        >
+                            Privacy Policy
+                        </Link>
+                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                        <Link
+                            href="/terms-of-service"
+                            class="transition hover:text-black dark:hover:text-white"
+                        >
+                            Terms of Service
+                        </Link>
                     </div>
 
                     <div class="flex items-center justify-between gap-3 sm:justify-end">

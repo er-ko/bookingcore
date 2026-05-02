@@ -26,7 +26,6 @@ return [
     ],
 
     'public' => [
-        'created_by' => 'Создано человеком',
         'public_code' => 'Открытый код',
         'mit_licensed' => 'Лицензия MIT',
         'theme' => 'Тема',

@@ -26,7 +26,6 @@ return [
     ],
 
     'public' => [
-        'created_by' => 'Created by a human',
         'public_code' => 'Public code',
         'mit_licensed' => 'MIT licensed',
         'theme' => 'Theme',

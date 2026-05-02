@@ -26,7 +26,6 @@ return [
     ],
 
     'public' => [
-        'created_by' => 'Vytvorené človekom',
         'public_code' => 'Verejný kód',
         'mit_licensed' => 'Licencované pod MIT',
         'theme' => 'Motív',
