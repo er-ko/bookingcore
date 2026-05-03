@@ -100,15 +100,15 @@ const clearNestedFieldError = (parent, field) => {
 }
 
 const selectedBranch = computed(() => {
-    return props.branches.find((branch) => String(branch.id) === String(form.branch_id)) ?? null
+    return props.branches.find((branch) => String(branch.public_id) === String(form.branch_public_id)) ?? null
 })
 
 const selectedUnit = computed(() => {
-    return units.value.find((unit) => String(unit.id) === String(form.unit_id)) ?? null
+    return units.value.find((unit) => String(unit.public_id) === String(form.unit_public_id)) ?? null
 })
 
 const selectedActivity = computed(() => {
-    return activities.value.find((activity) => String(activity.id) === String(form.activity_id)) ?? null
+    return activities.value.find((activity) => String(activity.public_id) === String(form.activity_public_id)) ?? null
 })
 
 const selectedSlot = computed(() => {
@@ -155,7 +155,7 @@ const branchStatusText = computed(() => {
         return props.translations.states.no_branches_text
     }
 
-    if (form.branch_id && !loadingUnits.value && units.value.length === 0) {
+    if (form.branch_public_id && !loadingUnits.value && units.value.length === 0) {
         return props.translations.states.no_units_text
     }
 
@@ -163,7 +163,7 @@ const branchStatusText = computed(() => {
 })
 
 const serviceStatusText = computed(() => {
-    if (form.unit_id && !loadingActivities.value && activities.value.length === 0) {
+    if (form.unit_public_id && !loadingActivities.value && activities.value.length === 0) {
         return props.translations.states.no_activities_text
     }
 
@@ -171,7 +171,7 @@ const serviceStatusText = computed(() => {
 })
 
 const scheduleStatusText = computed(() => {
-    if (selectedDate.value && form.activity_id && !loadingSlots.value && slotMeta.value.is_empty) {
+    if (selectedDate.value && form.activity_public_id && !loadingSlots.value && slotMeta.value.is_empty) {
         return props.translations.states.no_slots_text
     }
 

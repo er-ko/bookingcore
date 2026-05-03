@@ -22,9 +22,10 @@ final class SlotOptionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => ['bail', 'required', 'integer', 'exists:branches,id'],
-            'unit_id' => ['bail', 'required', 'integer', 'exists:units,id'],
-            'activity_id' => ['bail', 'required', 'integer', 'exists:activities,id'],
+            'slug' => ['bail', 'required', 'string', 'exists:user_identity_settings,slug'],
+            'branch_public_id' => ['bail', 'required', 'string', 'exists:branches,public_id'],
+            'unit_public_id' => ['bail', 'required', 'string', 'exists:units,public_id'],
+            'activity_public_id' => ['bail', 'required', 'string', 'exists:activities,public_id'],
             'date' => ['bail', 'required', 'date_format:Y-m-d'],
         ];
     }
@@ -37,45 +38,50 @@ final class SlotOptionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'branch_id.required' => __('booking.validation.branch_required'),
-            'branch_id.integer' => __('booking.validation.branch_invalid'),
-            'branch_id.exists' => __('booking.validation.branch_not_found'),
+            'branch_public_id.required' => __('booking.validation.branch_required'),
+            'branch_public_id.string' => __('booking.validation.branch_invalid'),
+            'branch_public_id.exists' => __('booking.validation.branch_not_found'),
 
-            'unit_id.required' => __('booking.validation.unit_required'),
-            'unit_id.integer' => __('booking.validation.unit_invalid'),
-            'unit_id.exists' => __('booking.validation.unit_not_found'),
+            'unit_public_id.required' => __('booking.validation.unit_required'),
+            'unit_public_id.string' => __('booking.validation.unit_invalid'),
+            'unit_public_id.exists' => __('booking.validation.unit_not_found'),
 
-            'activity_id.required' => __('booking.validation.activity_required'),
-            'activity_id.integer' => __('booking.validation.activity_invalid'),
-            'activity_id.exists' => __('booking.validation.activity_not_found'),
+            'activity_public_id.required' => __('booking.validation.activity_required'),
+            'activity_public_id.string' => __('booking.validation.activity_invalid'),
+            'activity_public_id.exists' => __('booking.validation.activity_not_found'),
 
             'date.required' => __('booking.validation.date_required'),
             'date.date_format' => __('booking.validation.date_invalid'),
         ];
     }
 
+    public function slug(): string
+    {
+        return (string) $this->validated('slug');
+    }
+
     /**
      * Get the validated branch identifier.
      */
-    public function branchId(): int
+    public function branchPublicId(): string
     {
-        return (int) $this->validated('branch_id');
+        return (string) $this->validated('branch_public_id');
     }
 
     /**
      * Get the validated unit identifier.
      */
-    public function unitId(): int
+    public function unitPublicId(): string
     {
-        return (int) $this->validated('unit_id');
+        return (string) $this->validated('unit_public_id');
     }
 
     /**
      * Get the validated activity identifier.
      */
-    public function activityId(): int
+    public function activityPublicId(): string
     {
-        return (int) $this->validated('activity_id');
+        return (string) $this->validated('activity_public_id');
     }
 
     /**

@@ -124,9 +124,9 @@ defineProps({
                         </label>
 
                         <select
-                            v-model="form.branch_id"
-                            :class="inputClass('branch_id')"
-                            @change="clearFieldError('branch_id')"
+                            v-model="form.branch_public_id"
+                            :class="inputClass('branch_public_id')"
+                            @change="clearFieldError('branch_public_id')"
                         >
                             <option value="">
                                 {{ translations.form.branch_placeholder }}
@@ -134,18 +134,18 @@ defineProps({
 
                             <option
                                 v-for="branch in branches"
-                                :key="branch.id"
-                                :value="branch.id"
+                                :key="branch.public_id"
+                                :value="branch.public_id"
                             >
                                 {{ branch.name }}
                             </option>
                         </select>
 
                         <p
-                            v-if="form.errors.branch_id"
+                            v-if="form.errors.branch_public_id"
                             class="text-sm text-red-600 dark:text-red-400"
                         >
-                            {{ form.errors.branch_id }}
+                            {{ form.errors.branch_public_id }}
                         </p>
                     </div>
 
@@ -155,10 +155,10 @@ defineProps({
                         </label>
 
                         <select
-                            v-model="form.unit_id"
-                            :disabled="loadingUnits || !form.branch_id"
-                            :class="inputClass('unit_id')"
-                            @change="clearFieldError('unit_id')"
+                            v-model="form.unit_public_id"
+                            :disabled="loadingUnits || !form.branch_public_id"
+                            :class="inputClass('unit_public_id')"
+                            @change="clearFieldError('unit_public_id')"
                         >
                             <option value="">
                                 {{ translations.form.unit_placeholder }}
@@ -166,18 +166,18 @@ defineProps({
 
                             <option
                                 v-for="unit in units"
-                                :key="unit.id"
-                                :value="unit.id"
+                                :key="unit.public_id"
+                                :value="unit.public_id"
                             >
                                 {{ unit.name }}
                             </option>
                         </select>
 
                         <p
-                            v-if="form.errors.unit_id"
+                            v-if="form.errors.unit_public_id"
                             class="text-sm text-red-600 dark:text-red-400"
                         >
-                            {{ form.errors.unit_id }}
+                            {{ form.errors.unit_public_id }}
                         </p>
                     </div>
 
@@ -187,10 +187,10 @@ defineProps({
                         </label>
 
                         <select
-                            v-model="form.activity_id"
-                            :disabled="loadingActivities || !form.unit_id"
-                            :class="inputClass('activity_id')"
-                            @change="clearFieldError('activity_id')"
+                            v-model="form.activity_public_id"
+                            :disabled="loadingActivities || !form.unit_public_id"
+                            :class="inputClass('activity_public_id')"
+                            @change="clearFieldError('activity_public_id')"
                         >
                             <option value="">
                                 {{ translations.form.activity_placeholder }}
@@ -198,18 +198,18 @@ defineProps({
 
                             <option
                                 v-for="activity in activities"
-                                :key="activity.id"
-                                :value="activity.id"
+                                :key="activity.public_id"
+                                :value="activity.public_id"
                             >
                                 {{ activity.name }}
                             </option>
                         </select>
 
                         <p
-                            v-if="form.errors.activity_id"
+                            v-if="form.errors.activity_public_id"
                             class="text-sm text-red-600 dark:text-red-400"
                         >
-                            {{ form.errors.activity_id }}
+                            {{ form.errors.activity_public_id }}
                         </p>
                     </div>
 
@@ -234,7 +234,7 @@ defineProps({
 
                     <select
                         v-model="form.starts_at"
-                        :disabled="loadingSlots || !selectedDate || !form.activity_id"
+                        :disabled="loadingSlots || !selectedDate || !form.activity_public_id"
                         :class="inputClass('starts_at')"
                         @change="clearFieldError('starts_at')"
                     >

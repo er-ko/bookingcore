@@ -1,5 +1,6 @@
 <script setup>
 import AuthLayout from '@/Layouts/AuthLayout.vue'
+import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 
 defineProps({
     translations: {
@@ -18,8 +19,7 @@ defineProps({
     >
         <div class="space-y-6">
             <div class="mx-auto grid max-w-3xl gap-4 lg:grid-cols-[1.08fr_0.92fr]">
-                <a
-                    :href="route('connect.google.redirect')"
+                <div
                     class="group relative overflow-hidden rounded-[1.9rem] border border-black/12 bg-white/85 p-6 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-black/25 hover:shadow-[0_18px_40px_-22px_rgba(0,0,0,0.35)] dark:border-white/12 dark:bg-white/[0.04] dark:hover:border-white/22 dark:hover:shadow-[0_18px_40px_-22px_rgba(255,255,255,0.12)] sm:p-7"
                 >
                     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/15 to-transparent dark:via-white/15" />
@@ -37,8 +37,10 @@ defineProps({
                                     </svg>
                                 </div>
 
-                                <div class="rounded-full border border-black/8 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/42 dark:border-white/10 dark:text-white/42">
-                                    {{ translations.provider.google_badge }}
+                                <div class="flex items-center gap-1.75 rounded-full border border-black/8 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.15em] text-black/42 dark:border-white/10 dark:text-white/42">
+                                    <span>{{ translations.provider.google_badge }}</span>
+                                    <span>/</span>
+                                    <span class="text-[9px] tracking-[0.075em] text-black/70 dark:text-white/70">{{ translations.provider.protocol }}</span>
                                 </div>
                             </div>
 
@@ -54,22 +56,26 @@ defineProps({
                         </div>
 
                         <div class="flex items-center justify-between gap-3">
-                            <div class="text-xs uppercase tracking-[0.18em] text-black/36 dark:text-white/36">
-                                {{ translations.provider.protocol }}
-                            </div>
+                            <LocaleSwitcher />
 
-                            <div class="inline-flex items-center gap-2 text-sm font-medium text-black/70 transition-all duration-150 group-hover:gap-3 group-hover:text-black dark:text-white/70 dark:group-hover:text-white">
+                            <a
+                                :href="route('connect.google.redirect')"
+                                class="inline-flex items-center gap-2 text-sm font-medium text-black/70 transition-all duration-150 group-hover:gap-3 group-hover:text-black dark:text-white/70 dark:group-hover:text-white"
+                            >
                                 <span>{{ translations.provider.action }}</span>
                                 <span aria-hidden="true">→</span>
-                            </div>
+                            </a>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <div class="rounded-[1.9rem] border border-black/10 bg-black/[0.03] p-6 dark:border-white/10 dark:bg-white/[0.03] sm:p-7">
                     <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                        {{ translations.flow.title }}
+                        {{ translations.flow.title }} [{{ translations.provider.protocol }}]
                     </div>
+                    <!-- <div class="text-xs uppercase tracking-[0.18em] text-black/36 dark:text-white/36">
+                        {{ translations.provider.protocol }}
+                    </div> -->
 
                     <div class="mt-5 space-y-3">
                         <div class="rounded-[1.35rem] border border-black/8 bg-white/70 px-4 py-3.5 text-sm text-black/68 dark:border-white/8 dark:bg-white/[0.03] dark:text-white/68">

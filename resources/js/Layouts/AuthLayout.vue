@@ -65,7 +65,7 @@ const oauthNotice = computed(() => authTranslations.value.oauth_notice ?? 'Secur
                 </p>
             </div>
 
-            <div class="mx-auto mt-10 max-w-4xl rounded-[2rem] border border-black/10 bg-black/[0.025] p-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.03] sm:p-8 md:p-9">
+            <div class="mx-auto mt-10 max-w-4xl rounded-[2rem] border border-black/10 bg-black/[0.025] py-4 sm:py-6 px-4 sm:px-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.03] sm:p-8 md:p-9">
                 <slot />
             </div>
 

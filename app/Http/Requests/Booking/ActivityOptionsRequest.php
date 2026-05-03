@@ -22,7 +22,8 @@ final class ActivityOptionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'unit_id' => ['bail', 'required', 'integer', 'exists:units,id'],
+            'slug' => ['bail', 'required', 'string', 'exists:user_identity_settings,slug'],
+            'unit_public_id' => ['bail', 'required', 'string', 'exists:units,public_id'],
         ];
     }
 
@@ -34,17 +35,22 @@ final class ActivityOptionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'unit_id.required' => __('booking.validation.unit_required'),
-            'unit_id.integer' => __('booking.validation.unit_invalid'),
-            'unit_id.exists' => __('booking.validation.unit_not_found'),
+            'unit_public_id.required' => __('booking.validation.unit_required'),
+            'unit_public_id.string' => __('booking.validation.unit_invalid'),
+            'unit_public_id.exists' => __('booking.validation.unit_not_found'),
         ];
+    }
+
+    public function slug(): string
+    {
+        return (string) $this->validated('slug');
     }
 
     /**
      * Get the validated unit identifier.
      */
-    public function unitId(): int
+    public function unitPublicId(): string
     {
-        return (int) $this->validated('unit_id');
+        return (string) $this->validated('unit_public_id');
     }
 }

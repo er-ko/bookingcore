@@ -1,7 +1,6 @@
 <script setup>
 import { computed, inject, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
-import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 import { useTheme } from '@/Composables/useTheme'
 
 const route = inject('route')
@@ -415,8 +414,6 @@ const navigationGroups = computed(() => [
                 </div>
 
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <LocaleSwitcher />
-
                     <button
                         type="button"
                         :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
@@ -517,7 +514,7 @@ const navigationGroups = computed(() => [
 
             <div
                 v-if="mobileMenuOpen"
-                class="border-t border-black/10 px-4 py-4 dark:border-white/10 lg:hidden"
+                class="min-h-full border-t border-black/10 px-4 py-4 dark:border-white/10 lg:hidden overflow-y-auto"
             >
                 <div class="flex flex-col gap-4">
                     <template v-if="hasCompletedOnboarding">

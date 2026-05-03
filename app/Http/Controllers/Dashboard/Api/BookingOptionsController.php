@@ -22,7 +22,8 @@ final class BookingOptionsController extends Controller
     ): JsonResponse {
         return response()->json([
             'data' => $query->getList(
-                branchId: $request->branchId(),
+                slug: $request->slug(),
+                branchPublicId: $request->branchPublicId(),
             ),
         ], 200);
     }
@@ -36,7 +37,8 @@ final class BookingOptionsController extends Controller
     ): JsonResponse {
         return response()->json([
             'data' => $query->getList(
-                unitId: $request->unitId(),
+                slug: $request->slug(),
+                unitPublicId: $request->unitPublicId(),
             ),
         ], 200);
     }
@@ -50,9 +52,10 @@ final class BookingOptionsController extends Controller
     ): JsonResponse {
         return response()->json([
             'data' => $query->getList(
-                branchId: $request->branchId(),
-                unitId: $request->unitId(),
-                activityId: $request->activityId(),
+                slug: $request->slug(),
+                branchPublicId: $request->branchPublicId(),
+                unitPublicId: $request->unitPublicId(),
+                activityPublicId: $request->activityPublicId(),
                 date: $request->availabilityDate(),
             ),
         ], 200);

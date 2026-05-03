@@ -42,6 +42,7 @@ final class HomeTranslations
     private static function hero(): array
     {
         return [
+            'appName' => config('app.name'),
             'badge' => __('home.hero.badge'),
 
             'title' => [

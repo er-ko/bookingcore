@@ -22,7 +22,8 @@ final class UnitOptionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => ['bail', 'required', 'integer', 'exists:branches,id'],
+            'slug' => ['bail', 'required', 'string', 'exists:user_identity_settings,slug'],
+            'branch_public_id' => ['bail', 'required', 'string', 'exists:branches,public_id'],
         ];
     }
 
@@ -34,17 +35,22 @@ final class UnitOptionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'branch_id.required' => __('booking.validation.branch_required'),
-            'branch_id.integer' => __('booking.validation.branch_invalid'),
-            'branch_id.exists' => __('booking.validation.branch_not_found'),
+            'branch_public_id.required' => __('booking.validation.branch_required'),
+            'branch_public_id.string' => __('booking.validation.branch_invalid'),
+            'branch_public_id.exists' => __('booking.validation.branch_not_found'),
         ];
+    }
+
+    public function slug(): string
+    {
+        return (string) $this->validated('slug');
     }
 
     /**
      * Get the validated branch identifier.
      */
-    public function branchId(): int
+    public function branchPublicId(): string
     {
-        return (int) $this->validated('branch_id');
+        return (string) $this->validated('branch_public_id');
     }
 }

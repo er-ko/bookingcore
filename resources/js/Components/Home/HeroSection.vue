@@ -30,7 +30,7 @@ const copyrightTag = computed(() =>
                 href="/"
                 class="text-xs font-medium uppercase tracking-[0.3em] text-black/75 transition hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
             >
-                BookingCore
+                {{ translations.appName }}
             </Link>
             <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20 hidden sm:block" />
             <div class="rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-black/55 backdrop-blur-sm dark:border-white/10 dark:bg-white/4 dark:text-white/55">

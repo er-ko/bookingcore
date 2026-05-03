@@ -102,8 +102,6 @@ Route::middleware('auth')->group(function () {
             ->name('dashboard.')
             ->group(function () {
                 Route::get('/', [DashboardPageController::class, 'index'])->name('index');
-                Route::get('/create', [DashboardPageController::class, 'create'])->name('create');
-                Route::post('/create', CreateBookingController::class)->name('store');
                 Route::post('/{booking}/cancel', CancelBookingController::class)->name('cancel');
                 Route::patch('/{booking}/status', UpdateBookingStatusController::class)->name('status');
             });

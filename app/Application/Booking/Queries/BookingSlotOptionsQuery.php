@@ -5,6 +5,10 @@ namespace App\Application\Booking\Queries;
 use App\Application\Booking\DTO\AvailabilityQuery;
 use App\Domain\Booking\Services\AvailabilityService;
 use App\Domain\Booking\Support\TimeRange;
+use App\Models\Activity;
+use App\Models\Branch;
+use App\Models\Unit;
+use App\Models\Identity\UserIdentitySettings;
 
 /**
  * Query object responsible for retrieving available slot options
@@ -30,15 +34,41 @@ final class BookingSlotOptionsQuery
      * }
      */
     public function getList(
-        int $branchId,
-        int $unitId,
-        int $activityId,
+        string $slug,
+        string $branchPublicId,
+        string $unitPublicId,
+        string $activityPublicId,
         string $date,
     ): array {
+        $identity = UserIdentitySettings::query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $userId = $identity->user_id;
+
+        $branch = Branch::query()
+            ->where('user_id', $userId)
+            ->where('public_id', $branchPublicId)
+            ->firstOrFail();
+
+        $unit = Unit::query()
+            ->where('user_id', $userId)
+            ->where('public_id', $unitPublicId)
+            ->where('branch_id', $branch->id)
+            ->firstOrFail();
+
+        $activity = Activity::query()
+            ->where('user_id', $userId)
+            ->where('public_id', $activityPublicId)
+            ->whereHas('units', function ($query) use ($unit) {
+                $query->where('units.id', $unit->id);
+            })
+            ->firstOrFail();
+
         $query = AvailabilityQuery::from(
-            branchId: $branchId,
-            unitId: $unitId,
-            activityId: $activityId,
+            branchId: $branch->id,
+            unitId: $unit->id,
+            activityId: $activity->id,
             date: $date,
         );
 

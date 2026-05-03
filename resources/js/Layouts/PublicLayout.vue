@@ -9,6 +9,8 @@ const { isDark, toggleTheme } = useTheme()
 const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
 const publicTranslations = computed(() => layoutTranslations.value.public ?? {})
 const accessibilityTranslations = computed(() => layoutTranslations.value.accessibility ?? {})
+
+const isHomePage = computed(() => page.url === '/')
 </script>
 
 <template>
@@ -38,6 +40,13 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
                         <span>{{ publicTranslations.mit_licensed ?? 'MIT licensed' }}</span>
                         <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                         <Link
+                            href="/connect"
+                            class="transition hover:text-black dark:hover:text-white"
+                        >
+                            {{ publicTranslations.connect ?? 'Connect' }}
+                        </Link>
+                        <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                        <Link
                             href="/privacy-policy"
                             class="transition hover:text-black dark:hover:text-white"
                         >
@@ -52,7 +61,12 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
                         </Link>
                     </div>
 
-                    <div class="flex items-center justify-between gap-3 sm:justify-end">
+                    <div
+                        :class="[
+                            'flex items-center gap-3 sm:justify-end',
+                            isHomePage ? 'justify-between' : 'justify-end',
+                        ]"
+                    >
                         <div class="flex items-center justify-end gap-3">
                             <div class="text-black/35 dark:text-white/35">
                                 {{ publicTranslations.theme ?? 'Theme' }}
@@ -104,7 +118,7 @@ const accessibilityTranslations = computed(() => layoutTranslations.value.access
                             </button>
                         </div>
 
-                        <LocaleSwitcher />
+                        <LocaleSwitcher v-if="isHomePage" />
                     </div>
                 </div>
             </div>

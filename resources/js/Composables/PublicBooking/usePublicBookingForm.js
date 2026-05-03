@@ -52,9 +52,9 @@ export function usePublicBookingForm(options = {}) {
     const hasValue = (value) => String(value ?? '').trim() !== ''
 
     const form = useForm({
-        branch_id: '',
-        unit_id: '',
-        activity_id: '',
+        branch_public_id: '',
+        unit_public_id: '',
+        activity_public_id: '',
         starts_at: '',
         customer: {
             first_name: '',
@@ -68,9 +68,9 @@ export function usePublicBookingForm(options = {}) {
 
     const selectionCount = computed(() => {
         return [
-            form.branch_id,
-            form.unit_id,
-            form.activity_id,
+            form.branch_public_id,
+            form.unit_public_id,
+            form.activity_public_id,
             form.starts_at,
         ].filter(hasValue).length
     })
@@ -113,12 +113,12 @@ export function usePublicBookingForm(options = {}) {
 
     function resetUnits() {
         units.value = []
-        form.unit_id = ''
+        form.unit_public_id = ''
     }
 
     function resetActivities() {
         activities.value = []
-        form.activity_id = ''
+        form.activity_public_id = ''
     }
 
     function resetSlots() {
@@ -138,7 +138,7 @@ export function usePublicBookingForm(options = {}) {
         return response.json()
     }
 
-    async function loadUnits(branchId) {
+    async function loadUnits(branchPublicId) {
         const requestId = ++unitsRequestId.value
 
         resetUnits()
@@ -146,7 +146,7 @@ export function usePublicBookingForm(options = {}) {
         resetSlots()
         selectedDate.value = ''
 
-        if (!branchId) {
+        if (!branchPublicId) {
             return
         }
 
@@ -154,7 +154,7 @@ export function usePublicBookingForm(options = {}) {
 
         try {
             const payload = await fetchJson(
-                `${route('api.booking-options.units')}?branch_id=${encodeURIComponent(branchId)}`
+                `${route('api.booking-options.units')}?slug=${encodeURIComponent(slug)}&branch_public_id=${encodeURIComponent(branchPublicId)}`
             )
 
             if (requestId !== unitsRequestId.value) {
@@ -176,14 +176,14 @@ export function usePublicBookingForm(options = {}) {
         }
     }
 
-    async function loadActivities(unitId) {
+    async function loadActivities(unitPublicId) {
         const requestId = ++activitiesRequestId.value
 
         resetActivities()
         resetSlots()
         selectedDate.value = ''
 
-        if (!unitId) {
+        if (!unitPublicId) {
             return
         }
 
@@ -191,7 +191,7 @@ export function usePublicBookingForm(options = {}) {
 
         try {
             const payload = await fetchJson(
-                `${route('api.booking-options.activities')}?unit_id=${encodeURIComponent(unitId)}`
+                `${route('api.booking-options.activities')}?slug=${encodeURIComponent(slug)}&unit_public_id=${encodeURIComponent(unitPublicId)}`
             )
 
             if (requestId !== activitiesRequestId.value) {
@@ -218,7 +218,7 @@ export function usePublicBookingForm(options = {}) {
 
         resetSlots()
 
-        if (!form.branch_id || !form.unit_id || !form.activity_id || !selectedDate.value) {
+        if (!form.branch_public_id || !form.unit_public_id || !form.activity_public_id || !selectedDate.value) {
             return
         }
 
@@ -226,9 +226,10 @@ export function usePublicBookingForm(options = {}) {
 
         try {
             const query = new URLSearchParams({
-                branch_id: String(form.branch_id),
-                unit_id: String(form.unit_id),
-                activity_id: String(form.activity_id),
+                slug: String(slug),
+                branch_public_id: String(form.branch_public_id),
+                unit_public_id: String(form.unit_public_id),
+                activity_public_id: String(form.activity_public_id),
                 date: selectedDate.value,
             })
 
@@ -258,21 +259,21 @@ export function usePublicBookingForm(options = {}) {
     }
 
     watch(
-        () => form.branch_id,
-        async (branchId) => {
-            await loadUnits(branchId)
+        () => form.branch_public_id,
+        async (branchPublicId) => {
+            await loadUnits(branchPublicId)
         }
     )
 
     watch(
-        () => form.unit_id,
-        async (unitId) => {
-            await loadActivities(unitId)
+        () => form.unit_public_id,
+        async (unitPublicId) => {
+            await loadActivities(unitPublicId)
         }
     )
 
     watch(
-        [() => form.activity_id, selectedDate],
+        [() => form.activity_public_id, selectedDate],
         async () => {
             await loadSlots()
         }

@@ -15,11 +15,19 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    identity: {
+        type: Object,
+        required: true,
+    },
 })
 
 const items = computed(() => props.bookings?.data ?? [])
 const links = computed(() => props.bookings?.links ?? [])
 const hasPagination = computed(() => links.value.length > 3)
+
+const publicBookingUrl = computed(() => {
+    return route('public-booking.show', { slug: props.identity.slug })
+})
 </script>
 
 <template>
@@ -40,12 +48,14 @@ const hasPagination = computed(() => links.value.length > 3)
                     </div>
 
                     <div>
-                        <Link
-                            :href="route('dashboard.create')"
+                        <a
+                            :href="publicBookingUrl"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             class="inline-flex items-center rounded-full border border-dashed border-black/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-black/75 transition hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/75 dark:hover:border-white/45 dark:hover:text-white"
                         >
                             {{ translations.create_booking }}
-                        </Link>
+                        </a>
                     </div>
                 </div>
 
@@ -63,12 +73,14 @@ const hasPagination = computed(() => links.value.length > 3)
                         </p>
 
                         <div class="mt-8">
-                            <Link
-                                :href="route('dashboard.create')"
+                            <a
+                                :href="publicBookingUrl"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 class="inline-flex items-center rounded-full border border-dashed border-black/20 px-5 py-2.5 text-sm font-medium text-black/75 transition hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/75 dark:hover:border-white/45 dark:hover:text-white"
                             >
                                 {{ translations.create_first_booking }}
-                            </Link>
+                            </a>
                         </div>
                     </div>
 

@@ -33,6 +33,7 @@ final class LayoutTranslations
                 'public_code' => __('layout.public.public_code'),
                 'mit_licensed' => __('layout.public.mit_licensed'),
                 'theme' => __('layout.public.theme'),
+                'connect' => __('connect.view.provider.action'),
             ],
             'auth' => [
                 'default_title' => __('layout.auth.default_title'),
