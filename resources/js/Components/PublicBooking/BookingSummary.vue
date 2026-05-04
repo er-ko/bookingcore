@@ -73,23 +73,33 @@ defineProps({
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-x-4 gap-y-3 border-b border-black/8 pb-3 dark:border-white/10">
-                    <div>
-                        <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                            {{ translations.content.unit_label }}
-                        </p>
-                        <p class="mt-1 text-sm font-medium text-black dark:text-white">
+                <div class="flex items-start justify-between gap-4 border-b border-black/8 pb-3 dark:border-white/10">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                        {{ translations.content.unit_label }}
+                    </p>
+
+                    <div class="max-w-[72%] text-right">
+                        <p class="text-sm font-medium text-black dark:text-white">
                             {{ compactSummary.unit_name || translations.content.summary_empty_selection }}
                         </p>
                     </div>
+                </div>
 
-                    <div>
-                        <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                            {{ translations.content.activity_label }}
-                        </p>
-                        <p class="mt-1 text-sm font-medium text-black dark:text-white">
+                <div class="flex items-start justify-between gap-4 border-b border-black/8 pb-3 dark:border-white/10">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                        {{ translations.content.activity_label }}
+                    </p>
+
+                    <div class="max-w-[72%] flex flex-col items-end justify-center gap-1">
+                        <p class="text-sm font-medium text-black dark:text-white">
                             {{ compactSummary.activity_name || translations.content.summary_empty_selection }}
                         </p>
+                        <div
+                            v-if="compactSummary.activity_price"
+                            class="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
+                        >
+                            {{ compactSummary.activity_price }}
+                        </div>
                     </div>
                 </div>
 
@@ -121,24 +131,24 @@ defineProps({
                     </p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-x-4 gap-y-3">
-                    <div>
-                        <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                            {{ translations.content.email_label }}
-                        </p>
-                        <p class="mt-1 break-all text-sm text-black/55 dark:text-white/55">
-                            {{ compactSummary.customer_email || translations.content.summary_empty_customer }}
-                        </p>
-                    </div>
+                <div class="flex items-start justify-between gap-4 border-b border-black/8 pb-3 dark:border-white/10">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                        {{ translations.content.email_label }}
+                    </p>
 
-                    <div>
-                        <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                            {{ translations.content.phone_label }}
-                        </p>
-                        <p class="mt-1 text-sm text-black/55 dark:text-white/55">
-                            {{ compactSummary.customer_phone || translations.content.summary_empty_customer }}
-                        </p>
-                    </div>
+                    <p class="max-w-[72%] text-right text-sm font-medium text-black dark:text-white">
+                        {{ compactSummary.customer_email || translations.content.summary_empty_customer }}
+                    </p>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                        {{ translations.content.phone_label }}
+                    </p>
+
+                    <p class="max-w-[72%] text-right text-sm font-medium text-black dark:text-white">
+                        {{ compactSummary.customer_phone || translations.content.summary_empty_customer }}
+                    </p>
                 </div>
 
                 <div v-if="compactSummary.note" class="border-t border-black/8 pt-3 dark:border-white/10">

@@ -79,6 +79,20 @@ defineProps({
         required: true,
     },
 })
+
+const formatActivityOption = (activity) => {
+    const name = activity?.name ?? ''
+    const rawPrice = activity?.price
+    const currency = activity?.currency_code ?? ''
+
+    if (rawPrice === null || rawPrice === undefined || rawPrice === '') {
+        return name
+    }
+
+    const price = Number(rawPrice).toFixed(2)
+
+    return `${name} — ${price} ${currency}`.trim()
+}
 </script>
 
 <template>
@@ -201,7 +215,7 @@ defineProps({
                                 :key="activity.public_id"
                                 :value="activity.public_id"
                             >
-                                {{ activity.name }}
+                                {{ formatActivityOption(activity) }}
                             </option>
                         </select>
 

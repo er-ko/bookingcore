@@ -17,9 +17,11 @@ final class LogoutControllerTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withSession(['locale' => 'cs-CZ'])
             ->post(route('logout'));
 
         $response->assertRedirect(route('home'));
+        $response->assertSessionHas('locale', 'cs-CZ');
 
         $this->assertGuest();
     }

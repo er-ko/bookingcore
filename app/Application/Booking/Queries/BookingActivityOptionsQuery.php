@@ -4,19 +4,16 @@ namespace App\Application\Booking\Queries;
 
 use App\Models\Activity;
 use App\Models\Identity\UserIdentitySettings;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * Query object responsible for retrieving active activity options
- * available for the selected unit in the booking form.
- */
 final class BookingActivityOptionsQuery
 {
     /**
      * Retrieve active activities priced for the selected unit.
      *
-     * @return Collection<string, Activity>
+     * @return Collection<int, Activity>
      */
     public function getList(
         string $slug,
@@ -28,14 +25,31 @@ final class BookingActivityOptionsQuery
 
         $userId = $identity->user_id;
 
-        return Activity::query()
-            ->active()
+        $unit = Unit::query()
             ->where('user_id', $userId)
-            ->whereHas('units', function (Builder $query) use ($unitPublicId, $userId) {
-                $query->where('units.public_id', $unitPublicId)
+            ->where('public_id', $unitPublicId)
+            ->firstOrFail();
+
+        return Activity::query()
+            ->select([
+                'activities.id',
+                'activities.public_id',
+                'activities.name',
+                'activities.duration_minutes',
+                'prices.price',
+            ])
+            ->selectRaw('? as currency_code', [$identity->default_currency_code])
+            ->join('prices', function ($join) use ($unit) {
+                $join->on('prices.activity_id', '=', 'activities.id')
+                    ->where('prices.unit_id', '=', $unit->id);
+            })
+            ->active()
+            ->where('activities.user_id', $userId)
+            ->whereHas('units', function (Builder $query) use ($unit, $userId) {
+                $query->where('units.id', $unit->id)
                     ->where('units.user_id', $userId);
             })
-            ->orderBy('name')
-            ->get(['activities.id', 'activities.public_id', 'activities.name', 'activities.duration_minutes']);
+            ->orderBy('activities.name')
+            ->get();
     }
 }

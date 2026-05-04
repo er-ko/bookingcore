@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Schema;
 
 beforeEach(function (): void {
     Schema::dropIfExists('user_identity_settings');
+    Schema::dropIfExists('integration_calendar_settings');
+    Schema::dropIfExists('integrations');
     Schema::dropIfExists('users');
     Schema::dropIfExists('languages');
 
@@ -50,6 +52,31 @@ beforeEach(function (): void {
         $table->char('default_currency_code', 3)->nullable();
         $table->char('default_country_code', 2)->nullable();
         $table->boolean('is_public')->default(true);
+        $table->timestamps();
+    });
+
+    Schema::create('integrations', function (Blueprint $table): void {
+        $table->id();
+        $table->foreignId('user_id');
+        $table->string('type');
+        $table->string('provider');
+        $table->string('provider_account_id')->nullable();
+        $table->string('email')->nullable();
+        $table->string('name')->nullable();
+        $table->text('access_token')->nullable();
+        $table->text('refresh_token')->nullable();
+        $table->timestamp('token_expires_at')->nullable();
+        $table->json('scopes')->nullable();
+        $table->json('meta')->nullable();
+        $table->boolean('is_active')->default(true);
+        $table->boolean('is_primary')->default(false);
+        $table->timestamps();
+    });
+
+    Schema::create('integration_calendar_settings', function (Blueprint $table): void {
+        $table->id();
+        $table->foreignId('integration_id');
+        $table->string('selected_calendar_id', 191)->nullable();
         $table->timestamps();
     });
 
@@ -144,7 +171,7 @@ it('seeds public booking pages from the owner default language when no session l
         ->assertSessionHas('locale', 'es');
 });
 
-it('uses the existing session locale before any page-specific seed', function (): void {
+it('uses the public booking owner default language before the existing session locale', function (): void {
     $user = User::factory()->create();
 
     UserIdentitySettings::query()->create([
@@ -162,8 +189,30 @@ it('uses the existing session locale before any page-specific seed', function ()
         ->withHeader('Accept-Language', 'es-ES,es;q=0.9')
         ->get('/locale-test/@session-wins')
         ->assertOk()
-        ->assertSeeText('en')
-        ->assertSessionHas('locale', 'en');
+        ->assertSeeText('es')
+        ->assertSessionHas('locale', 'es');
+});
+
+it('uses the authenticated administration default language before the existing session locale', function (): void {
+    $user = User::factory()->create();
+
+    UserIdentitySettings::query()->create([
+        'user_id' => $user->id,
+        'brand_name' => 'Casa Reserva',
+        'slug' => 'admin-language',
+        'default_language_code' => 'es',
+        'default_currency_code' => 'EUR',
+        'default_country_code' => 'ES',
+        'is_public' => true,
+    ]);
+
+    $this
+        ->actingAs($user)
+        ->withSession(['locale' => 'en'])
+        ->get('/locale-test/home')
+        ->assertOk()
+        ->assertSeeText('es')
+        ->assertSessionHas('locale', 'es');
 });
 
 it('updates the current session locale manually', function (): void {

@@ -4,6 +4,7 @@ namespace App\Support\Locale;
 
 use App\Models\Identity\UserIdentitySettings;
 use App\Models\Region\Language;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 final class LocaleResolver
@@ -18,9 +19,29 @@ final class LocaleResolver
      */
     public function seedLocaleFor(Request $request): string
     {
-        return $this->publicBookingLocale($request)
+        return $this->publicBookingLocaleFor($request)
             ?? $this->browserLocale($request)
             ?? $this->fallbackLocale();
+    }
+
+    /**
+     * Resolve the authenticated administration locale from identity settings.
+     */
+    public function authenticatedUserLocale(Request $request): ?string
+    {
+        if ($this->publicBookingLocaleFor($request) !== null) {
+            return null;
+        }
+
+        $user = $request->user();
+
+        if (! $user instanceof User) {
+            return null;
+        }
+
+        $user->loadMissing('identitySettings');
+
+        return $this->canonicalLocale($user->identitySettings?->default_language_code);
     }
 
     /**
@@ -68,7 +89,7 @@ final class LocaleResolver
     /**
      * Resolve the public booking owner locale from the current @slug route.
      */
-    private function publicBookingLocale(Request $request): ?string
+    public function publicBookingLocaleFor(Request $request): ?string
     {
         if (! $request->routeIs('public-booking.*')) {
             return null;

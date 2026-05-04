@@ -111,6 +111,17 @@ const selectedActivity = computed(() => {
     return activities.value.find((activity) => String(activity.public_id) === String(form.activity_public_id)) ?? null
 })
 
+const activityPrice = computed(() => {
+    const rawPrice = selectedActivity.value?.price
+    const currency = selectedActivity.value?.currency_code ?? ''
+
+    if (rawPrice === null || rawPrice === undefined || rawPrice === '') {
+        return null
+    }
+
+    return `${Number(rawPrice).toFixed(2)} ${currency}`.trim()
+})
+
 const selectedSlot = computed(() => {
     return slots.value.find((slot) => slotValue(slot) === form.starts_at) ?? null
 })
@@ -141,6 +152,7 @@ const compactSummary = computed(() => {
         branch_address: selectedBranch.value ? formatBranchLocation(selectedBranch.value) : null,
         unit_name: selectedUnit.value?.name ?? null,
         activity_name: selectedActivity.value?.name ?? null,
+        activity_price: activityPrice.value,
         date: selectedDate.value || null,
         time: selectedSlot.value?.label ?? form.starts_at ?? null,
         customer_name: customerFullName.value,

@@ -22,16 +22,23 @@ final readonly class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $this->locales->supportedOrFallback(
-            $request->session()->get('locale')
-        );
+        $locale = $this->locales->publicBookingLocaleFor($request)
+            ?? $this->locales->authenticatedUserLocale($request);
 
-        if (! $request->session()->has('locale')) {
-            $locale = $this->locales->seedLocaleFor($request);
+        if ($locale !== null) {
+            $request->session()->put('locale', $locale);
+        } else {
+            $locale = $this->locales->supportedOrFallback(
+                $request->session()->get('locale')
+            );
 
-            $request->session()->put('locale', $locale);
-        } elseif ($locale !== $request->session()->get('locale')) {
-            $request->session()->put('locale', $locale);
+            if (! $request->session()->has('locale')) {
+                $locale = $this->locales->seedLocaleFor($request);
+
+                $request->session()->put('locale', $locale);
+            } elseif ($locale !== $request->session()->get('locale')) {
+                $request->session()->put('locale', $locale);
+            }
         }
 
         app()->setLocale($locale);
