@@ -4,7 +4,6 @@ return [
     'messages' => [
         'failed' => 'Impossibile elaborare la richiesta di integrazione calendario.',
         'calendar_selected' => 'Calendario selezionato con successo.',
-        'settings_updated' => 'Impostazioni di sincronizzazione del calendario aggiornate con successo.',
         'invalid_calendar_id' => 'L’ID del calendario selezionato non è valido.',
         'integration_user_mismatch' => 'L’integrazione selezionata non appartiene all’utente autenticato.',
         'integration_not_calendar' => 'L’integrazione selezionata non è un’integrazione calendario.',
@@ -12,7 +11,6 @@ return [
         'missing_refresh_token' => 'L’integrazione calendario non contiene un token di aggiornamento.',
         'missing_access_token' => 'L’integrazione calendario non contiene un token di accesso.',
         'not_google_integration' => 'L’integrazione selezionata non è un’integrazione Google Calendar.',
-        'invalid_sync_mode' => 'La modalità di sincronizzazione selezionata non è valida.',
         'google_refresh_failed' => 'Impossibile aggiornare il token di accesso di Google Calendar.',
         'google_refresh_missing_access_token' => 'Impossibile aggiornare il token di accesso di Google Calendar perché la risposta non includeva un token di accesso.',
         'connection_error' => 'BookingCore non ha potuto verificare la connessione al calendario. Ricolleghi il suo account Google Calendar e riprovi.',
@@ -22,10 +20,6 @@ return [
         'calendar_id_required' => 'L’identificatore del calendario è obbligatorio.',
         'calendar_id_string' => 'L’identificatore del calendario deve essere un testo valido.',
         'calendar_id_max' => 'L’identificatore del calendario non può superare 255 caratteri.',
-
-        'sync_mode_required' => 'La modalità di sincronizzazione è obbligatoria.',
-        'sync_mode_string' => 'La modalità di sincronizzazione deve essere un testo valido.',
-        'sync_mode_in' => 'La modalità di sincronizzazione selezionata non è valida.',
     ],
 
     'view' => [
@@ -40,22 +34,13 @@ return [
             'timezone_title' => 'Fuso orario',
             'status_title' => 'Stato',
             'active_title' => 'Attivo',
-            'calendar_settings_title' => 'Impostazioni calendario',
             'available_calendars_title' => 'Calendari disponibili',
             'timezone_prefix' => 'Fuso orario:',
-        ],
-
-        'form' => [
-            'sync_mode_title' => 'Modalità di sincronizzazione',
-            'sync_mode_soft_title' => 'Flessibile',
-            'sync_mode_strict_title' => 'Rigida',
-            'sync_mode_help' => 'La modalità flessibile mantiene BookingCore operativo anche se la sincronizzazione del calendario non riesce. La modalità rigida è pensata per una maggiore coerenza.',
         ],
 
         'actions' => [
             'connect_google' => 'Connetti Google Calendar',
             'reconnect_google' => 'Riconnetti Google Calendar',
-            'save_settings' => 'Salva impostazioni',
             'select_calendar' => 'Seleziona calendario',
             'selected' => 'Selezionato',
         ],

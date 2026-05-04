@@ -12,6 +12,7 @@ use App\Infrastructure\Integration\Resolvers\CalendarProviderResolver;
 use App\Models\Booking\Booking;
 use App\Models\Integration\BookingCalendarEvent;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 final class CreateBookingCalendarEvent
 {
@@ -32,7 +33,7 @@ final class CreateBookingCalendarEvent
         $ownerUserId = $this->resolveOwnerUserId($booking);
 
         if (! $ownerUserId) {
-            return null;
+            throw new RuntimeException('Booking owner could not be resolved.');
         }
 
         $integration = $this->integrations->findPrimary(
@@ -42,7 +43,7 @@ final class CreateBookingCalendarEvent
         );
 
         if (! $this->bookingCalendarSyncPolicy->canSync($integration)) {
-            return null;
+            throw new RuntimeException('Google Calendar integration is required before creating bookings.');
         }
 
         $integration = ($this->ensureValidGoogleAccessTokenAction)($integration);
@@ -51,7 +52,7 @@ final class CreateBookingCalendarEvent
         $calendarId = $this->bookingCalendarSyncPolicy->selectedCalendarId($integration);
 
         if (! $calendarId) {
-            return null;
+            throw new RuntimeException('A Google Calendar must be selected before creating bookings.');
         }
 
         $existingMapping = $this->bookingCalendarEvents->findByBookingIntegrationAndCalendar(

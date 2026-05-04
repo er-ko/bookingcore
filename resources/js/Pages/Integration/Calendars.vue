@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 
@@ -23,10 +23,6 @@ const hasIntegration = computed(() => integration.value !== null)
 const hasConnectionError = computed(() => Boolean(connectionError.value))
 const selectedCalendarId = computed(() => integration.value?.calendar_settings?.selected_calendar_id ?? null)
 
-const settingsForm = reactive({
-    sync_mode: integration.value?.calendar_settings?.sync_mode ?? 'soft',
-})
-
 const fieldClass = [
     'block w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 text-sm select-none text-black transition-all duration-150 focus:border-black/30 focus:outline-none dark:border-white/10 dark:text-white dark:focus:border-white/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] dark:disabled:bg-white/[0.03]',
 ]
@@ -42,22 +38,6 @@ const selectCalendar = (calendarId) => {
         `/integrations/calendar/${integration.value.id}/select`,
         {
             calendar_id: calendarId,
-        },
-        {
-            preserveScroll: true,
-        }
-    )
-}
-
-const updateSettings = () => {
-    if (!integration.value?.id || hasConnectionError.value) {
-        return
-    }
-
-    router.patch(
-        `/integrations/calendar/${integration.value.id}/settings`,
-        {
-            sync_mode: settingsForm.sync_mode,
         },
         {
             preserveScroll: true,
@@ -207,43 +187,6 @@ const updateSettings = () => {
                                         >
                                             {{ translations.overview.active_title }}
                                         </span>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-black/10 pt-8 dark:border-white/10">
-                                    <h3 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
-                                        {{ translations.overview.calendar_settings_title }}
-                                    </h3>
-
-                                    <div class="mt-6 space-y-6">
-                                        <div class="space-y-2">
-                                            <label for="sync_mode" :class="labelClass">
-                                                {{ translations.form.sync_mode_title }}
-                                            </label>
-
-                                            <select
-                                                id="sync_mode"
-                                                v-model="settingsForm.sync_mode"
-                                                :class="fieldClass"
-                                            >
-                                                <option value="soft">{{ translations.form.sync_mode_soft_title }}</option>
-                                                <option value="strict">{{ translations.form.sync_mode_strict_title }}</option>
-                                            </select>
-
-                                            <p class="text-sm leading-6 text-black/45 dark:text-white/45">
-                                                {{ translations.form.sync_mode_help }}
-                                            </p>
-                                        </div>
-
-                                        <div class="pt-1">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center justify-center rounded-full border border-black/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-black/80 transition hover:cursor-pointer hover:border-black/45 hover:text-black dark:border-white/20 dark:text-white/80 dark:hover:border-white/45 dark:hover:text-white"
-                                                @click="updateSettings"
-                                            >
-                                                {{ translations.actions.save_settings }}
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

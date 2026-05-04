@@ -15,7 +15,6 @@ final class IntegrationCalendarSetting extends Model
     protected $fillable = [
         'integration_id',
         'selected_calendar_id',
-        'sync_mode',
     ];
 
     /**
@@ -24,21 +23,5 @@ final class IntegrationCalendarSetting extends Model
     public function integration(): BelongsTo
     {
         return $this->belongsTo(Integration::class);
-    }
-
-    /**
-     * Determine whether strict sync mode is enabled.
-     */
-    public function isStrictMode(): bool
-    {
-        return $this->sync_mode === 'strict';
-    }
-
-    /**
-     * Determine whether soft sync mode is enabled.
-     */
-    public function isSoftMode(): bool
-    {
-        return $this->sync_mode === 'soft';
     }
 }

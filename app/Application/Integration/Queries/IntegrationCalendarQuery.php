@@ -96,7 +96,6 @@ final class IntegrationCalendarQuery
             'meta' => $integration->meta,
             'calendar_settings' => $calendarSettings ? [
                 'selected_calendar_id' => $calendarSettings->selected_calendar_id,
-                'sync_mode' => $calendarSettings->sync_mode,
             ] : null,
         ];
     }

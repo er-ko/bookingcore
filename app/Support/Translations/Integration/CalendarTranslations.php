@@ -10,7 +10,6 @@ final class CalendarTranslations
             'title' => __('integration/calendar.view.title'),
             'description' => __('integration/calendar.view.description'),
             'overview' => self::overview(),
-            'form' => self::form(),
             'actions' => self::actions(),
             'states' => self::states(),
         ];
@@ -26,19 +25,8 @@ final class CalendarTranslations
             'timezone_title' => __('integration/calendar.view.overview.timezone_title'),
             'status_title' => __('integration/calendar.view.overview.status_title'),
             'active_title' => __('integration/calendar.view.overview.active_title'),
-            'calendar_settings_title' => __('integration/calendar.view.overview.calendar_settings_title'),
             'available_calendars_title' => __('integration/calendar.view.overview.available_calendars_title'),
             'timezone_prefix' => __('integration/calendar.view.overview.timezone_prefix'),
-        ];
-    }
-
-    private static function form(): array
-    {
-        return [
-            'sync_mode_title' => __('integration/calendar.view.form.sync_mode_title'),
-            'sync_mode_soft_title' => __('integration/calendar.view.form.sync_mode_soft_title'),
-            'sync_mode_strict_title' => __('integration/calendar.view.form.sync_mode_strict_title'),
-            'sync_mode_help' => __('integration/calendar.view.form.sync_mode_help'),
         ];
     }
 
@@ -47,7 +35,6 @@ final class CalendarTranslations
         return [
             'connect_google' => __('integration/calendar.view.actions.connect_google'),
             'reconnect_google' => __('integration/calendar.view.actions.reconnect_google'),
-            'save_settings' => __('integration/calendar.view.actions.save_settings'),
             'select_calendar' => __('integration/calendar.view.actions.select_calendar'),
             'selected' => __('integration/calendar.view.actions.selected'),
         ];

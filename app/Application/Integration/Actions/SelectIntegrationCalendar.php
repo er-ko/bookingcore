@@ -42,7 +42,6 @@ final class SelectIntegrationCalendar
             ],
             [
                 'selected_calendar_id' => $calendarId,
-                'sync_mode' => $integration->calendarSettings?->sync_mode ?? 'soft',
             ],
         );
 

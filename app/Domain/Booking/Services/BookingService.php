@@ -9,12 +9,8 @@ use App\Domain\Booking\Exceptions\BookingConflictException;
 use App\Domain\Booking\Exceptions\BookingStatusException;
 use App\Domain\Booking\Exceptions\BookingValidationException;
 use App\Domain\Booking\Exceptions\SlotUnavailableException;
-use App\Domain\Integration\Policies\BookingCalendarSyncPolicy;
 use App\Enums\BookingStatus;
-use App\Enums\IntegrationProvider;
-use App\Enums\IntegrationType;
 use App\Infrastructure\Booking\Repositories\BookingRepository;
-use App\Infrastructure\Integration\Repositories\IntegrationRepository;
 use App\Models\Activity;
 use App\Models\Booking\Booking;
 use App\Models\Unit;
@@ -24,8 +20,6 @@ final class BookingService
 {
     public function __construct(
         private readonly BookingRepository $bookingRepository,
-        private readonly IntegrationRepository $integrationRepository,
-        private readonly BookingCalendarSyncPolicy $bookingCalendarSyncPolicy,
         private readonly CreateBookingCalendarEvent $createBookingCalendarEvent,
         private readonly UpdateBookingCalendarEvent $updateBookingCalendarEvent,
     ) {
@@ -159,13 +153,9 @@ final class BookingService
      */
     private function handleCalendarSyncException(Booking $booking, \Throwable $exception): void
     {
-        if ($this->shouldUseStrictCalendarSync($booking)) {
-            $this->bookingRepository->deleteBooking($booking);
+        $this->bookingRepository->deleteBooking($booking);
 
-            throw $exception;
-        }
-
-        report($exception);
+        throw $exception;
     }
 
     /**
@@ -173,23 +163,13 @@ final class BookingService
      */
     private function syncAndFinalizeIfNeeded(Booking $booking): Booking
     {
-        try {
-            ($this->updateBookingCalendarEvent)($booking);
+        ($this->updateBookingCalendarEvent)($booking);
 
-            if ($booking->status->isTerminal()) {
-                $this->bookingRepository->deleteBooking($booking);
-            }
-
-            return $booking;
-        } catch (\Throwable $exception) {
-            if ($this->shouldUseStrictCalendarSync($booking)) {
-                throw $exception;
-            }
-
-            report($exception);
-
-            return $booking;
+        if ($booking->status->isTerminal()) {
+            $this->bookingRepository->deleteBooking($booking);
         }
+
+        return $booking;
     }
 
     /**
@@ -257,34 +237,6 @@ final class BookingService
         if ($hasConflict) {
             throw BookingConflictException::unitAlreadyBooked();
         }
-    }
-
-    /**
-     * Determine whether strict calendar sync mode is enabled for the booking owner.
-     */
-    private function shouldUseStrictCalendarSync(Booking $booking): bool
-    {
-        $ownerUserId = $this->resolveOwnerUserId($booking);
-
-        if (! $ownerUserId) {
-            return false;
-        }
-
-        $integration = $this->integrationRepository->findPrimary(
-            userId: $ownerUserId,
-            type: IntegrationType::Calendar,
-            provider: IntegrationProvider::Google,
-        );
-
-        return $this->bookingCalendarSyncPolicy->isStrict($integration);
-    }
-
-    /**
-     * Resolve the BookingCore owner user ID for the booking.
-     */
-    private function resolveOwnerUserId(Booking $booking): ?int
-    {
-        return $booking->branch?->user_id;
     }
 
     /**

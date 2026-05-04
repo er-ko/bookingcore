@@ -38,7 +38,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_mode' => 'soft',
         ]);
 
         $integration->load('calendarSettings');
@@ -62,7 +61,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => null,
-            'sync_mode' => 'soft',
         ]);
 
         $integration->load('calendarSettings');
@@ -78,7 +76,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_mode' => 'soft',
         ]);
 
         $integration->load('calendarSettings');
@@ -108,7 +105,6 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => '',
-            'sync_mode' => 'soft',
         ]);
 
         $integration->load('calendarSettings');
@@ -124,72 +120,11 @@ final class BookingCalendarSyncPolicyTest extends TestCase
         IntegrationCalendarSetting::create([
             'integration_id' => $integration->id,
             'selected_calendar_id' => 'primary',
-            'sync_mode' => 'soft',
         ]);
 
         $integration->load('calendarSettings');
 
         $this->assertSame('primary', $this->policy->selectedCalendarId($integration));
-    }
-
-    /** @test */
-    public function test_is_strict_returns_false_when_integration_is_null(): void
-    {
-        $this->assertFalse($this->policy->isStrict(null));
-    }
-
-    /** @test */
-    public function test_is_strict_returns_true_when_sync_mode_is_strict(): void
-    {
-        $integration = $this->makeIntegration();
-
-        IntegrationCalendarSetting::create([
-            'integration_id' => $integration->id,
-            'selected_calendar_id' => 'primary',
-            'sync_mode' => 'strict',
-        ]);
-
-        $integration->load('calendarSettings');
-
-        $this->assertTrue($this->policy->isStrict($integration));
-    }
-
-    /** @test */
-    public function test_is_soft_returns_true_when_integration_is_null(): void
-    {
-        $this->assertTrue($this->policy->isSoft(null));
-    }
-
-    /** @test */
-    public function test_is_soft_returns_true_when_sync_mode_is_soft(): void
-    {
-        $integration = $this->makeIntegration();
-
-        IntegrationCalendarSetting::create([
-            'integration_id' => $integration->id,
-            'selected_calendar_id' => 'primary',
-            'sync_mode' => 'soft',
-        ]);
-
-        $integration->load('calendarSettings');
-
-        $this->assertTrue($this->policy->isSoft($integration));
-    }
-
-    /** @test */
-    public function test_is_soft_returns_false_when_sync_mode_is_strict(): void
-    {
-        $integration = $this->makeIntegration();
-
-        IntegrationCalendarSetting::create([
-            'integration_id' => $integration->id,
-            'selected_calendar_id' => 'primary',
-            'sync_mode' => 'strict',
-        ]);
-
-        $integration->load('calendarSettings');
-
-        $this->assertFalse($this->policy->isSoft($integration));
     }
 
     private function makeIntegration(bool $isActive = true): Integration

@@ -162,7 +162,6 @@ function createOnboardedUnitUser(): User
     IntegrationCalendarSetting::create([
         'integration_id' => $integration->id,
         'selected_calendar_id' => 'test-calendar@group.calendar.google.com',
-        'sync_mode' => 'soft',
     ]);
 
     return $user->fresh();

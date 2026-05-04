@@ -30,34 +30,6 @@ final class BookingCalendarSyncPolicy
     }
 
     /**
-     * Determine whether strict sync mode is enabled.
-     */
-    public function isStrict(?Integration $integration): bool
-    {
-        $settings = $integration?->calendarSettings;
-
-        if (! $settings) {
-            return false;
-        }
-
-        return $settings->isStrictMode();
-    }
-
-    /**
-     * Determine whether soft sync mode is enabled.
-     */
-    public function isSoft(?Integration $integration): bool
-    {
-        $settings = $integration?->calendarSettings;
-
-        if (! $settings) {
-            return true;
-        }
-
-        return $settings->isSoftMode();
-    }
-
-    /**
      * Get the selected calendar identifier for the integration.
      */
     public function selectedCalendarId(?Integration $integration): ?string

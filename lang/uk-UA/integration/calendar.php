@@ -4,7 +4,6 @@ return [
     'messages' => [
         'failed' => 'Не вдалося обробити запит інтеграції календаря.',
         'calendar_selected' => 'Календар успішно вибрано.',
-        'settings_updated' => 'Налаштування синхронізації календаря успішно оновлено.',
         'invalid_calendar_id' => 'Вибраний ідентифікатор календаря є недійсним.',
         'integration_user_mismatch' => 'Вибрана інтеграція не належить автентифікованому користувачу.',
         'integration_not_calendar' => 'Вибрана інтеграція не є інтеграцією календаря.',
@@ -12,7 +11,6 @@ return [
         'missing_refresh_token' => 'Інтеграція календаря не містить токена оновлення.',
         'missing_access_token' => 'Інтеграція календаря не містить токена доступу.',
         'not_google_integration' => 'Вибрана інтеграція не є інтеграцією Google Calendar.',
-        'invalid_sync_mode' => 'Вибраний режим синхронізації є недійсним.',
         'google_refresh_failed' => 'Не вдалося оновити токен доступу Google Calendar.',
         'google_refresh_missing_access_token' => 'Не вдалося оновити токен доступу Google Calendar, оскільки відповідь не містила токена доступу.',
         'connection_error' => 'BookingCore не вдалося перевірити підключення до Вашого календаря. Будь ласка, повторно підключіть свій обліковий запис Google Calendar і спробуйте ще раз.',
@@ -22,10 +20,6 @@ return [
         'calendar_id_required' => 'Ідентифікатор календаря є обов’язковим.',
         'calendar_id_string' => 'Ідентифікатор календаря має бути рядком.',
         'calendar_id_max' => 'Ідентифікатор календаря не може містити більше ніж 255 символів.',
-
-        'sync_mode_required' => 'Режим синхронізації є обов’язковим.',
-        'sync_mode_string' => 'Режим синхронізації має бути рядком.',
-        'sync_mode_in' => 'Вибраний режим синхронізації є недійсним.',
     ],
 
     'view' => [
@@ -40,22 +34,13 @@ return [
             'timezone_title' => 'Часовий пояс',
             'status_title' => 'Статус',
             'active_title' => 'Активний',
-            'calendar_settings_title' => 'Налаштування календаря',
             'available_calendars_title' => 'Доступні календарі',
             'timezone_prefix' => 'Часовий пояс:',
-        ],
-
-        'form' => [
-            'sync_mode_title' => 'Режим синхронізації',
-            'sync_mode_soft_title' => 'М’який',
-            'sync_mode_strict_title' => 'Строгий',
-            'sync_mode_help' => 'М’який режим дозволяє BookingCore працювати навіть у разі помилки синхронізації календаря. Строгий режим призначений для забезпечення вищої узгодженості.',
         ],
 
         'actions' => [
             'connect_google' => 'Підключити Google Calendar',
             'reconnect_google' => 'Повторно підключити Google Calendar',
-            'save_settings' => 'Зберегти налаштування',
             'select_calendar' => 'Вибрати календар',
             'selected' => 'Вибрано',
         ],

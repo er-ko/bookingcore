@@ -4,7 +4,6 @@ return [
     'messages' => [
         'failed' => 'Nie udało się przetworzyć żądania dotyczącego integracji kalendarza.',
         'calendar_selected' => 'Kalendarz został pomyślnie wybrany.',
-        'settings_updated' => 'Ustawienia synchronizacji kalendarza zostały pomyślnie zaktualizowane.',
         'invalid_calendar_id' => 'Wybrany identyfikator kalendarza jest nieprawidłowy.',
         'integration_user_mismatch' => 'Wybrana integracja nie należy do uwierzytelnionego użytkownika.',
         'integration_not_calendar' => 'Wybrana integracja nie jest integracją kalendarza.',
@@ -12,7 +11,6 @@ return [
         'missing_refresh_token' => 'Integracja kalendarza nie zawiera tokenu odświeżania.',
         'missing_access_token' => 'Integracja kalendarza nie zawiera tokenu dostępu.',
         'not_google_integration' => 'Wybrana integracja nie jest integracją Kalendarza Google.',
-        'invalid_sync_mode' => 'Wybrany tryb synchronizacji jest nieprawidłowy.',
         'google_refresh_failed' => 'Nie udało się odświeżyć tokenu dostępu do Kalendarza Google.',
         'google_refresh_missing_access_token' => 'Nie udało się odświeżyć tokenu dostępu do Kalendarza Google, ponieważ odpowiedź nie zawierała tokenu dostępu.',
         'connection_error' => 'BookingCore nie mógł zweryfikować połączenia z Państwa kalendarzem. Proszę ponownie połączyć konto Kalendarza Google i spróbować jeszcze raz.',
@@ -22,10 +20,6 @@ return [
         'calendar_id_required' => 'Identyfikator kalendarza jest wymagany.',
         'calendar_id_string' => 'Identyfikator kalendarza musi być ciągiem znaków.',
         'calendar_id_max' => 'Identyfikator kalendarza nie może być dłuższy niż 255 znaków.',
-
-        'sync_mode_required' => 'Tryb synchronizacji jest wymagany.',
-        'sync_mode_string' => 'Tryb synchronizacji musi być ciągiem znaków.',
-        'sync_mode_in' => 'Wybrany tryb synchronizacji jest nieprawidłowy.',
     ],
 
     'view' => [
@@ -40,22 +34,13 @@ return [
             'timezone_title' => 'Strefa czasowa',
             'status_title' => 'Status',
             'active_title' => 'Aktywna',
-            'calendar_settings_title' => 'Ustawienia kalendarza',
             'available_calendars_title' => 'Dostępne kalendarze',
             'timezone_prefix' => 'Strefa czasowa:',
-        ],
-
-        'form' => [
-            'sync_mode_title' => 'Tryb synchronizacji',
-            'sync_mode_soft_title' => 'Miękki',
-            'sync_mode_strict_title' => 'Ścisły',
-            'sync_mode_help' => 'Tryb miękki pozwala BookingCore działać dalej, nawet jeśli synchronizacja kalendarza się nie powiedzie. Tryb ścisły jest przeznaczony do silniejszego zachowania spójności.',
         ],
 
         'actions' => [
             'connect_google' => 'Połącz Kalendarz Google',
             'reconnect_google' => 'Połącz ponownie Kalendarz Google',
-            'save_settings' => 'Zapisz ustawienia',
             'select_calendar' => 'Wybierz kalendarz',
             'selected' => 'Wybrano',
         ],

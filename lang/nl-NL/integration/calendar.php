@@ -4,7 +4,6 @@ return [
     'messages' => [
         'failed' => 'Het verwerken van het verzoek voor agenda-integratie is mislukt.',
         'calendar_selected' => 'Agenda succesvol geselecteerd.',
-        'settings_updated' => 'Instellingen voor agendasynchronisatie succesvol bijgewerkt.',
         'invalid_calendar_id' => 'De geselecteerde agenda-ID is ongeldig.',
         'integration_user_mismatch' => 'De geselecteerde integratie behoort niet toe aan de geauthenticeerde gebruiker.',
         'integration_not_calendar' => 'De geselecteerde integratie is geen agenda-integratie.',
@@ -12,7 +11,6 @@ return [
         'missing_refresh_token' => 'De agenda-integratie bevat geen vernieuwingstoken.',
         'missing_access_token' => 'De agenda-integratie bevat geen toegangstoken.',
         'not_google_integration' => 'De geselecteerde integratie is geen Google Agenda-integratie.',
-        'invalid_sync_mode' => 'De geselecteerde synchronisatiemodus is ongeldig.',
         'google_refresh_failed' => 'Het vernieuwen van het toegangstoken voor Google Agenda is mislukt.',
         'google_refresh_missing_access_token' => 'Het vernieuwen van het toegangstoken voor Google Agenda is mislukt omdat het antwoord geen toegangstoken bevatte.',
         'connection_error' => 'BookingCore kon uw agendaverbinding niet verifiëren. Verbind uw Google Agenda-account opnieuw en probeer het nogmaals.',
@@ -22,10 +20,6 @@ return [
         'calendar_id_required' => 'De agenda-ID is verplicht.',
         'calendar_id_string' => 'De agenda-ID moet een tekst zijn.',
         'calendar_id_max' => 'De agenda-ID mag niet langer zijn dan 255 tekens.',
-
-        'sync_mode_required' => 'De synchronisatiemodus is verplicht.',
-        'sync_mode_string' => 'De synchronisatiemodus moet een tekst zijn.',
-        'sync_mode_in' => 'De geselecteerde synchronisatiemodus is ongeldig.',
     ],
 
     'view' => [
@@ -40,22 +34,13 @@ return [
             'timezone_title' => 'Tijdzone',
             'status_title' => 'Status',
             'active_title' => 'Actief',
-            'calendar_settings_title' => 'Agenda-instellingen',
             'available_calendars_title' => 'Beschikbare agenda’s',
             'timezone_prefix' => 'Tijdzone:',
-        ],
-
-        'form' => [
-            'sync_mode_title' => 'Synchronisatiemodus',
-            'sync_mode_soft_title' => 'Soft',
-            'sync_mode_strict_title' => 'Strikt',
-            'sync_mode_help' => 'Soft laat BookingCore blijven werken, ook als agendasynchronisatie mislukt. Strikt is bedoeld voor sterkere consistentie.',
         ],
 
         'actions' => [
             'connect_google' => 'Google Agenda verbinden',
             'reconnect_google' => 'Google Agenda opnieuw verbinden',
-            'save_settings' => 'Instellingen opslaan',
             'select_calendar' => 'Agenda selecteren',
             'selected' => 'Geselecteerd',
         ],
