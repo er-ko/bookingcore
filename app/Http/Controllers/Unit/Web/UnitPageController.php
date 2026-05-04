@@ -34,7 +34,7 @@ final class UnitPageController extends Controller
     {
         return Inertia::render('Unit/Create', [
             'translations' => UnitTranslations::create(),
-            ...$unitFormOptionsQuery->getCreateFormData(),
+            ...$unitFormOptionsQuery->getCreateFormData($this->user()),
         ]);
     }
 
@@ -60,7 +60,7 @@ final class UnitPageController extends Controller
             'recurringTimeOffs' => $this->groupRecurringTimeOffsByDay($unit),
             'timeOffs' => $this->mapTimeOffs($unit),
             'translations' => UnitTranslations::edit(),
-            ...$unitFormOptionsQuery->getCreateFormData(),
+            ...$unitFormOptionsQuery->getCreateFormData($this->user()),
         ]);
     }
 
