@@ -63,9 +63,11 @@ use Illuminate\Support\Facades\Route;
 | Public routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', HomePageController::class)->name('home');
-Route::get('/privacy-policy', [LegalPageController::class, 'privacyPolicy'])->name('privacy-policy');
-Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])->name('terms-of-service');
+Route::middleware('guest')->group(function () {
+    Route::get('/', HomePageController::class)->name('home');
+    Route::get('/privacy-policy', [LegalPageController::class, 'privacyPolicy'])->name('privacy-policy');
+    Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])->name('terms-of-service');
+});
 Route::post('/locale', UpdateLocaleController::class)->name('locale.update');
 
 Route::prefix('@{slug}')

@@ -27,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn () => route('connect.index'));
+        $middleware->redirectUsersTo(fn () => route('dashboard.index'));
 
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
