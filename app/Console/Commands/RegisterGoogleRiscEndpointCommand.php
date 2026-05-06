@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Http;
 final class RegisterGoogleRiscEndpointCommand extends Command
 {
     protected $signature = 'risc:register
-                            {--check : Show the current registered stream configuration instead of updating it}';
+                            {--check : Show the current registered stream configuration instead of updating it}
+                            {--verify : Send a verification event to confirm the endpoint is reachable}';
 
     protected $description = 'Register (or inspect) the Google RISC webhook endpoint';
 
     private const RISC_STREAM_UPDATE_URL = 'https://risc.googleapis.com/v1beta/stream:update';
     private const RISC_STREAM_STATUS_URL = 'https://risc.googleapis.com/v1beta/stream';
+    private const RISC_STREAM_VERIFY_URL = 'https://risc.googleapis.com/v1beta/stream:verify';
     private const RISC_SCOPE = 'https://www.googleapis.com/auth/risc.configuration.readwrite';
 
     public function handle(): int
@@ -34,9 +36,15 @@ final class RegisterGoogleRiscEndpointCommand extends Command
             return self::FAILURE;
         }
 
-        return $this->option('check')
-            ? $this->checkStream($accessToken)
-            : $this->registerStream($accessToken);
+        if ($this->option('check')) {
+            return $this->checkStream($accessToken);
+        }
+
+        if ($this->option('verify')) {
+            return $this->verifyStream($accessToken);
+        }
+
+        return $this->registerStream($accessToken);
     }
 
     private function registerStream(string $accessToken): int
@@ -67,6 +75,26 @@ final class RegisterGoogleRiscEndpointCommand extends Command
         }
 
         $this->info('RISC endpoint registered successfully.');
+
+        return self::SUCCESS;
+    }
+
+    private function verifyStream(string $accessToken): int
+    {
+        $this->info('Sending verification event to your endpoint...');
+
+        $response = Http::withToken($accessToken)
+            ->post(self::RISC_STREAM_VERIFY_URL, [
+                'state' => bin2hex(random_bytes(16)),
+            ]);
+
+        if (! $response->successful()) {
+            $this->error("Verification failed ({$response->status()}): " . $response->body());
+
+            return self::FAILURE;
+        }
+
+        $this->info('Verification event sent. Google confirmed your endpoint responded with 202.');
 
         return self::SUCCESS;
     }
