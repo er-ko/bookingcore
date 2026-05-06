@@ -18,7 +18,8 @@ final class RegisterGoogleRiscEndpointCommand extends Command
     private const RISC_STREAM_UPDATE_URL = 'https://risc.googleapis.com/v1beta/stream:update';
     private const RISC_STREAM_STATUS_URL = 'https://risc.googleapis.com/v1beta/stream';
     private const RISC_STREAM_VERIFY_URL = 'https://risc.googleapis.com/v1beta/stream:verify';
-    private const RISC_SCOPE = 'https://www.googleapis.com/auth/risc.configuration.readwrite';
+    private const RISC_SCOPE_CONFIG = 'https://www.googleapis.com/auth/risc.configuration.readwrite';
+    private const RISC_SCOPE_VERIFY = 'https://www.googleapis.com/auth/risc.verify';
 
     public function handle(): int
     {
@@ -30,7 +31,13 @@ final class RegisterGoogleRiscEndpointCommand extends Command
             return self::FAILURE;
         }
 
-        $accessToken = $this->fetchServiceAccountToken($serviceAccountPath);
+        if ($this->option('verify')) {
+            $accessToken = $this->fetchServiceAccountToken($serviceAccountPath, self::RISC_SCOPE_VERIFY);
+
+            return $accessToken ? $this->verifyStream($accessToken) : self::FAILURE;
+        }
+
+        $accessToken = $this->fetchServiceAccountToken($serviceAccountPath, self::RISC_SCOPE_CONFIG);
 
         if ($accessToken === null) {
             return self::FAILURE;
@@ -38,10 +45,6 @@ final class RegisterGoogleRiscEndpointCommand extends Command
 
         if ($this->option('check')) {
             return $this->checkStream($accessToken);
-        }
-
-        if ($this->option('verify')) {
-            return $this->verifyStream($accessToken);
         }
 
         return $this->registerStream($accessToken);
@@ -114,12 +117,12 @@ final class RegisterGoogleRiscEndpointCommand extends Command
         return self::SUCCESS;
     }
 
-    private function fetchServiceAccountToken(string $serviceAccountPath): ?string
+    private function fetchServiceAccountToken(string $serviceAccountPath, string $scope): ?string
     {
         try {
             $client = new GoogleClient();
             $client->setAuthConfig($serviceAccountPath);
-            $client->addScope(self::RISC_SCOPE);
+            $client->addScope($scope);
 
             $token = $client->fetchAccessTokenWithAssertion();
 
