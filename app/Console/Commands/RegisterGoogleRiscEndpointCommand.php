@@ -10,44 +10,33 @@ use Illuminate\Support\Facades\Http;
 final class RegisterGoogleRiscEndpointCommand extends Command
 {
     protected $signature = 'risc:register
-                            {--check : Show the current registered stream configuration instead of updating it}
-                            {--verify : Send a verification event to confirm the endpoint is reachable}';
+                            {--check : Show the current registered stream configuration instead of updating it}';
 
     protected $description = 'Register (or inspect) the Google RISC webhook endpoint';
 
     private const RISC_STREAM_UPDATE_URL = 'https://risc.googleapis.com/v1beta/stream:update';
     private const RISC_STREAM_STATUS_URL = 'https://risc.googleapis.com/v1beta/stream';
-    private const RISC_STREAM_VERIFY_URL = 'https://risc.googleapis.com/v1beta/stream:verify';
-    private const RISC_SCOPE_CONFIG = 'https://www.googleapis.com/auth/risc.configuration.readwrite';
-    private const RISC_SCOPE_VERIFY = 'https://www.googleapis.com/auth/risc.verify';
+    private const RISC_SCOPE = 'https://www.googleapis.com/auth/risc.configuration.readwrite';
 
     public function handle(): int
     {
         $serviceAccountPath = config('services.google.service_account_path');
 
-        if (! $serviceAccountPath || ! file_exists($serviceAccountPath)) {
+        if (! $serviceAccountPath || ! \file_exists($serviceAccountPath)) {
             $this->error('GOOGLE_SERVICE_ACCOUNT_PATH is not set or the file does not exist.');
 
             return self::FAILURE;
         }
 
-        if ($this->option('verify')) {
-            $accessToken = $this->fetchServiceAccountToken($serviceAccountPath, self::RISC_SCOPE_VERIFY);
-
-            return $accessToken ? $this->verifyStream($accessToken) : self::FAILURE;
-        }
-
-        $accessToken = $this->fetchServiceAccountToken($serviceAccountPath, self::RISC_SCOPE_CONFIG);
+        $accessToken = $this->fetchServiceAccountToken($serviceAccountPath);
 
         if ($accessToken === null) {
             return self::FAILURE;
         }
 
-        if ($this->option('check')) {
-            return $this->checkStream($accessToken);
-        }
-
-        return $this->registerStream($accessToken);
+        return $this->option('check')
+            ? $this->checkStream($accessToken)
+            : $this->registerStream($accessToken);
     }
 
     private function registerStream(string $accessToken): int
@@ -82,26 +71,6 @@ final class RegisterGoogleRiscEndpointCommand extends Command
         return self::SUCCESS;
     }
 
-    private function verifyStream(string $accessToken): int
-    {
-        $this->info('Sending verification event to your endpoint...');
-
-        $response = Http::withToken($accessToken)
-            ->post(self::RISC_STREAM_VERIFY_URL, [
-                'state' => bin2hex(random_bytes(16)),
-            ]);
-
-        if (! $response->successful()) {
-            $this->error("Verification failed ({$response->status()}): " . $response->body());
-
-            return self::FAILURE;
-        }
-
-        $this->info('Verification event sent. Google confirmed your endpoint responded with 202.');
-
-        return self::SUCCESS;
-    }
-
     private function checkStream(string $accessToken): int
     {
         $response = Http::withToken($accessToken)->get(self::RISC_STREAM_STATUS_URL);
@@ -117,12 +86,12 @@ final class RegisterGoogleRiscEndpointCommand extends Command
         return self::SUCCESS;
     }
 
-    private function fetchServiceAccountToken(string $serviceAccountPath, string $scope): ?string
+    private function fetchServiceAccountToken(string $serviceAccountPath): ?string
     {
         try {
             $client = new GoogleClient();
             $client->setAuthConfig($serviceAccountPath);
-            $client->addScope($scope);
+            $client->addScope(self::RISC_SCOPE);
 
             $token = $client->fetchAccessTokenWithAssertion();
 
