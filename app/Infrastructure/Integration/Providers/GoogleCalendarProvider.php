@@ -126,7 +126,11 @@ final class GoogleCalendarProvider implements CalendarProvider
         $tokenData = $client->fetchAccessTokenWithRefreshToken($integration->refresh_token);
 
         if (! is_array($tokenData) || isset($tokenData['error'])) {
-            throw new RuntimeException(__('integration/calendar.messages.google_refresh_failed'));
+            $errorCode = is_array($tokenData) && isset($tokenData['error'])
+                ? (string) $tokenData['error']
+                : 'unknown';
+
+            throw new RuntimeException($errorCode);
         }
 
         if (! isset($tokenData['access_token']) || ! is_string($tokenData['access_token'])) {
