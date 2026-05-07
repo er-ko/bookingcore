@@ -29,6 +29,8 @@ return [
         'public_code' => 'Kod publiczny',
         'mit_licensed' => 'Na licencji MIT',
         'theme' => 'Motyw',
+        'privacy_policy' => 'Polityka prywatności',
+        'terms_of_service' => 'Warunki korzystania z usługi',
     ],
 
     'auth' => [

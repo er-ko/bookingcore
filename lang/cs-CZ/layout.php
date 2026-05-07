@@ -29,6 +29,8 @@ return [
         'public_code' => 'Veřejný kód',
         'mit_licensed' => 'Licence MIT',
         'theme' => 'Motiv',
+        'privacy_policy' => 'Zásady ochrany osobních údajů',
+        'terms_of_service' => 'Podmínky používání',
     ],
 
     'auth' => [

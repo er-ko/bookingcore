@@ -51,10 +51,6 @@ const destroyBranch = (branchPublicId) => {
                         {{ translations.table.status }}
                     </th>
 
-                    <th class="min-w-[130px] px-6 py-4 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                        {{ translations.table.updated }}
-                    </th>
-
                     <th class="px-6 py-4 text-end text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                         {{ translations.table.actions }}
                     </th>
@@ -119,12 +115,6 @@ const destroyBranch = (branchPublicId) => {
                         >
                             {{ translations.table.inactive }}
                         </span>
-                    </td>
-
-                    <td class="px-6 py-5 align-middle text-center">
-                        <div class="text-sm text-black/65 dark:text-white/65">
-                            {{ branch.updated_at ?? '-' }}
-                        </div>
                     </td>
 
                     <td class="px-6 py-5 align-middle text-end">

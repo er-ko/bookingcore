@@ -50,14 +50,14 @@ const isHomePage = computed(() => page.url === '/')
                             href="/privacy-policy"
                             class="transition hover:text-black dark:hover:text-white"
                         >
-                            Privacy Policy
+                            {{ publicTranslations.privacy_policy ?? 'Privacy Policy' }}
                         </Link>
                         <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                         <Link
                             href="/terms-of-service"
                             class="transition hover:text-black dark:hover:text-white"
                         >
-                            Terms of Service
+                            {{ publicTranslations.terms_of_service ?? 'Terms of Service' }}
                         </Link>
                     </div>
 
