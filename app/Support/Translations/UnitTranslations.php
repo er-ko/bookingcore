@@ -16,6 +16,14 @@ final class UnitTranslations
             'table' => self::table(),
             'actions' => self::indexActions(),
             'alerts' => self::alerts(),
+            'meta' => self::meta(),
+        ];
+    }
+
+    public static function meta(): array
+    {
+        return [
+            'suffix' => ' | '. config('app.name'),
         ];
     }
 
@@ -36,6 +44,7 @@ final class UnitTranslations
             'form' => self::form(),
             'validation' => self::validation(),
             'actions' => self::formActions(),
+            'meta' => self::meta(),
         ];
     }
 
@@ -68,6 +77,7 @@ final class UnitTranslations
             'working_hours_form' => self::workingHoursForm(),
             'recurring_time_offs_form' => self::recurringTimeOffsForm(),
             'time_offs_form' => self::timeOffsForm(),
+            'meta' => self::meta(),
         ];
     }
 

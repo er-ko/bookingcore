@@ -12,6 +12,14 @@ final class CurrencyTranslations
             'table' => self::table(),
             'actions' => self::actions(),
             'alerts' => self::alerts(),
+            'meta' => self::meta(),
+        ];
+    }
+
+    public static function meta(): array
+    {
+        return [
+            'suffix' => ' | '. config('app.name'),
         ];
     }
 

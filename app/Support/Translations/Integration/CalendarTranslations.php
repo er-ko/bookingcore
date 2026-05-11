@@ -12,8 +12,18 @@ final class CalendarTranslations
             'overview' => self::overview(),
             'actions' => self::actions(),
             'states' => self::states(),
+            'meta' => self::meta(),
         ];
     }
+
+    public static function meta(): array
+    {
+        return [
+            'suffix' => ' | '. config('app.name'),
+        ];
+    }
+
+    
 
     private static function overview(): array
     {

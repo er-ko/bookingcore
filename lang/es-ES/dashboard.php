@@ -25,61 +25,14 @@ return [
 	],
 
     'messages' => [
-		'created' => 'La reserva se ha creado correctamente.',
-		'failed' => 'No se pudo crear la reserva.',
 		'cancelled' => 'La reserva se ha cancelado correctamente.',
 		'status_updated' => 'El estado de la reserva se ha actualizado correctamente.',
-        'not_found' => 'No se encontró la reserva seleccionada.',
     ],
 
 	'validation' => [
-		'branch_required' => 'La sucursal es obligatoria.',
-        'branch_invalid' => 'El identificador de la sucursal no es válido.',
-        'branch_not_found' => 'La sucursal seleccionada no existe.',
-
-        'unit_required' => 'La unidad es obligatoria.',
-        'unit_invalid' => 'El identificador de la unidad no es válido.',
-        'unit_not_found' => 'La unidad seleccionada no existe.',
-
-        'activity_required' => 'La actividad es obligatoria.',
-        'activity_invalid' => 'El identificador de la actividad no es válido.',
-        'activity_not_found' => 'La actividad seleccionada no existe.',
-        'activity_not_available_for_unit' => 'La actividad seleccionada no está disponible para la unidad seleccionada.',
-
-        'starts_at_required' => 'La hora de inicio es obligatoria.',
-        'starts_at_invalid' => 'El formato de la hora de inicio no es válido.',
-
-        'customer_required' => 'La información del cliente es obligatoria.',
-        'customer_invalid' => 'El formato de los datos del cliente no es válido.',
-
-        'customer_first_name_required' => 'El nombre del cliente es obligatorio.',
-        'customer_first_name_invalid' => 'El nombre del cliente debe ser una cadena de texto.',
-        'customer_first_name_too_long' => 'El nombre del cliente es demasiado largo.',
-
-        'customer_last_name_required' => 'El apellido del cliente es obligatorio.',
-        'customer_last_name_invalid' => 'El apellido del cliente debe ser una cadena de texto.',
-        'customer_last_name_too_long' => 'El apellido del cliente es demasiado largo.',
-
-        'customer_email_required' => 'El correo electrónico del cliente es obligatorio.',
-        'customer_email_invalid' => 'El correo electrónico del cliente debe ser una dirección válida.',
-        'customer_email_too_long' => 'El correo electrónico del cliente es demasiado largo.',
-
-        'customer_phone_code_required' => 'El prefijo telefónico es obligatorio.',
-        'customer_phone_code_invalid' => 'El prefijo telefónico debe ser una cadena de texto.',
-        'customer_phone_code_too_long' => 'El prefijo telefónico es demasiado largo.',
-
-        'customer_phone_required' => 'El número de teléfono es obligatorio.',
-        'customer_phone_invalid' => 'El número de teléfono debe ser una cadena de texto.',
-        'customer_phone_too_long' => 'El número de teléfono es demasiado largo.',
-
-        'note_invalid' => 'La nota debe ser una cadena de texto.',
-
         'status_required' => 'El estado de la reserva es obligatorio.',
         'status_invalid' => 'El formato del estado de la reserva no es válido.',
         'status_not_allowed' => 'El estado de reserva seleccionado no está permitido.',
-
-        'date_required' => 'La fecha es obligatoria.',
-        'date_invalid' => 'El formato de la fecha no es válido.',
 	],
 
 	'view' => [
@@ -107,71 +60,10 @@ return [
             'inactive' => 'Inactivo',
         ],
 
-        'overview' => [
-            'title' => 'Resumen de la reserva',
-
-            'customer_title' => 'Datos del cliente',
-            'customer_text' => 'Introduzca la información del cliente necesaria para crear la reserva.',
-
-            'booking_flow_title' => 'Flujo de reserva',
-            'booking_flow_text' => 'Seleccione una sucursal, luego una unidad, una actividad, una fecha y un intervalo disponible.',
-
-            'availability_title' => 'Disponibilidad',
-            'availability_text' => 'Los intervalos disponibles se cargan según la sucursal, la unidad, la actividad y la fecha seleccionadas.',
-
-            'required_title' => 'Obligatorio',
-            'required_items' => [
-                'first_and_last_name' => 'Nombre y apellido',
-                'phone_code_and_number' => 'Prefijo y número de teléfono',
-                'branch' => 'Sucursal',
-                'unit' => 'Unidad',
-                'activity' => 'Actividad',
-                'date' => 'Fecha',
-                'slot' => 'Intervalo disponible',
-            ],
-
-            'optional_title' => 'Opcional',
-            'optional_items' => [
-                'email' => 'Correo electrónico',
-                'note' => 'Nota',
-            ],
-
-            'note_title' => 'Nota',
-            'note_text' => 'Solo se puede crear una reserva después de seleccionar un intervalo disponible válido.',
-        ],
-
-        'form' => [
-            'booking_details' => 'Detalles de la reserva',
-            'complete_the_reservation' => 'Complete la reserva',
-            'customer_details' => 'Datos del cliente',
-            'first_name_title' => 'Nombre',
-            'last_name_title' => 'Apellido',
-            'email_title' => 'Correo electrónico',
-            'phone_code_title' => 'Código',
-            'phone_title' => 'Teléfono',
-            'branch_title' => 'Sucursal',
-            'select_branch' => 'Seleccione una sucursal',
-            'unit_title' => 'Unidad',
-            'select_unit' => 'Seleccione una unidad',
-            'loading_units' => 'Cargando unidades...',
-            'activity_title' => 'Actividad',
-            'select_activity' => 'Seleccione una actividad',
-            'loading_activities' => 'Cargando actividades...',
-            'date_title' => 'Fecha',
-            'available_slots_title' => 'Intervalos disponibles',
-            'available_slots_count' => 'intervalo(s) disponible(s)',
-            'loading_slots' => 'Cargando intervalos...',
-            'no_available_slots' => 'No se encontraron intervalos disponibles para la fecha seleccionada.',
-            'select_slot' => 'Seleccione un intervalo',
-            'note_title' => 'Nota',
-        ],
-
         'actions' => [
             'confirm' => 'Confirmar',
             'complete' => 'Completar',
             'cancel' => 'Cancelar',
-            'create' => 'Crear reserva',
-            'creating' => 'Creando...',
         ],
 
         'alerts' => [

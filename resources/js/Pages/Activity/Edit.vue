@@ -19,7 +19,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="`${translations.title} - ${props.activity.name}`" />
+    <Head :title="`${translations.title} - ${props.activity.name} ${translations.meta.suffix}`" />
 
     <AppLayout>
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

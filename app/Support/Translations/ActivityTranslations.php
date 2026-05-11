@@ -16,6 +16,14 @@ final class ActivityTranslations
             'table' => self::table(),
             'actions' => self::indexActions(),
             'alerts' => self::alerts(),
+            'meta' => self::meta(),
+        ];
+    }
+
+    public static function meta(): array
+    {
+        return [
+            'suffix' => ' | '. config('app.name'),
         ];
     }
 
@@ -37,6 +45,7 @@ final class ActivityTranslations
             'form' => self::form(),
             'validation' => self::validation(),
             'actions' => self::formActions(),
+            'meta' => self::meta(),
         ];
     }
 
@@ -62,6 +71,7 @@ final class ActivityTranslations
             'form' => self::form(),
             'validation' => self::validation(),
             'actions' => self::formActions(),
+            'meta' => self::meta(),
         ];
     }
 

@@ -25,61 +25,14 @@ return [
 	],
 
     'messages' => [
-		'created' => 'Бронювання успішно створено.',
-		'failed' => 'Не вдалося створити бронювання.',
 		'cancelled' => 'Бронювання успішно скасовано.',
 		'status_updated' => 'Статус бронювання успішно оновлено.',
-        'not_found' => 'Вибране бронювання не знайдено.',
     ],
 
 	'validation' => [
-		'branch_required' => 'Філія є обов’язковою.',
-        'branch_invalid' => 'Ідентифікатор філії є недійсним.',
-        'branch_not_found' => 'Вибрана філія не існує.',
-
-        'unit_required' => 'Об’єкт є обов’язковим.',
-        'unit_invalid' => 'Ідентифікатор об’єкта є недійсним.',
-        'unit_not_found' => 'Вибраний об’єкт не існує.',
-
-        'activity_required' => 'Послуга є обов’язковою.',
-        'activity_invalid' => 'Ідентифікатор послуги є недійсним.',
-        'activity_not_found' => 'Вибрана послуга не існує.',
-        'activity_not_available_for_unit' => 'Вибрана послуга недоступна для вибраного об’єкта.',
-
-        'starts_at_required' => 'Час початку є обов’язковим.',
-        'starts_at_invalid' => 'Формат часу початку є недійсним.',
-
-        'customer_required' => 'Інформація про клієнта є обов’язковою.',
-        'customer_invalid' => 'Формат даних клієнта є недійсним.',
-
-        'customer_first_name_required' => 'Ім’я клієнта є обов’язковим.',
-        'customer_first_name_invalid' => 'Ім’я клієнта має бути рядком.',
-        'customer_first_name_too_long' => 'Ім’я клієнта є занадто довгим.',
-
-        'customer_last_name_required' => 'Прізвище клієнта є обов’язковим.',
-        'customer_last_name_invalid' => 'Прізвище клієнта має бути рядком.',
-        'customer_last_name_too_long' => 'Прізвище клієнта є занадто довгим.',
-
-        'customer_email_required' => 'Електронна адреса клієнта є обов’язковою.',
-        'customer_email_invalid' => 'Електронна адреса клієнта має бути дійсною адресою електронної пошти.',
-        'customer_email_too_long' => 'Електронна адреса клієнта є занадто довгою.',
-
-        'customer_phone_code_required' => 'Телефонний код є обов’язковим.',
-        'customer_phone_code_invalid' => 'Телефонний код має бути рядком.',
-        'customer_phone_code_too_long' => 'Телефонний код є занадто довгим.',
-
-        'customer_phone_required' => 'Номер телефону є обов’язковим.',
-        'customer_phone_invalid' => 'Номер телефону має бути рядком.',
-        'customer_phone_too_long' => 'Номер телефону є занадто довгим.',
-
-        'note_invalid' => 'Примітка має бути рядком.',
-
         'status_required' => 'Статус бронювання є обов’язковим.',
         'status_invalid' => 'Формат статусу бронювання є недійсним.',
         'status_not_allowed' => 'Вибраний статус бронювання не дозволено.',
-
-        'date_required' => 'Дата є обов’язковою.',
-        'date_invalid' => 'Формат дати є недійсним.',
 	],
 
 	'view' => [
@@ -107,71 +60,10 @@ return [
             'inactive' => 'Неактивний',
         ],
 
-        'overview' => [
-            'title' => 'Огляд бронювання',
-
-            'customer_title' => 'Дані клієнта',
-            'customer_text' => 'Введіть інформацію про клієнта, необхідну для створення бронювання.',
-
-            'booking_flow_title' => 'Процес бронювання',
-            'booking_flow_text' => 'Виберіть філію, потім об’єкт, послугу, дату та доступний часовий слот.',
-
-            'availability_title' => 'Доступність',
-            'availability_text' => 'Доступні часові слоти завантажуються на основі вибраної філії, об’єкта, послуги та дати.',
-
-            'required_title' => 'Обов’язково',
-            'required_items' => [
-                'first_and_last_name' => 'Ім’я та прізвище',
-                'phone_code_and_number' => 'Телефонний код і номер',
-                'branch' => 'Філія',
-                'unit' => 'Об’єкт',
-                'activity' => 'Послуга',
-                'date' => 'Дата',
-                'slot' => 'Доступний слот',
-            ],
-
-            'optional_title' => 'Необов’язково',
-            'optional_items' => [
-                'email' => 'Електронна пошта',
-                'note' => 'Примітка',
-            ],
-
-            'note_title' => 'Примітка',
-            'note_text' => 'Бронювання можна створити лише після вибору дійсного доступного часового слота.',
-        ],
-
-        'form' => [
-            'booking_details' => 'Деталі бронювання',
-            'complete_the_reservation' => 'Завершити резервацію',
-            'customer_details' => 'Дані клієнта',
-            'first_name_title' => 'Ім’я',
-            'last_name_title' => 'Прізвище',
-            'email_title' => 'Електронна пошта',
-            'phone_code_title' => 'Код',
-            'phone_title' => 'Телефон',
-            'branch_title' => 'Філія',
-            'select_branch' => 'Виберіть філію',
-            'unit_title' => 'Об’єкт',
-            'select_unit' => 'Виберіть об’єкт',
-            'loading_units' => 'Завантаження об’єктів...',
-            'activity_title' => 'Послуга',
-            'select_activity' => 'Виберіть послугу',
-            'loading_activities' => 'Завантаження послуг...',
-            'date_title' => 'Дата',
-            'available_slots_title' => 'Доступні слоти',
-            'available_slots_count' => 'доступний(-і) слот(-и)',
-            'loading_slots' => 'Завантаження слотів...',
-            'no_available_slots' => 'Для вибраної дати не знайдено доступних слотів.',
-            'select_slot' => 'Виберіть слот',
-            'note_title' => 'Примітка',
-        ],
-
         'actions' => [
             'confirm' => 'Підтвердити',
             'complete' => 'Завершити',
             'cancel' => 'Скасувати',
-            'create' => 'Створити бронювання',
-            'creating' => 'Створення...',
         ],
 
         'alerts' => [

@@ -14,6 +14,14 @@ final class IdentityTranslations
             'validation' => self::validation(),
             'actions' => self::actions(),
             'deletion' => self::deletion(),
+            'meta' => self::meta(),
+        ];
+    }
+
+    public static function meta(): array
+    {
+        return [
+            'suffix' => ' | '. config('app.name'),
         ];
     }
 
