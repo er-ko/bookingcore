@@ -1,114 +1,145 @@
+# BookingCore
+
 ![Laravel](https://img.shields.io/badge/Laravel-12-red)
 ![Vue](https://img.shields.io/badge/Vue-3-green)
 ![Inertia](https://img.shields.io/badge/Inertia.js-SPA-purple)
-![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Open Source](https://img.shields.io/badge/open--source-yes-brightgreen)
+![Status](https://img.shields.io/badge/status-active-blue)
 
-# BookingCore – Laravel Booking Engine
+**BookingCore** is a free open-source booking system for small service businesses.
 
-A modern **booking engine built with Laravel 12, Vue 3 and Inertia.js**,
-designed with a strong focus on **clean architecture, domain separation,
-and testability**.
+It is designed for salons, spas, massage therapists, consultants, coaches, freelancers, and other appointment-based businesses that need a simple way to accept bookings online and sync reservations with the owner’s calendar.
 
-This repository demonstrates how a booking system can be implemented
-using a structured **Domain-Driven Design (DDD) inspired architecture** rather
-than traditional CRUD‑oriented Laravel controllers.
+Website: **https://bookingcore.link**
 
-The project includes both:
+---
 
-- Backend domain architecture\
-- Modern Vue + Inertia UI
+## Why BookingCore?
 
-The goal is to showcase patterns suitable for scalable production
-systems.
+Many small service businesses do not need a complex scheduling platform.
 
-------------------------------------------------------------------------
+They often need something much simpler:
 
-# Features
+- a public booking page,
+- service and availability setup,
+- calendar-based reservation management,
+- fewer admin tasks,
+- and a system they can understand, self-host, and extend.
 
-### Booking Engine
+BookingCore focuses on a lightweight booking flow where customers book online and reservations sync directly with the owner’s calendar.
 
--   Resource‑based booking system
--   Activities assigned to resources
--   Working hours support
--   Time‑off periods
--   Activity buffers (before / after)
--   Automatic slot generation
--   Booking conflict detection
--   Booking cancellation
--   Booking status updates
+The goal is not to replace existing calendars, but to add a simple booking layer on top of them.
 
-### API Layer
+---
 
--   Clean API endpoints
--   Centralized exception handling
--   Validation layer
--   Consistent JSON responses
+## Current status
 
-### Frontend (Vue + Inertia)
+BookingCore currently supports Google Calendar integration as the first calendar provider.
 
--   Vue 3 Composition API
--   Inertia.js SPA navigation
--   Reactive booking form
--   Dynamic option loading
--   Slot availability UI
--   Status badges
--   Booking action buttons
+Future roadmap includes support for additional calendar providers such as:
 
-### Architecture
+- Apple Calendar
+- Microsoft Outlook Calendar
+- more calendar and scheduling integrations
 
--   Domain‑driven folder structure
--   Thin controllers
--   DTO objects
--   Domain services
--   Repositories
--   Centralized exception mapping
--   Query objects
--   Infrastructure layer
+---
 
-### Testing
+## Features
 
--   Pest test suite
--   Unit tests for domain logic
--   Feature tests for API flows
+### Booking system
 
-------------------------------------------------------------------------
+- Public booking pages
+- Branch / unit based booking structure
+- Activities assigned to units
+- Working hours
+- Time-off periods
+- Activity duration and buffers
+- Automatic time slot generation
+- Booking conflict detection
+- Booking cancellation
+- Booking status updates
+- Calendar-first workflow
 
-# Architecture
+### Calendar workflow
 
-The project follows a layered architecture inspired by Domain‑Driven
-Design and Clean Architecture.
+- Connect a calendar provider
+- Sync reservations with the owner’s calendar
+- Reduce the need to manage another admin dashboard
+- Keep bookings close to the tools business owners already use
 
-HTTP Layer\
-↓\
-Requests / Validation\
-↓\
-Actions (Use Cases)\
-↓\
-Domain Services\
-↓\
-Repositories\
-↓\
+### Business use cases
+
+BookingCore is suitable for:
+
+- beauty salons
+- hairdressers
+- massage therapists
+- wellness and spa services
+- consultants
+- coaches
+- freelancers
+- appointment-based local businesses
+
+---
+
+## Tech stack
+
+### Backend
+
+- Laravel 12
+- PHP 8.4
+- Eloquent ORM
+- MySQL / MariaDB
+- Pest
+
+### Frontend
+
+- Vue 3
+- Inertia.js
+- Tailwind CSS
+
+### Infrastructure
+
+- Docker
+- Queue worker
+- Scheduler
+- Calendar provider integration
+
+---
+
+## Architecture
+
+BookingCore is built with a clean backend structure inspired by Domain-Driven Design and Clean Architecture.
+
+The goal is to keep the project maintainable, testable, and easy to extend.
+
+```text
+HTTP Layer
+↓
+Requests / Validation
+↓
+Actions / Use Cases
+↓
+Domain Services
+↓
+Repositories
+↓
 Database
+```
 
-### Key principles:
+### Key principles
 
 - Thin controllers
 - Domain logic in services
 - DTOs between layers
-- Query objects for reads
+- Query objects for read flows
 - Repository abstraction
 - Centralized exception handling
+- Infrastructure separated from domain logic
 
-------------------------------------------------------------------------
+---
 
-# Architecture Diagram
-
-The project separates write flows and read flows into dedicated layers.
-
-- **Write flow** goes through validation, controllers, actions, and domain services
-- **Read flow** is handled by application queries
-- **Persistence** is isolated in the infrastructure layer
-- **Frontend** is built with Vue 3 and Inertia.js
+## Architecture diagram
 
 ```mermaid
 flowchart TD
@@ -127,178 +158,182 @@ flowchart TD
     UI --> QUERY
 ```
 
-------------------------------------------------------------------------
+---
 
-# Project Structure
+## Project structure
 
-    app
-    ├ Domain
-    │  └ Booking
-    │     ├ Actions
-    │     ├ DTO
-    │     ├ Exceptions
-    │     ├ Services
-    │     └ Support
-    │
-    ├ Application
-    │  └ Booking
-    │     └ Queries
-    │
-    ├ Infrastructure
-    │  └ Booking
-    │     └ Repositories
-    │
-    ├ Http
-    │  ├ Controllers
-    │  │  └ Api
-    │  │     └ Booking
-    │  └ Requests
-    │
-    resources/js
-    ├ Pages
-    │  └ Booking
-    │     ├ Index.vue
-    │     └ Create.vue
-    │
-    ├ Components
-    │  └ Booking
-    │     ├ BookingTable.vue
-    │     ├ BookingStatusBadge.vue
-    │     ├ BookingActions.vue
-    │     └ BookingForm.vue
-    │
-    └ Composables
-       └ Booking
-          └ useBookingForm.js
+```text
+app
+├── Domain
+│   └── Booking
+│       ├── Actions
+│       ├── DTO
+│       ├── Exceptions
+│       ├── Services
+│       └── Support
+│
+├── Application
+│   └── Booking
+│       └── Queries
+│
+├── Infrastructure
+│   └── Booking
+│       └── Repositories
+│
+├── Http
+│   ├── Controllers
+│   │   └── Api
+│   │       └── Booking
+│   └── Requests
+│
+resources/js
+├── Pages
+│   └── Booking
+├── Components
+│   └── Booking
+└── Composables
+    └── Booking
+```
 
-------------------------------------------------------------------------
+---
 
-# Booking Lifecycle
+## Booking lifecycle
 
-pending → confirmed → completed\
-↘\
-cancelled
+```text
+pending → confirmed → completed
+       ↘
+        cancelled
+```
 
-### Rules:
+### Rules
 
 - Cancelled bookings cannot be modified
 - Status cannot be set to the same value
-- Cancellation must use the cancel endpoint
+- Cancellation must use the cancellation flow
+- Conflicting bookings are prevented by domain rules
 
-------------------------------------------------------------------------
+---
 
-# API Endpoints
+## API endpoints
 
-### Create Booking
+### Create booking
 
-POST `/api/bookings/create`
+```http
+POST /api/bookings/create
+```
 
-### Cancel Booking
+### Cancel booking
 
-POST `/api/bookings/{booking}/cancel`
+```http
+POST /api/bookings/{booking}/cancel
+```
 
-### Update Booking Status
+### Update booking status
 
-PATCH `/api/bookings/{booking}/status`
+```http
+PATCH /api/bookings/{booking}/status
+```
 
-------------------------------------------------------------------------
+---
 
-# Frontend Architecture
-
-The UI is built using:
-
--   Vue 3 Composition API
--   Inertia.js
--   TailwindCSS
-
-Composable example:
-
-    useBookingForm()
-
-### Handles:
-
-- reactive form state
-- loading resources
-- loading activities
-- loading slots
-- booking submission
-
-------------------------------------------------------------------------
-
-# Testing
-
-Tests are written using Pest.
-
-Run tests:
-
-    php artisan test
-
-------------------------------------------------------------------------
-
-# Technologies
-
-### Backend
-
-- Laravel 12
-- PHP 8.3
-- Eloquent ORM
-- Carbon
-- Pest
-
-### Frontend
-
-- Vue 3
-- Inertia.js
-- TailwindCSS
-
-### Infrastructure
-
-- SQLite (testing)
-- MySQL / PostgreSQL compatible
-
-------------------------------------------------------------------------
-
-# Installation
+## Installation
 
 Clone the repository:
 
-git clone https://github.com/ek-ko/bookingcore.git
+```bash
+git clone https://github.com/er-ko/bookingcore.git
+cd bookingcore
+```
 
-Install dependencies:
+Install PHP dependencies:
 
+```bash
 composer install
+```
+
+Install frontend dependencies:
+
+```bash
 npm install
+```
+
+Copy the environment file:
+
+```bash
+cp .env.example .env
+```
+
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
 
 Run migrations:
 
+```bash
 php artisan migrate
+```
 
 Start the development server:
 
+```bash
 php artisan serve
 npm run dev
+```
 
-------------------------------------------------------------------------
+Run tests:
 
-# Design Goals
+```bash
+php artisan test
+```
 
-This project demonstrates:
+---
 
--   scalable Laravel architecture
--   clean domain separation
--   test‑driven backend development
--   modern Laravel + Vue integration
+## Roadmap
 
-------------------------------------------------------------------------
+Planned improvements:
 
-# Author
+- Apple Calendar integration
+- Microsoft Outlook Calendar integration
+- More calendar providers
+- Improved public booking pages
+- More flexible availability rules
+- Better self-hosting documentation
+- More installation examples
+- Docker production setup guide
+- Additional tests and example data
 
-Roman Kocián
-Laravel Backend Developer
+---
 
-BookingCore
-Architecture project
+## Contributing
 
-olaao
-https://olaao.com
-SaaS platform
+Contributions are welcome.
+
+You can help by:
+
+- reporting bugs,
+- improving documentation,
+- suggesting features,
+- adding tests,
+- improving calendar integrations,
+- or submitting pull requests.
+
+---
+
+## License
+
+BookingCore is open-source software.
+
+Please check the repository license file for details.
+
+---
+
+## Author
+
+**Roman Kocián**  
+PHP/Laravel Backend Developer  
+Founder of Olaao.com and BookingCore.link
+
+- Olaao: https://olaao.com
+- BookingCore: https://bookingcore.link
