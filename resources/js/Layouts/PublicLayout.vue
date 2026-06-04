@@ -9,8 +9,6 @@ const { isDark, toggleTheme } = useTheme()
 const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
 const publicTranslations = computed(() => layoutTranslations.value.public ?? {})
 const accessibilityTranslations = computed(() => layoutTranslations.value.accessibility ?? {})
-
-const isHomePage = computed(() => page.url === '/')
 </script>
 
 <template>
@@ -61,12 +59,7 @@ const isHomePage = computed(() => page.url === '/')
                         </Link>
                     </div>
 
-                    <div
-                        :class="[
-                            'flex items-center gap-3 sm:justify-end',
-                            isHomePage ? 'justify-between' : 'justify-end',
-                        ]"
-                    >
+                    <div class="flex items-center gap-3 sm:justify-end justify-between">
                         <div class="flex items-center justify-end gap-3">
                             <div class="text-black/35 dark:text-white/35">
                                 {{ publicTranslations.theme ?? 'Theme' }}
@@ -118,7 +111,7 @@ const isHomePage = computed(() => page.url === '/')
                             </button>
                         </div>
 
-                        <LocaleSwitcher v-if="isHomePage" />
+                        <LocaleSwitcher />
                     </div>
                 </div>
             </div>

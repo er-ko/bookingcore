@@ -1,6 +1,5 @@
 <script setup>
 import AuthLayout from '@/Layouts/AuthLayout.vue'
-import LocaleSwitcher from '@/Components/LocaleSwitcher.vue'
 
 defineProps({
     translations: {
@@ -37,10 +36,8 @@ defineProps({
                                     </svg>
                                 </div>
 
-                                <div class="flex items-center gap-1.75 rounded-full border border-black/8 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.15em] text-black/42 dark:border-white/10 dark:text-white/42">
-                                    <span>{{ translations.provider.google_badge }}</span>
-                                    <span>/</span>
-                                    <span class="text-[9px] tracking-[0.075em] text-black/70 dark:text-white/70">{{ translations.provider.protocol }}</span>
+                                <div class="rounded-full border border-black/8 px-3 py-1 text-[12px] font-light tracking-[0.15em] text-black/85 dark:border-white/10 dark:text-white/85">
+                                    {{ translations.provider.google_badge }}
                                 </div>
                             </div>
 
@@ -56,7 +53,10 @@ defineProps({
                         </div>
 
                         <div class="flex items-center justify-between gap-3">
-                            <LocaleSwitcher />
+
+                            <div class="text-xs uppercase tracking-[0.15em] text-black/35 dark:text-white/36">
+                                {{ translations.provider.protocol }}
+                            </div>
 
                             <a
                                 :href="route('connect.google.redirect')"
