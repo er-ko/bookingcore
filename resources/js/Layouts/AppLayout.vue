@@ -280,7 +280,7 @@ const navigationGroups = computed(() => [
         >
             <div
                 v-if="visibleFlash"
-                class="pointer-events-none fixed top-5 right-5 z-[100] w-[calc(100vw-2.5rem)] max-w-sm"
+                class="pointer-events-none fixed top-5 right-5 z-100 w-[calc(100vw-2.5rem)] max-w-sm"
             >
                 <div
                     class="overflow-hidden rounded-2xl border shadow-[0_18px_60px_-20px_rgba(0,0,0,0.35)] backdrop-blur-xl"
@@ -316,7 +316,7 @@ const navigationGroups = computed(() => [
                             :key="`${flashType}-${visibleFlash}`"
                             class="h-full origin-right animate-toast-progress"
                             :class="flashType === 'error'
-                                ? 'bg-gradient-to-l from-red-500 to-red-400 dark:from-red-500 dark:to-red-400'
+                                ? 'bg-linear-to-l from-red-500 to-red-400 dark:from-red-500 dark:to-red-400'
                                 : 'bg-green-400 dark:bg-green-600'"
                         />
                     </div>
@@ -384,7 +384,7 @@ const navigationGroups = computed(() => [
 
                             <div
                                 v-if="openDropdown === group.key"
-                                class="absolute top-full left-0 mt-3 min-w-[220px] overflow-hidden rounded-3xl border border-black/10 bg-white/95 p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/95"
+                                class="absolute top-full left-0 mt-3 min-w-55 overflow-hidden rounded-3xl border border-black/10 bg-white/95 p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/95"
                             >
                                 <Link
                                     v-for="item in group.items"
@@ -393,7 +393,7 @@ const navigationGroups = computed(() => [
                                     class="flex items-center rounded-2xl px-4 py-3 text-sm font-medium select-none transition"
                                     :class="item.active
                                         ? 'bg-black text-white dark:bg-white dark:text-black'
-                                        : 'text-black/65 hover:bg-black/[0.04] hover:text-black dark:text-white/65 dark:hover:bg-white/[0.06] dark:hover:text-white'"
+                                        : 'text-black/65 hover:bg-black/4 hover:text-black dark:text-white/65 dark:hover:bg-white/6 dark:hover:text-white'"
                                     @click="closeDropdown"
                                 >
                                     {{ item.label }}

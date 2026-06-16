@@ -17,11 +17,10 @@ const isHomePage = computed(() => page.component === 'Home/Index')
     <div class="relative w-full min-h-dvh overflow-x-hidden flex flex-col items-center transition-all duration-300 ease-in-out bg-white text-black dark:bg-black dark:text-white">
         <!-- bg pattern -->
         <div class="z-0 absolute inset-0 pointer-events-none">
-            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
-            <div class="absolute left-[-8rem] top-[-6rem] h-64 w-64 rounded-full bg-black/[0.035] blur-3xl dark:bg-white/[0.035]" />
-            <div class="absolute right-[-10rem] top-[20%] h-72 w-72 rounded-full bg-black/[0.03] blur-3xl dark:bg-white/[0.035]" />
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.035)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)]" />
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.75),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_40%)]" />
+            <div class="absolute -left-32 -top-24 h-64 w-64 rounded-full bg-black/[0.035] blur-3xl dark:bg-white/[0.035]" />
+            <div class="absolute -right-40 top-[20%] h-72 w-72 rounded-full bg-black/3 blur-3xl dark:bg-white/[0.035]" />
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.035)_1px,transparent_1px)] bg-size-[40px_40px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)]" />
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.75),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.15),transparent_25%)]" />
         </div>
         <!-- header -->
         <div v-if="isHomePage" class="z-10 w-full flex items-center justify-between px-4 md:px-6 xl:px-8 py-6">

@@ -129,7 +129,7 @@ const props = defineProps({
         </div>
 
         <!-- Tags -->
-        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.15em] text-black/50 dark:text-white/50">
+        <div class="flex flex-wrap items-center justify-center gap-x-3 md:gap-x-4 gap-y-2 text-[0.7rem] md:text-xs uppercase tracking-[0.15em] text-black/50 dark:text-white/50">
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.mit_license }}</span>
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.open_source }}</span>
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.booking_engine }}</span>
