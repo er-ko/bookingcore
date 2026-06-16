@@ -43,7 +43,7 @@ const headDescription = computed(() => props.translations.meta.description)
     </Head>
 
     <PublicLayout>
-        <div class="space-y-12 select-none lg:space-y-16">
+        <div class="w-full max-w-6xl flex flex-col space-y-16 select-none">
             <HeroSection
                 :connect-url="route('connect.index')"
                 :current-year="currentYear"

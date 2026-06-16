@@ -26,9 +26,6 @@ return [
     ],
 
     'public' => [
-        'public_code' => 'Открытый код',
-        'mit_licensed' => 'Лицензия MIT',
-        'theme' => 'Тема',
         'privacy_policy' => 'Политика конфиденциальности',
         'terms_of_service' => 'Условия обслуживания',
     ],

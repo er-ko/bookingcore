@@ -32,11 +32,9 @@ defineProps({
                 {{ translations.description }}
             </p>
 
-            <div class="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.18em] text-black/38 dark:text-white/38">
-                <span>{{ translations.tags.open_source }}</span>
-                <span>{{ translations.tags.mit_license }}</span>
-                <span>{{ translations.tags.public_code }}</span>
-                <span>{{ translations.tags.booking_infrastructure }}</span>
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.18em] text-black/50 dark:text-white/50">
+                <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.open_source }}</span>
+                <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.booking_engine }}</span>
             </div>
         </div>
     </section>

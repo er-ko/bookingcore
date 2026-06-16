@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'The bridge between',
             'line_2' => 'your customer',
-            'line_3' => 'and your calendar.',
+            'line_3' => 'and your calendar',
         ],
 
         'description' => 'A lean scheduling engine that connects your customers to your calendar, with clean rules, clear structure, and no subscription lock-in.',
 
         'actions' => [
             'get_started' => 'Get started',
-            'view_github' => 'View GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'An open source scheduling foundation for teams that want clarity, control, and a booking experience they can actually shape.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#MITLicense',
-            'public_code' => '#PublicCode',
-            'booking_infrastructure' => '#BookingInfrastructure',
+            'booking_engine' => '#BookingEngine',
         ],
     ],
 ];

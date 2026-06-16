@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'Le lien entre',
             'line_2' => 'votre client',
-            'line_3' => 'et votre calendrier.',
+            'line_3' => 'et votre calendrier',
         ],
 
         'description' => 'Un moteur de planification léger qui relie vos clients à votre calendrier, avec des règles claires, une structure lisible et sans dépendance à un abonnement.',
 
         'actions' => [
             'get_started' => 'Commencer',
-            'view_github' => 'Voir GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Une base de planification open source pour les équipes qui veulent de la clarté, du contrôle et une expérience de réservation qu’elles peuvent réellement façonner.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#LicenceMIT',
-            'public_code' => '#CodePublic',
-            'booking_infrastructure' => '#InfrastructureReservation',
+            'booking_engine' => '#EngineDeReservas',
         ],
     ],
 ];

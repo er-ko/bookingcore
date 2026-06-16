@@ -26,9 +26,6 @@ return [
     ],
 
     'public' => [
-        'public_code' => 'Código público',
-        'mit_licensed' => 'Licença MIT',
-        'theme' => 'Tema',
         'privacy_policy' => 'Política de Privacidade',
         'terms_of_service' => 'Termos de Serviço',
     ],

@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'De brug tussen',
             'line_2' => 'uw klant',
-            'line_3' => 'en uw agenda.',
+            'line_3' => 'en uw agenda',
         ],
 
         'description' => 'Een slanke planningsengine die uw klanten met uw agenda verbindt, met heldere regels, een duidelijke structuur en zonder abonnementsafhankelijkheid.',
 
         'actions' => [
             'get_started' => 'Aan de slag',
-            'view_github' => 'GitHub bekijken',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Een open source planningsfundament voor teams die helderheid, controle en een boekingservaring willen die zij daadwerkelijk zelf kunnen vormgeven.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#MITLicentie',
-            'public_code' => '#OpenbareCode',
-            'booking_infrastructure' => '#Boekingsinfrastructuur',
+            'booking_engine' => '#Boekingsengine',
         ],
     ],
 ];

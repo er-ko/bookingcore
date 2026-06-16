@@ -26,9 +26,6 @@ return [
     ],
 
     'public' => [
-        'public_code' => 'Public code',
-        'mit_licensed' => 'MIT licensed',
-        'theme' => 'Theme',
         'privacy_policy' => 'Privacy Policy',
         'terms_of_service' => 'Terms of Service',
     ],

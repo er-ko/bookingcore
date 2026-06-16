@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'Most mezi',
             'line_2' => 'vaším zákazníkem',
-            'line_3' => 'a vaším kalendářem.',
+            'line_3' => 'a vaším kalendářem',
         ],
 
         'description' => 'Jednoduchý a efektivní plánovací engine, který propojuje vaše zákazníky s vaším kalendářem pomocí jasných pravidel, přehledné struktury a bez uzamčení v předplatném.',
 
         'actions' => [
             'get_started' => 'Začít',
-            'view_github' => 'Zobrazit GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Open source plánovací základ pro týmy, které chtějí přehlednost, kontrolu a rezervační prostředí, které mohou skutečně přizpůsobit.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#MITLicence',
-            'public_code' => '#VeřejnýKód',
-            'booking_infrastructure' => '#RezervačníInfrastruktura',
+            'booking_engine' => '#RezervačníEngine',
         ],
     ],
 ];

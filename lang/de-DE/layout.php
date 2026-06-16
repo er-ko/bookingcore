@@ -26,9 +26,6 @@ return [
     ],
 
     'public' => [
-        'public_code' => 'Öffentlicher Code',
-        'mit_licensed' => 'MIT-lizenziert',
-        'theme' => 'Design',
         'privacy_policy' => 'Datenschutzrichtlinie',
         'terms_of_service' => 'Allgemeine Geschäftsbedingungen',
     ],

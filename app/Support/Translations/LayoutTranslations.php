@@ -30,9 +30,6 @@ final class LayoutTranslations
                 'logout' => __('layout.navigation.logout'),
             ],
             'public' => [
-                'public_code' => __('layout.public.public_code'),
-                'mit_licensed' => __('layout.public.mit_licensed'),
-                'theme' => __('layout.public.theme'),
                 'connect' => __('connect.view.provider.action'),
                 'privacy_policy' => __('layout.public.privacy_policy'),
                 'terms_of_service' => __('layout.public.terms_of_service'),

@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'A ponte entre',
             'line_2' => 'seu cliente',
-            'line_3' => 'e seu calendário.',
+            'line_3' => 'e seu calendário',
         ],
 
         'description' => 'Um motor de planejamento leve que conecta seus clientes ao seu calendário, com regras claras, estrutura simples e sem dependência de assinatura.',
 
         'actions' => [
             'get_started' => 'Começar',
-            'view_github' => 'Ver GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Uma base de planejamento open source para equipes que querem clareza, controle e uma experiência de reserva que possam realmente moldar.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#LicencaMIT',
-            'public_code' => '#CodigoPublico',
-            'booking_infrastructure' => '#InfraestruturaReservas',
+            'booking_engine' => '#EngineDeReservas',
         ],
     ],
 ];

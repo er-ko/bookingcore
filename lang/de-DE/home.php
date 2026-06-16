@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'Die Brücke zwischen',
             'line_2' => 'Ihren Kunden',
-            'line_3' => 'und Ihrem Kalender.',
+            'line_3' => 'und Ihrem Kalender',
         ],
 
         'description' => 'Eine schlanke Terminplanungs-Engine, die Ihre Kunden mit Ihrem Kalender verbindet – mit klaren Regeln, übersichtlicher Struktur und ohne Bindung an ein Abonnement.',
 
         'actions' => [
             'get_started' => 'Loslegen',
-            'view_github' => 'GitHub ansehen',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Eine Open-Source-Terminplanungsgrundlage für Teams, die Klarheit, Kontrolle und ein Buchungserlebnis möchten, das sie wirklich selbst gestalten können.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#MITLizenz',
-            'public_code' => '#ÖffentlicherCode',
-            'booking_infrastructure' => '#Buchungsinfrastruktur',
+            'booking_engine' => '#Buchungsengine',
         ],
     ],
 ];

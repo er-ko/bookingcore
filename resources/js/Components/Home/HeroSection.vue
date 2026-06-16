@@ -23,17 +23,17 @@ const copyrightTag = computed(() =>
 </script>
 
 <template>
-    <section class="flex flex-col items-center space-y-10 text-center lg:space-y-12 py-16 px-3">
+    <section class="min-h-dvh flex flex-col items-center justify-center space-y-10 text-center lg:space-y-12 py-16 px-3">
         <!-- Eyebrow -->
         <div class="flex flex-wrap items-center justify-center gap-3">
             <Link
                 href="/"
-                class="text-xs font-medium uppercase tracking-[0.3em] text-black/75 transition hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
+                class="text-xs md:text-sm font-medium uppercase tracking-[0.3em] md:tracking-[0.35em] transition text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white"
             >
                 {{ translations.appName }}
             </Link>
             <span class="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20 hidden sm:block" />
-            <div class="rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-black/55 backdrop-blur-sm dark:border-white/10 dark:bg-white/4 dark:text-white/55">
+            <div class="rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] backdrop-blur-sm bg-white text-black/75 dark:bg-black dark:text-white/75 border border-dashed border-black/25 dark:border-white/25">
                 {{ translations.badge }}
             </div>
         </div>
@@ -41,11 +41,11 @@ const copyrightTag = computed(() =>
         <!-- Headline + description -->
         <div class="max-w-4xl space-y-16">
             <h1 class="text-5xl font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[5.5rem] lg:leading-none">
-                {{ translations.title.line_1 }}
+                <span class="block">{{ translations.title.line_1 }}</span>
                 <span class="block text-black/35 dark:text-white/35">{{ translations.title.line_2 }}</span>
                 <span class="block">{{ translations.title.line_3 }}</span>
             </h1>
-            <p class="mx-auto max-w-xl text-base leading-7 text-black/55 dark:text-white/55 sm:text-lg sm:leading-8">
+            <p class="mx-auto max-w-xl text-base sm:text-lg sm:leading-8 leading-7 text-black/65 dark:text-white/65">
                 {{ translations.description }}
             </p>
         </div>
@@ -132,10 +132,10 @@ const copyrightTag = computed(() =>
         </div>
 
         <!-- CTAs -->
-        <div class="pt-12 flex flex-col items-center gap-3 sm:flex-row">
+        <div class="flex justify-center gap-3 pt-12">
             <Link
                 :href="connectUrl"
-                class="inline-flex items-center justify-center rounded-full border border-black bg-black px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-white transition hover:translate-x-0.5 hover:cursor-pointer hover:bg-black/90 dark:border-white dark:bg-white dark:text-black dark:hover:bg-white/90"
+                class="inline-flex items-center justify-center rounded-full border border-black bg-black px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-black/90 dark:border-white dark:bg-white dark:text-black dark:hover:bg-white/90"
             >
                 {{ translations.actions.get_started }}
             </Link>
@@ -143,17 +143,17 @@ const copyrightTag = computed(() =>
                 href="https://github.com/er-ko/bookingcore"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center justify-center rounded-full border border-black/12 bg-white/70 px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-black/70 transition hover:border-black/25 hover:text-black dark:border-white/10 dark:bg-white/4 dark:text-white/70 dark:hover:border-white/25 dark:hover:text-white"
+                class="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] transition hover:-translate-y-0.5 bg-white text-black dark:bg-black dark:text-white border border-dashed hover:border-solid border-black/65 hover:border-black dark:border-white/65 dark:hover:border-white"
             >
-                {{ translations.actions.view_github }}
+                {{ 'GitHub' }}
             </a>
         </div>
 
         <!-- Tags -->
-        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.18em] text-black/38 dark:text-white/38 mt-6 md:mt-0">
-            <span>{{ translations.tags.mit_license }}</span>
-            <span>{{ translations.tags.public_code }}</span>
-            <span>{{ copyrightTag }}</span>
+        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-6 md:mt-0 text-xs uppercase tracking-[0.15em] text-black/50 dark:text-white/50">
+            <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.mit_license }}</span>
+            <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.public_code }}</span>
+            <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ copyrightTag }}</span>
         </div>
     </section>
 </template>

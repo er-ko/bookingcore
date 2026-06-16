@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'El puente entre',
             'line_2' => 'su cliente',
-            'line_3' => 'y su calendario.',
+            'line_3' => 'y su calendario',
         ],
 
         'description' => 'Un motor de programación ligero que conecta a sus clientes con su calendario, con reglas claras, una estructura ordenada y sin dependencia de suscripción.',
 
         'actions' => [
             'get_started' => 'Comenzar',
-            'view_github' => 'Ver GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Una base de programación de código abierto para equipos que desean claridad, control y una experiencia de reserva que realmente puedan adaptar.',
         'tags' => [
             'open_source' => '#CodigoAbierto',
-            'mit_license' => '#LicenciaMIT',
-            'public_code' => '#CodigoPublico',
-            'booking_infrastructure' => '#InfraestructuraDeReservas',
+            'booking_engine' => '#EngineDeReservas',
         ],
     ],
 ];

@@ -55,7 +55,6 @@ final class HomeTranslations
 
             'actions' => [
                 'get_started' => __('home.hero.actions.get_started'),
-                'view_github' => __('home.hero.actions.view_github'),
             ],
 
             'tags' => [
@@ -209,9 +208,7 @@ final class HomeTranslations
 
             'tags' => [
                 'open_source' => __('home.closing.tags.open_source'),
-                'mit_license' => __('home.closing.tags.mit_license'),
-                'public_code' => __('home.closing.tags.public_code'),
-                'booking_infrastructure' => __('home.closing.tags.booking_infrastructure'),
+                'booking_engine' => __('home.closing.tags.booking_engine'),
             ],
         ];
     }

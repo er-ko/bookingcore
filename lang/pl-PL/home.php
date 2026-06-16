@@ -12,14 +12,13 @@ return [
         'title' => [
             'line_1' => 'Most pomiędzy',
             'line_2' => 'Państwa klientem',
-            'line_3' => 'a Państwa kalendarzem.',
+            'line_3' => 'a Państwa kalendarzem',
         ],
 
         'description' => 'Lekki silnik harmonogramowania, który łączy Państwa klientów z Państwa kalendarzem, oferując przejrzyste reguły, czytelną strukturę i brak uzależnienia od subskrypcji.',
 
         'actions' => [
             'get_started' => 'Rozpocznij',
-            'view_github' => 'Zobacz GitHub',
         ],
 
         'tags' => [
@@ -140,9 +139,7 @@ return [
         'description' => 'Otwartoźródłowa podstawa harmonogramowania dla zespołów, które chcą przejrzystości, kontroli oraz doświadczenia rezerwacji, które mogą realnie kształtować.',
         'tags' => [
             'open_source' => '#OpenSource',
-            'mit_license' => '#LicencjaMIT',
-            'public_code' => '#PublicznyKod',
-            'booking_infrastructure' => '#InfrastrukturaRezerwacji',
+            'booking_engine' => '#EngineRezerwacji',
         ],
     ],
 ];
