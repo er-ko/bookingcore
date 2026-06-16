@@ -23,8 +23,8 @@ return [
 
         'tags' => [
         'mit_license' => '#MITLicencia',
-        'public_code' => '#VerejnyKod',
-        'copyright' => '#Copyright :year',
+        'open_source' => '#OpenSource',
+        'booking_engine' => '#BookingEngine',
     ],
 
         'bridge' => [
@@ -138,8 +138,8 @@ return [
         'title' => 'BookingCore',
         'description' => 'Open-source plánovací základ pre tímy, ktoré chcú prehľadnosť, kontrolu a rezervačné prostredie, ktoré si môžu skutočne prispôsobiť.',
         'tags' => [
-            'open_source' => '#OpenSource',
-            'booking_engine' => '#BookingEngine',
+            'public_code' => '#VerejnyKod',
+            'copyright' => '#Copyright :year',
         ],
     ],
 ];

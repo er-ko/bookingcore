@@ -43,10 +43,9 @@ const headDescription = computed(() => props.translations.meta.description)
     </Head>
 
     <PublicLayout>
-        <div class="w-full max-w-6xl flex flex-col space-y-16 select-none">
+        <div class="w-full max-w-6xl flex flex-col space-y-12 md:space-y-16 select-none">
             <HeroSection
                 :connect-url="route('connect.index')"
-                :current-year="currentYear"
                 :translations="translations.hero"
             />
             <OpenAccessSection :translations="translations.open_access" />
@@ -55,7 +54,10 @@ const headDescription = computed(() => props.translations.meta.description)
                 :translations="translations.audience"
                 :audiences="audiences"
             />
-            <ClosingSection :translations="translations.closing" />
+            <ClosingSection
+                :current-year="currentYear"
+                :translations="translations.closing"
+            />
         </div>
     </PublicLayout>
 </template>

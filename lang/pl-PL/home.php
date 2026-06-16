@@ -23,8 +23,8 @@ return [
 
         'tags' => [
             'mit_license' => '#LicencjaMIT',
-            'public_code' => '#PublicznyKod',
-            'copyright' => '#Copyright :year',
+            'open_source' => '#OpenSource',
+            'booking_engine' => '#EngineRezerwacji',
         ],
 
         'bridge' => [
@@ -138,8 +138,8 @@ return [
         'title' => 'BookingCore',
         'description' => 'Otwartoźródłowa podstawa harmonogramowania dla zespołów, które chcą przejrzystości, kontroli oraz doświadczenia rezerwacji, które mogą realnie kształtować.',
         'tags' => [
-            'open_source' => '#OpenSource',
-            'booking_engine' => '#EngineRezerwacji',
+            'public_code' => '#PublicznyKod',
+            'copyright' => '#Copyright :year',
         ],
     ],
 ];

@@ -59,8 +59,8 @@ final class HomeTranslations
 
             'tags' => [
                 'mit_license' => __('home.hero.tags.mit_license'),
-                'public_code' => __('home.hero.tags.public_code'),
-                'copyright' => __('home.hero.tags.copyright'),
+                'open_source' => __('home.hero.tags.open_source'),
+                'booking_engine' => __('home.hero.tags.booking_engine'),
             ],
 
             'bridge' => [
@@ -207,8 +207,8 @@ final class HomeTranslations
             'description' => __('home.closing.description'),
 
             'tags' => [
-                'open_source' => __('home.closing.tags.open_source'),
-                'booking_engine' => __('home.closing.tags.booking_engine'),
+                'public_code' => __('home.closing.tags.public_code'),
+                'copyright' => __('home.closing.tags.copyright'),
             ],
         ];
     }

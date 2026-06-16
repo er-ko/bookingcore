@@ -30,6 +30,7 @@ final class LayoutTranslations
                 'logout' => __('layout.navigation.logout'),
             ],
             'public' => [
+                'appName' => config('app.name'),
                 'connect' => __('connect.view.provider.action'),
                 'privacy_policy' => __('layout.public.privacy_policy'),
                 'terms_of_service' => __('layout.public.terms_of_service'),

@@ -23,8 +23,8 @@ return [
 
         'tags' => [
             'mit_license' => '#MITLizenz',
-            'public_code' => '#ÖffentlicherCode',
-            'copyright' => '#Urheberrecht :year',
+            'open_source' => '#OpenSource',
+            'booking_engine' => '#Buchungsengine',
         ],
 
         'bridge' => [
@@ -138,8 +138,8 @@ return [
         'title' => 'BookingCore',
         'description' => 'Eine Open-Source-Terminplanungsgrundlage für Teams, die Klarheit, Kontrolle und ein Buchungserlebnis möchten, das sie wirklich selbst gestalten können.',
         'tags' => [
-            'open_source' => '#OpenSource',
-            'booking_engine' => '#Buchungsengine',
+            'public_code' => '#ÖffentlicherCode',
+            'copyright' => '#Urheberrecht :year',
         ],
     ],
 ];

@@ -23,8 +23,8 @@ return [
 
         'tags' => [
             'mit_license' => '#LicenceMIT',
-            'public_code' => '#CodePublic',
-            'copyright' => '#DroitAuteur :year',
+            'open_source' => '#OpenSource',
+            'booking_engine' => '#EngineDeReservas',
         ],
 
         'bridge' => [
@@ -138,8 +138,8 @@ return [
         'title' => 'BookingCore',
         'description' => 'Une base de planification open source pour les équipes qui veulent de la clarté, du contrôle et une expérience de réservation qu’elles peuvent réellement façonner.',
         'tags' => [
-            'open_source' => '#OpenSource',
-            'booking_engine' => '#EngineDeReservas',
+            'public_code' => '#CodePublic',
+            'copyright' => '#DroitAuteur :year',
         ],
     ],
 ];

@@ -23,8 +23,8 @@ return [
 
         'tags' => [
             'mit_license' => '#ЛіцензіяMIT',
-            'public_code' => '#ПублічнийКод',
-            'copyright' => '#АвторськіПрава :year',
+            'open_source' => '#ВідкритийКод',
+            'booking_engine' => '#EngineБронирования',
         ],
 
         'bridge' => [
@@ -138,8 +138,8 @@ return [
         'title' => 'BookingCore',
         'description' => 'Відкрита основа для планування для команд, які прагнуть ясності, контролю та досвіду бронювання, який вони справді можуть адаптувати під себе.',
         'tags' => [
-            'open_source' => '#ВідкритийКод',,
-            'booking_engine' => '#EngineБронирования',
+            'public_code' => '#ПублічнийКод',
+            'copyright' => '#АвторськіПрава :year',
         ],
     ],
 ];
