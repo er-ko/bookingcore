@@ -114,7 +114,7 @@ const isHomePage = computed(() => page.component === 'Home/Index')
                          v-if="!isHomePage"
                         type="button"
                         :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
-                        class="hidden sm:inline-flex items-center rounded-full p-2 transition-all duration-300 ease-in-out hover:cursor-pointer bg-blue-500 text-white/65 hover:text-white dark:bg-amber-500 dark:text-black/65 dark:hover:text-black"
+                        class="inline-flex items-center rounded-full p-2 transition-all duration-300 ease-in-out hover:cursor-pointer bg-blue-500 text-white/65 hover:text-white dark:bg-amber-500 dark:text-black/65 dark:hover:text-black"
                         @click="toggleTheme"
                     >
                         <svg
