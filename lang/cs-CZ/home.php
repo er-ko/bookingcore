@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'Pro koho je určen',
-        'title' => 'Vytvořeno pro firmy, které plánují svůj den kolem rezervací.',
+        'title' => 'Vytvořeno pro firmy, které plánují svůj den kolem rezervací',
         'description' => 'BookingCore je navržen pro týmy, které pracují s rezervačními okny, délkou služeb, dostupností zdrojů a skutečnými každodenními plánovacími rozhodnutími.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Každodenní realita',
                 'description' => 'Vytvořeno pro provozy, které potřebují skutečnou otevírací dobu, délku služeb, časové rezervy a koordinaci zdrojů.',
-            ],
-            'common_thread' => [
-                'title' => 'Společný základ',
-                'description' => 'Pokud si zákazníci rezervují konkrétní čas ve vašem dni, BookingCore je přizpůsoben právě tomuto pracovnímu postupu.',
             ],
         ],
 

@@ -163,10 +163,6 @@ final class HomeTranslations
                     'title' => __('home.audience.insights.daily_reality.title'),
                     'description' => __('home.audience.insights.daily_reality.description'),
                 ],
-                'common_thread' => [
-                    'title' => __('home.audience.insights.common_thread.title'),
-                    'description' => __('home.audience.insights.common_thread.description'),
-                ],
             ],
 
             'items' => [

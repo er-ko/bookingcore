@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'Voor wie het is',
-        'title' => 'Gebouwd voor bedrijven die hun dag rond reserveringen plannen.',
+        'title' => 'Gebouwd voor bedrijven die hun dag rond reserveringen plannen',
         'description' => 'BookingCore is ontworpen voor teams die werken met afspraakvensters, serviceduur, beschikbaarheid van resources en echte dagelijkse planningsbeslissingen.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Dagelijkse praktijk',
                 'description' => 'Gebouwd voor organisaties die echte openingstijden, serviceduur, buffers en resourcecoördinatie nodig hebben.',
-            ],
-            'common_thread' => [
-                'title' => 'Gemeenschappelijke kern',
-                'description' => 'Als klanten een specifiek tijdstip in uw dag reserveren, is BookingCore voor die workflow ontworpen.',
             ],
         ],
 

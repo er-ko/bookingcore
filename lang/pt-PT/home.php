@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'A quem se destina',
-        'title' => 'Criado para negócios que organizam o dia em torno de reservas.',
+        'title' => 'Criado para negócios que organizam o dia em torno de reservas',
         'description' => 'O BookingCore foi concebido para equipas que trabalham com janelas de marcação, duração de serviços, disponibilidade de recursos e decisões reais de planeamento diário.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Realidade diária',
                 'description' => 'Criado para operações que precisam de horários de abertura reais, duração de serviços, margens e coordenação de recursos.',
-            ],
-            'common_thread' => [
-                'title' => 'Ponto comum',
-                'description' => 'Se os seus clientes reservam uma hora específica do seu dia, o BookingCore está preparado para esse fluxo de trabalho.',
             ],
         ],
 

@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'Für wen es gedacht ist',
-        'title' => 'Entwickelt für Unternehmen, die ihren Tag rund um Reservierungen planen.',
+        'title' => 'Entwickelt für Unternehmen, die ihren Tag rund um Reservierungen planen',
         'description' => 'BookingCore ist für Teams konzipiert, die mit Terminfenstern, Leistungsdauer, Ressourcenverfügbarkeit und echten täglichen Planungsentscheidungen arbeiten.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Tägliche Realität',
                 'description' => 'Entwickelt für Betriebe, die echte Öffnungszeiten, Leistungsdauer, Pufferzeiten und Ressourcenkoordination benötigen.',
-            ],
-            'common_thread' => [
-                'title' => 'Gemeinsamer Nenner',
-                'description' => 'Wenn Kunden eine bestimmte Uhrzeit in Ihrem Tag reservieren, ist BookingCore genau auf diesen Arbeitsablauf ausgerichtet.',
             ],
         ],
 

@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'À qui cela s’adresse',
-        'title' => 'Conçu pour les entreprises qui organisent leur journée autour des réservations.',
+        'title' => 'Conçu pour les entreprises qui organisent leur journée autour des réservations',
         'description' => 'BookingCore est conçu pour les équipes qui travaillent avec des créneaux de rendez-vous, des durées de service, la disponibilité des ressources et de véritables décisions quotidiennes de planification.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Réalité quotidienne',
                 'description' => 'Conçu pour les opérations qui nécessitent de vrais horaires d’ouverture, des durées de service, des marges et une coordination des ressources.',
-            ],
-            'common_thread' => [
-                'title' => 'Point commun',
-                'description' => 'Si vos clients réservent un horaire précis dans votre journée, BookingCore est pensé pour ce flux de travail.',
             ],
         ],
 

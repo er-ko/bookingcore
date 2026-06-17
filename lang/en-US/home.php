@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'Who It Is For',
-        'title' => 'Built for businesses that schedule their day around reservations.',
+        'title' => 'Built for businesses that schedule their day around reservations',
         'description' => 'BookingCore is designed for teams that work with appointment windows, service duration, resource availability, and real daily scheduling decisions.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Daily reality',
                 'description' => 'Built for operations that need real opening hours, service length, buffers, and resource coordination.',
-            ],
-            'common_thread' => [
-                'title' => 'Common thread',
-                'description' => 'If customers reserve a specific time in your day, BookingCore is shaped for that workflow.',
             ],
         ],
 

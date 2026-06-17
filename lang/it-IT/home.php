@@ -95,17 +95,13 @@ return [
 
     'audience' => [
         'eyebrow' => 'A chi è destinato',
-        'title' => 'Pensato per attività che organizzano la giornata attorno alle prenotazioni.',
+        'title' => 'Pensato per attività che organizzano la giornata attorno alle prenotazioni',
         'description' => 'BookingCore è progettato per team che lavorano con finestre di appuntamento, durata dei servizi, disponibilità delle risorse e decisioni reali di pianificazione quotidiana.',
 
         'insights' => [
             'daily_reality' => [
                 'title' => 'Realtà quotidiana',
                 'description' => 'Pensato per operazioni che richiedono orari di apertura reali, durata dei servizi, margini e coordinamento delle risorse.',
-            ],
-            'common_thread' => [
-                'title' => 'Elemento comune',
-                'description' => 'Se i clienti prenotano un orario specifico della sua giornata, BookingCore è modellato per quel flusso di lavoro.',
             ],
         ],
 
