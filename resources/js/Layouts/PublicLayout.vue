@@ -14,19 +14,21 @@ const isHomePage = computed(() => page.component === 'Home/Index')
 
 <template>
     <!-- wrapper -->
-    <div class="relative w-full min-h-dvh overflow-x-hidden flex flex-col items-center transition-all duration-300 ease-in-out bg-white text-black dark:bg-black dark:text-white">
+    <div class="relative w-full min-h-dvh overflow-x-hidden flex flex-col items-center transition-all duration-300 ease-in-out bg-white text-black dark:bg-zinc-800 dark:text-white">
         <!-- bg pattern -->
         <div class="z-0 absolute inset-0 pointer-events-none">
-            <div class="absolute -left-32 -top-24 h-64 w-64 rounded-full bg-black/[0.035] blur-3xl dark:bg-white/[0.035]" />
-            <div class="absolute -right-40 top-[20%] h-72 w-72 rounded-full bg-black/3 blur-3xl dark:bg-white/[0.035]" />
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.035)_1px,transparent_1px)] bg-size-[40px_40px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)]" />
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.75),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.15),transparent_25%)]" />
+            <!-- <div class="absolute -left-32 -top-24 h-64 w-64 rounded-full bg-black/[0.035] blur-3xl dark:bg-white/[0.035]" />
+            <div class="absolute -right-40 top-[20%] h-72 w-72 rounded-full bg-black/3 blur-3xl dark:bg-white/[0.035]" /> -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.035)_1px,transparent_1px)] bg-size-[160px_160px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)]" />
+            
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.8),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.8),transparent_45%)]" />
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.8),transparent_45%)] dark:bg-[radial-gradient(circle_at_bottom,rgba(0,0,0,0.8),transparent_45%)]" />
         </div>
         <!-- header -->
         <div v-if="isHomePage" class="z-10 w-full flex items-center justify-between px-4 md:px-6 xl:px-8 py-6">
             <Link
                 href="/"
-                class="text-xs md:text-sm font-medium uppercase tracking-[0.3em] text-black dark:text-white"
+                class="text-xs md:text-sm font-medium uppercase tracking-[0.3em] select-none text-black dark:text-white"
             >
                 {{ publicTranslations.appName }}
             </Link>
@@ -83,8 +85,8 @@ const isHomePage = computed(() => page.component === 'Home/Index')
         </div>
             
         <!-- footer -->
-        <div class="z-10 relative w-full flex items-center justify-center bg-white/50 dark:bg-black/50">
-            <div class="w-full max-w-6xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 px-3 lg:px-4 xl:px-0 py-6 text-xs select-none border-t border-black/8 dark:border-white/8 xl:border-t-0">
+        <div class="z-10 relative w-full flex items-center justify-center backdrop-blur-lg">
+            <div class="w-full max-w-6xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 px-3 lg:px-4 xl:px-0 py-6 text-xs select-none border-t border-dotted border-zinc-100 dark:border-zinc-900">
                 <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-black/65 dark:text-white/65">
                     <Link
                         href="/connect"

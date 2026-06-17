@@ -48,12 +48,16 @@ const headDescription = computed(() => props.translations.meta.description)
                 :connect-url="route('connect.index')"
                 :translations="translations.hero"
             />
-            <OpenAccessSection :translations="translations.open_access" />
+            <div class="w-full px-3 xl:px-0">
+                <OpenAccessSection :translations="translations.open_access" />
+            </div>
             <FeatureGrid :items="features" />
-            <AudienceSection
-                :translations="translations.audience"
-                :audiences="audiences"
-            />
+            <div class="w-full px-3 xl:px-0">
+                <AudienceSection
+                    :translations="translations.audience"
+                    :audiences="audiences"
+                />
+            </div>
             <ClosingSection
                 :current-year="currentYear"
                 :translations="translations.closing"

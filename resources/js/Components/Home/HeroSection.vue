@@ -24,7 +24,7 @@ const props = defineProps({
                 <span class="block transition ease-in-out text-black/35 dark:text-white/35">{{ translations.title.line_2 }}</span>
                 <span class="block">{{ translations.title.line_3 }}</span>
             </h1>
-            <p class="mx-auto max-w-xl text-base sm:text-lg sm:leading-8 leading-7 text-black/65 dark:text-white/65">
+            <p class="mx-auto max-w-xl text-base sm:text-lg leading-7 sm:leading-8 text-black/65 dark:text-white/65">
                 {{ translations.description }}
             </p>
         </div>
@@ -122,14 +122,14 @@ const props = defineProps({
                 href="https://github.com/er-ko/bookingcore"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center justify-center rounded-full px-4 md:px-6 py-2 md:py-3 text-xs md:text-sm font-medium uppercase tracking-[0.12em] transition hover:-translate-y-0.5 bg-white text-black dark:bg-black dark:text-white border border-dashed hover:border-solid border-black/65 hover:border-black dark:border-white/65 dark:hover:border-white"
+                class="inline-flex items-center justify-center rounded-full px-4 md:px-6 py-2 md:py-3 text-xs md:text-sm font-medium uppercase tracking-[0.12em] transition hover:-translate-y-0.5 bg-transparent text-black dark:bg-transparent dark:text-white border border-dashed hover:border-solid border-black/65 hover:border-black dark:border-white/65 dark:hover:border-white"
             >
                 {{ 'GitHub' }}
             </a>
         </div>
 
         <!-- Tags -->
-        <div class="flex flex-wrap items-center justify-center gap-x-3 md:gap-x-4 gap-y-2 text-[0.7rem] md:text-xs uppercase tracking-[0.15em] text-black/50 dark:text-white/50">
+        <div class="flex flex-wrap items-center justify-center gap-x-3 md:gap-x-4 gap-y-2 text-[0.7rem] md:text-xs uppercase tracking-[0.15em] text-black/65 dark:text-white/65">
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.mit_license }}</span>
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.open_source }}</span>
             <span class="transition duration-300 ease-in-out hover:text-black dark:hover:text-white cursor-pointer">{{ translations.tags.booking_engine }}</span>

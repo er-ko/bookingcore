@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <section class="grid gap-4 md:grid-cols-3 lg:gap-5">
+    <section class="grid gap-4 md:grid-cols-3 lg:gap-5 px-3 xl:px-0">
         <article
             v-for="item in items"
             :key="item.title"

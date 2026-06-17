@@ -47,7 +47,7 @@ function updateLocale(event) {
         <select
             :value="currentLocale"
             :disabled="processing"
-            class="h-9 appearance-none rounded-full border border-black/10 bg-white/70 py-1.5 ps-3 pe-8 text-xs font-medium text-black/60 outline-none transition hover:cursor-pointer hover:border-black/25 hover:text-black disabled:cursor-wait disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/60 dark:hover:border-white/25 dark:hover:text-white"
+            class="h-9 appearance-none rounded-full border border-black/10 bg-white/70 py-1.5 ps-3 pe-8 text-xs font-medium select-none text-black/60 outline-none transition hover:cursor-pointer hover:border-black/25 hover:text-black disabled:cursor-wait disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/60 dark:hover:border-white/25 dark:hover:text-white"
             @change="updateLocale"
         >
             <option

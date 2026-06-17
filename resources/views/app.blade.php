@@ -19,7 +19,7 @@
             })();
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const isDark = storedTheme === 'dark' || (storedTheme !== 'light' && prefersDark);
-            const backgroundColor = isDark ? '#000000' : '#ffffff';
+            const backgroundColor = isDark ? '#3f3f46' : '#ffffff';
 
             document.documentElement.classList.toggle('dark', isDark);
             document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
@@ -44,7 +44,7 @@
         gtag('config', 'G-EVYZXJC011');
     </script>
 </head>
-<body class="antialiased bg-white text-black dark:bg-black dark:text-white">
+<body class="antialiased bg-white text-black dark:bg-zinc-800 dark:text-white">
     @inertia
 </body>
 </html>

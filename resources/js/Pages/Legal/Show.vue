@@ -28,7 +28,7 @@ const headDescription = computed(() => props.document.meta?.description ?? props
             <header class="space-y-6 pb-12 text-center border-b border-dashed border-black/10 dark:border-white/10">
                 <Link
                     href="/"
-                    class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-black/75 transition-all duration-150 hover:gap-3 hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
+                    class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-black/65 transition-all duration-150 hover:gap-3 hover:text-black dark:text-white/65 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
                 >
                     <span aria-hidden="true">←</span>
                     BookingCore
@@ -38,10 +38,10 @@ const headDescription = computed(() => props.document.meta?.description ?? props
                     <h1 class="text-4xl font-semibold sm:text-5xl lg:text-6xl">
                         {{ document.title }}
                     </h1>
-                    <p class="mx-auto mt-2 md:mt-3 max-w-2xl text-sm uppercase tracking-[0.15em] md:tracking-[0.18rem] text-black/40 dark:text-white/40">
+                    <p class="mx-auto mt-2 md:mt-3 max-w-2xl text-sm uppercase tracking-[0.15em] md:tracking-[0.18rem] text-black/35 dark:text-white/35">
                         {{ document.updated }}
                     </p>
-                    <p class="mx-auto mt-6 md:mt-8 max-w-2xl text-base leading-7 text-black/60 dark:text-white/60 sm:text-lg sm:leading-8">
+                    <p class="mx-auto mt-6 md:mt-8 max-w-2xl text-base leading-7 text-black/75 dark:text-white/75 sm:text-lg sm:leading-8">
                         {{ document.intro }}
                     </p>
                 </div>
@@ -53,11 +53,11 @@ const headDescription = computed(() => props.document.meta?.description ?? props
                     :key="section.title"
                     class="grid gap-3 lg:gap-8 py-10 md:py-12 lg:grid-cols-[14rem_1fr]"
                 >
-                    <h2 class="text-sm font-semibold uppercase tracking-[0.12em] text-black dark:text-white">
+                    <h2 class="text-center lg:text-start text-sm font-semibold uppercase tracking-[0.12em] text-black dark:text-white">
                         {{ section.title }}
                     </h2>
 
-                    <div class="space-y-4 text-base leading-7 text-black/75 dark:text-white/75">
+                    <div class="space-y-4 text-center lg:text-start text-base leading-7 text-black/75 dark:text-white/75">
                         <p
                             v-for="paragraph in section.body"
                             :key="paragraph"
