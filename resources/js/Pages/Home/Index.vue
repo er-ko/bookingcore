@@ -43,7 +43,7 @@ const headDescription = computed(() => props.translations.meta.description)
     </Head>
 
     <PublicLayout>
-        <div class="w-full max-w-6xl flex flex-col space-y-12 md:space-y-16 select-none">
+        <div class="w-full max-w-6xl flex flex-col space-y-12 md:space-y-16 pb-12 md:pb-16 select-none">
             <HeroSection
                 :connect-url="route('connect.index')"
                 :translations="translations.hero"
