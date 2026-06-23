@@ -51,7 +51,9 @@ const headDescription = computed(() => props.translations.meta.description)
             <div class="w-full px-3 xl:px-0">
                 <OpenAccessSection :translations="translations.open_access" />
             </div>
-            <FeatureGrid :items="features" />
+            <div class="w-full px-3 xl:px-0">
+                <FeatureGrid :items="features" />
+            </div>
             <div class="w-full px-3 xl:px-0">
                 <AudienceSection
                     :translations="translations.audience"
