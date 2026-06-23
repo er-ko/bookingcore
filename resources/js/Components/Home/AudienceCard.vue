@@ -21,15 +21,113 @@ defineProps({
         <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/82 via-black/36 to-transparent" />
 
         <div class="pointer-events-none absolute inset-0 overflow-hidden">
-            <div
-                :class="audience.orbClass"
-                class="absolute -right-20 top-14 h-72 w-72 rounded-full blur-3xl sm:h-96 sm:w-96"
-            />
+            <div class="absolute -right-20 top-24 w-[16rem] -rotate-6 opacity-70 sm:-right-8 sm:top-14 sm:w-[20rem] sm:opacity-80 md:w-[26rem] lg:right-10">
+                <div class="relative aspect-[4/3]">
+                    <div
+                        :class="audience.orbClass"
+                        class="absolute inset-x-16 top-6 h-24 rounded-[2rem] blur-2xl"
+                    />
 
-            <div class="absolute left-8 top-1/2 h-24 w-64 -translate-y-1/2 rounded-full bg-white/12 blur-2xl sm:left-16 sm:h-32 sm:w-96" />
-
-            <div class="absolute bottom-24 right-12 hidden h-28 w-56 -rotate-12 rounded-full border border-white/22 sm:block" />
-            <div class="absolute bottom-32 right-20 hidden h-16 w-32 -rotate-12 rounded-full border border-white/18 sm:block" />
+                    <svg
+                        aria-hidden="true"
+                        class="absolute inset-0 h-full w-full"
+                        fill="none"
+                        viewBox="0 0 520 390"
+                    >
+                        <rect
+                            fill="white"
+                            fill-opacity="0.12"
+                            height="276"
+                            rx="32"
+                            stroke="white"
+                            stroke-opacity="0.34"
+                            stroke-width="2"
+                            width="360"
+                            x="78"
+                            y="58"
+                        />
+                        <path
+                            d="M78 142H438"
+                            stroke="white"
+                            stroke-opacity="0.3"
+                            stroke-width="2"
+                        />
+                        <path
+                            d="M156 58V32M360 58V32"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-opacity="0.58"
+                            stroke-width="14"
+                        />
+                        <path
+                            d="M136 188H380M136 240H380M136 284H318M195 166V298M257 166V298M320 166V298"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-opacity="0.2"
+                            stroke-width="2"
+                        />
+                        <rect
+                            fill="white"
+                            fill-opacity="0.2"
+                            height="34"
+                            rx="12"
+                            width="54"
+                            x="136"
+                            y="198"
+                        />
+                        <rect
+                            fill="white"
+                            fill-opacity="0.15"
+                            height="34"
+                            rx="12"
+                            width="54"
+                            x="261"
+                            y="244"
+                        />
+                        <rect
+                            fill="white"
+                            fill-opacity="0.2"
+                            height="34"
+                            rx="12"
+                            width="54"
+                            x="325"
+                            y="198"
+                        />
+                        <path
+                            d="M152 217L161 224L176 210"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-opacity="0.72"
+                            stroke-width="5"
+                        />
+                        <path
+                            d="M340 216L349 222L364 209"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-opacity="0.72"
+                            stroke-width="5"
+                        />
+                        <path
+                            d="M466 174L488 196L466 218"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-opacity="0.38"
+                            stroke-width="10"
+                        />
+                        <path
+                            d="M54 232L32 254L54 276"
+                            stroke="white"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-opacity="0.22"
+                            stroke-width="10"
+                        />
+                    </svg>
+                </div>
+            </div>
         </div>
 
         <div class="relative z-10 flex h-full flex-1 flex-col justify-between p-6 sm:p-8 lg:p-10">
