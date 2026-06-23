@@ -78,8 +78,7 @@ function scrollToAudience(index) {
             <div
                 id="audience-cards"
                 ref="cardsSlider"
-                class="audience-cards flex snap-x snap-mandatory gap-4 overflow-x-auto px-[max(1rem,calc((100vw-72rem)/2))] sm:gap-5"
-                style="scrollbar-width: none; -ms-overflow-style: none;"
+                class="audience-cards flex snap-x snap-mandatory gap-4 py-2 overflow-x-auto px-[max(1rem,calc((100vw-72rem)/2))] sm:gap-5"
                 @scroll.passive="updateActiveAudience"
             >
                 <AudienceCard
