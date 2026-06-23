@@ -43,7 +43,7 @@ const oauthNotice = computed(() => authTranslations.value.oauth_notice ?? 'Secur
     </Head>
 
     <PublicLayout>
-        <div class="mx-auto w-full max-w-4xl">
+        <div class="mx-auto w-full max-w-4xl px-3 lg:px-0 py-6 md:py-12">
             <div class="select-none text-center">
                 <Link
                     href="/"
@@ -65,7 +65,7 @@ const oauthNotice = computed(() => authTranslations.value.oauth_notice ?? 'Secur
                 </p>
             </div>
 
-            <div class="mx-auto mt-10 max-w-4xl rounded-4xl border border-black/10 bg-black/2.5 py-4 sm:py-6 px-4 sm:px-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/3 sm:p-8 md:p-9">
+            <div class="mx-auto mt-10 max-w-4xl rounded-4xl border border-transparent lg:border-black/10 bg-transparent lg:bg-black/2.5 p-0 sm:py-6 sm:px-6 lg:backdrop-blur-sm dark:border-transparent dark:lg:border-white/10 dark:bg-transparent dark:lg:bg-white/3 sm:p-8 md:p-9">
                 <slot />
             </div>
 
