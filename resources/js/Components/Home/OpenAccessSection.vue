@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <section class="md:mx-3 xl:mx-0 relative overflow-hidden md:rounded-[2.2rem] border border-emerald-500/14 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.2),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_34%)] px-4 py-12 md:py-10 dark:border-emerald-300/14 dark:bg-[radial-gradient(circle_at_top_left,rgba(52,211,153,0.2),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(52,211,153,0.12),transparent_34%)] sm:px-8 sm:py-12 lg:px-10 lg:py-14">
+    <section class="md:mx-3 xl:mx-0 relative overflow-hidden md:rounded-[2.2rem] border border-x-0 md:border-x border-emerald-500/14 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.2),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_34%)] px-4 py-12 md:py-10 dark:border-emerald-300/14 dark:bg-[radial-gradient(circle_at_top_left,rgba(52,211,153,0.2),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(52,211,153,0.12),transparent_34%)] sm:px-8 sm:py-12 lg:px-10 lg:py-14">
         <div class="pointer-events-none absolute inset-0">
             <div class="absolute left-[6%] top-[14%] h-28 w-28 rounded-full bg-emerald-500/10 blur-3xl dark:bg-emerald-300/12" />
             <div class="absolute right-[8%] top-[18%] h-36 w-36 rounded-full bg-emerald-500/8 blur-3xl dark:bg-emerald-300/10" />
