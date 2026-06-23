@@ -165,6 +165,11 @@ onBeforeUnmount(() => {
     document.removeEventListener('click', handleClickOutside)
     window.removeEventListener(FLASH_EVENT_NAME, handleFlashEvent)
     clearFlashTimeout()
+    document.body.style.overflow = ''
+})
+
+watch(mobileMenuOpen, (isOpen) => {
+    document.body.style.overflow = isOpen ? 'hidden' : ''
 })
 
 const flashUi = computed(() => {
@@ -512,87 +517,179 @@ const navigationGroups = computed(() => [
                 </div>
             </div>
 
+        </header>
+
+        <Transition
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
             <div
                 v-if="mobileMenuOpen"
-                class="min-h-full border-t border-black/10 px-4 py-4 dark:border-white/10 lg:hidden overflow-y-auto"
+                class="fixed inset-0 z-50 flex flex-col bg-white dark:bg-black lg:hidden"
             >
-                <div class="flex flex-col gap-4">
-                    <template v-if="hasCompletedOnboarding">
-                        <div class="space-y-2">
-                            <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                {{ navigationTranslations.dashboard ?? 'Dashboard' }}
-                            </div>
-
-                            <div class="flex flex-col gap-1">
-                                <Link
-                                    :href="route('dashboard.index')"
-                                    class="rounded-2xl px-4 py-3 text-sm font-medium transition"
-                                    :class="route().current('dashboard.*')
-                                        ? 'bg-black text-white dark:bg-white dark:text-black'
-                                        : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
-                                    @click="closeMobileMenu"
-                                >
-                                    {{ navigationTranslations.dashboard ?? 'Dashboard' }}
-                                </Link>
-                            </div>
-                        </div>
-                        <div
-                            v-for="group in navigationGroups"
-                            :key="`${group.key}-mobile`"
-                            class="space-y-2"
-                        >
-                            <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                {{ group.label }}
-                            </div>
-
-                            <div class="flex flex-col gap-1">
-                                <Link
-                                    v-for="item in group.items"
-                                    :key="`${item.label}-mobile`"
-                                    :href="item.href"
-                                    class="rounded-2xl px-4 py-3 text-sm font-medium transition"
-                                    :class="item.active
-                                        ? 'bg-black text-white dark:bg-white dark:text-black'
-                                        : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
-                                    @click="closeMobileMenu"
-                                >
-                                    {{ item.label }}
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div class="space-y-2">
-                            <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                {{ navigationTranslations.identity ?? 'Identity' }}
-                            </div>
-
-                            <div class="flex flex-col gap-1">
-                                <Link
-                                    :href="route('identity.index')"
-                                    class="rounded-2xl px-4 py-3 text-sm font-medium transition"
-                                    :class="route().current('identity.*')
-                                        ? 'bg-black text-white dark:bg-white dark:text-black'
-                                        : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
-                                    @click="closeMobileMenu"
-                                >
-                                    {{ navigationTranslations.identity ?? 'Identity' }}
-                                </Link>
-                            </div>
-                        </div>
-                    </template>
-
+                <div class="flex shrink-0 items-center justify-between border-b border-black/10 px-4 py-4 dark:border-white/10 sm:px-6 lg:px-8">
                     <Link
-                        :href="route('logout')"
-                        method="post"
-                        as="button"
-                        class="mt-2 rounded-2xl border border-black/15 px-4 py-3 text-left text-sm font-medium text-black/70 transition hover:border-black/40 hover:text-black dark:border-white/15 dark:text-white/70 dark:hover:border-white/40 dark:hover:text-white"
+                        :href="homeHref"
+                        class="text-xs font-medium select-none uppercase tracking-[0.25em] text-black/75 transition hover:text-black dark:text-white/75 dark:hover:text-white md:text-sm md:tracking-[0.35em]"
                         @click="closeMobileMenu"
                     >
-                        {{ navigationTranslations.logout ?? 'Logout' }}
+                        {{ appName }}
                     </Link>
+
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <button
+                            type="button"
+                            :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
+                            class="inline-flex items-center rounded-full p-2 cursor-pointer text-black/50 transition-all duration-300 ease-in-out hover:text-black dark:text-white/50 dark:hover:text-white"
+                            @click="toggleTheme"
+                        >
+                            <svg
+                                v-if="isDark"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <circle cx="12" cy="12" r="4" />
+                                <path d="M12 2v2" />
+                                <path d="M12 20v2" />
+                                <path d="m4.93 4.93 1.41 1.41" />
+                                <path d="m17.66 17.66 1.41 1.41" />
+                                <path d="M2 12h2" />
+                                <path d="M20 12h2" />
+                                <path d="m6.34 17.66-1.41 1.41" />
+                                <path d="m19.07 4.93-1.41 1.41" />
+                            </svg>
+
+                            <svg
+                                v-else
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            :aria-label="accessibilityTranslations.close_navigation ?? 'Close navigation'"
+                            class="inline-flex rounded-full p-2 text-black/50 transition hover:text-black dark:text-white/50 dark:hover:text-white"
+                            @click="closeMobileMenu"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto px-4 py-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col gap-4">
+                        <template v-if="!hasCompletedOnboarding">
+                            <div class="space-y-2">
+                                <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                    {{ navigationTranslations.dashboard ?? 'Dashboard' }}
+                                </div>
+
+                                <div class="flex flex-col gap-1">
+                                    <Link
+                                        :href="route('dashboard.index')"
+                                        class="rounded-2xl px-4 py-3 text-sm font-medium transition"
+                                        :class="route().current('dashboard.*')
+                                            ? 'bg-black text-white dark:bg-white dark:text-black'
+                                            : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
+                                        @click="closeMobileMenu"
+                                    >
+                                        {{ navigationTranslations.dashboard ?? 'Dashboard' }}
+                                    </Link>
+                                </div>
+                            </div>
+
+                            <div
+                                v-for="group in navigationGroups"
+                                :key="`${group.key}-mobile`"
+                                class="space-y-2"
+                            >
+                                <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                    {{ group.label }}
+                                </div>
+
+                                <div class="flex flex-col gap-1">
+                                    <Link
+                                        v-for="item in group.items"
+                                        :key="`${item.label}-mobile`"
+                                        :href="item.href"
+                                        class="rounded-2xl px-4 py-3 text-sm font-medium transition"
+                                        :class="item.active
+                                            ? 'bg-black text-white dark:bg-white dark:text-black'
+                                            : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
+                                        @click="closeMobileMenu"
+                                    >
+                                        {{ item.label }}
+                                    </Link>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                    {{ navigationTranslations.identity ?? 'Identity' }}
+                                </div>
+
+                                <div class="flex flex-col gap-1">
+                                    <Link
+                                        :href="route('identity.index')"
+                                        class="rounded-2xl px-4 py-3 text-sm font-medium transition"
+                                        :class="route().current('identity.*')
+                                            ? 'bg-black text-white dark:bg-white dark:text-black'
+                                            : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'"
+                                        @click="closeMobileMenu"
+                                    >
+                                        {{ navigationTranslations.identity ?? 'Identity' }}
+                                    </Link>
+                                </div>
+                            </div>
+                        </template>
+
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                            class="mt-2 rounded-2xl border border-black/15 px-4 py-3 text-left text-sm font-medium text-black/70 transition hover:border-black/40 hover:text-black dark:border-white/15 dark:text-white/70 dark:hover:border-white/40 dark:hover:text-white"
+                            @click="closeMobileMenu"
+                        >
+                            {{ navigationTranslations.logout ?? 'Logout' }}
+                        </Link>
+                    </div>
                 </div>
             </div>
-        </header>
+        </Transition>
 
         <main>
             <slot />
