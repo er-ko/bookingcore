@@ -612,7 +612,7 @@ const navigationGroups = computed(() => [
 
                 <div class="flex-1 overflow-y-auto px-4 py-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col gap-4">
-                        <template v-if="!hasCompletedOnboarding">
+                        <template v-if="hasCompletedOnboarding">
                             <div class="space-y-2">
                                 <div class="px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
                                     {{ navigationTranslations.dashboard ?? 'Dashboard' }}
