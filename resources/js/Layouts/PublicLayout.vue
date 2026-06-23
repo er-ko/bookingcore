@@ -10,6 +10,7 @@ const layoutTranslations = computed(() => page.props.layoutTranslations ?? {})
 const publicTranslations = computed(() => layoutTranslations.value.public ?? {})
 const accessibilityTranslations = computed(() => layoutTranslations.value.accessibility ?? {})
 const isHomePage = computed(() => page.component === 'Home/Index')
+const isConnectPage = computed(() => page.component === 'Auth/Connect')
 </script>
 
 <template>
@@ -85,7 +86,10 @@ const isHomePage = computed(() => page.component === 'Home/Index')
         </div>
             
         <!-- footer -->
-        <div class="z-10 relative w-full flex items-center justify-center backdrop-blur-lg">
+        <div
+            v-if="!isConnectPage"
+            class="z-10 relative w-full flex items-center justify-center backdrop-blur-lg"
+        >
             <div class="w-full max-w-6xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 px-3 lg:px-4 xl:px-0 py-6 text-xs select-none border-t border-dotted border-zinc-100 dark:border-zinc-900">
                 <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-black/65 dark:text-white/65">
                     <Link
@@ -113,7 +117,7 @@ const isHomePage = computed(() => page.component === 'Home/Index')
                 <div class="flex items-center gap-2 justify-center sm:justify-end">
                     <LocaleSwitcher />
                     <button
-                         v-if="!isHomePage"
+                        v-if="!isHomePage"
                         type="button"
                         :aria-label="accessibilityTranslations.toggle_theme ?? 'Toggle theme'"
                         class="inline-flex items-center rounded-full p-2 transition-all duration-300 ease-in-out hover:cursor-pointer bg-blue-500 text-white/65 hover:text-white dark:bg-amber-500 dark:text-black/65 dark:hover:text-black"
