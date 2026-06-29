@@ -10,7 +10,7 @@ defineProps({
 <template>
     <article
         :class="audience.cardClass"
-        class="relative flex min-h-[430px] w-[86vw] max-w-[980px] flex-shrink-0 snap-center flex-col overflow-hidden rounded-[2rem] shadow-[0_28px_90px_-55px_rgba(0,0,0,0.7)] transition-transform duration-300 hover:scale-[1.01] sm:min-h-[520px] sm:w-[74vw] lg:w-[72vw] xl:w-[980px] z-10"
+        class="relative flex min-h-[430px] w-[86vw] max-w-[980px] flex-shrink-0 snap-center flex-col overflow-hidden rounded-[2rem] transition-transform duration-300 hover:scale-[1.01] sm:min-h-[520px] sm:w-[74vw] lg:w-[72vw] xl:w-[980px] z-10"
     >
         <div
             :class="audience.visualClass"
