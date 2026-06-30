@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Sichtbarkeit der Buchungsseite',
             'public_booking_page_title' => 'Öffentliche Buchungsseite',
             'public_booking_page_text' => 'Wenn diese Option aktiviert ist, können Besucher über die öffentliche URL auf Ihre Buchungsseite zugreifen. Wenn sie deaktiviert ist, bleibt die Seite für Besucher verborgen.',
+			'booking_mode_title' => 'Buchungsmodus',
+			'booking_mode_coming_soon' => 'demnächst verfügbar',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Kontolöschung planen',
             'cancel_deletion' => 'Löschung abbrechen',
         ],
+
+        'mode_warning' => [
+			'title' => 'Hinweis zur Modusänderung',
+			'text' => 'Das Ändern des Buchungsmodus setzt Ihren gesamten Arbeitsbereich dauerhaft zurück — einschließlich Dienstleistungen, Filialen, Mitarbeitern, Preisen und Arbeitszeiten. Verbundene Kalender bleiben erhalten.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Kontoentfernung',

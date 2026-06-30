@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useIdentityForm } from '@/Composables/Identity/useIdentityForm'
 
@@ -22,6 +22,10 @@ const props = defineProps({
         type: Array,
         default: () => ([]),
     },
+    bookingModes: {
+        type: Array,
+        default: () => ([]),
+    },
     translations: {
         type: Object,
         required: true,
@@ -39,6 +43,8 @@ const {
     identity: props.identity,
     translations: props.translations,
 })
+
+const selectedMode = computed(() => props.bookingModes.find(m => m.value === form.mode) ?? null)
 
 const errorClass = 'text-sm text-red-600 dark:text-red-400'
 const labelClass = 'block text-[11px] font-medium uppercase tracking-[0.2em] text-black/45 dark:text-white/45'
@@ -63,6 +69,48 @@ const labelClass = 'block text-[11px] font-medium uppercase tracking-[0.2em] tex
         </div>
 
         <div class="space-y-8 px-6 py-6">
+            <div
+                v-if="bookingModes.length > 0"
+                class="space-y-2"
+            >
+                <label
+                    for="mode"
+                    :class="labelClass"
+                >
+                    {{ translations.form.booking_mode_title }} <span class="text-red-600">*</span>
+                </label>
+
+                <select
+                    id="mode"
+                    v-model="form.mode"
+                    :class="inputClass('mode')"
+                    @change="clearFieldError('mode')"
+                >
+                    <option
+                        v-for="mode in bookingModes"
+                        :key="mode.value"
+                        :value="mode.value"
+                        :disabled="!mode.available"
+                    >
+                        {{ mode.label }}{{ !mode.available ? ` / ${translations.form.booking_mode_coming_soon}` : '' }}
+                    </option>
+                </select>
+
+                <p
+                    v-if="selectedMode?.description"
+                    class="ps-3.5 text-xs leading-5 text-black/50 dark:text-white/50"
+                >
+                    {{ selectedMode.description }}
+                </p>
+
+                <p
+                    v-if="form.errors.mode"
+                    class="text-sm text-red-600 dark:text-red-400"
+                >
+                    {{ form.errors.mode }}
+                </p>
+            </div>
+
             <div class="grid gap-4 md:grid-cols-2 md:gap-6">
                 <div class="space-y-2 md:col-span-2">
                     <label

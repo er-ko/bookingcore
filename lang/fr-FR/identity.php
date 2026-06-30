@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Visibilité de la page de réservation',
             'public_booking_page_title' => 'Page publique de réservation',
             'public_booking_page_text' => 'Lorsque cette option est activée, les visiteurs peuvent accéder à votre page de réservation via son URL publique. Lorsqu’elle est désactivée, la page reste masquée aux visiteurs.',
+			'booking_mode_title' => 'Mode de réservation',
+			'booking_mode_coming_soon' => 'bientôt disponible',
         ],
 
         'actions' => [
@@ -79,7 +81,12 @@ return [
             'cancel_deletion' => 'Annuler la suppression',
         ],
 
-        'deletion' => [
+        'mode_warning' => [
+			'title' => 'Avertissement de changement de mode',
+			'text' => 'Changer le mode de réservation réinitialisera définitivement l\'ensemble de votre espace de travail — y compris les services, les agences, le personnel, les tarifs et les horaires de travail. Vos calendriers connectés seront conservés.',
+		],
+
+		'deletion' => [
             'account_removal_title' => 'Suppression du compte',
             'scheduled_deletion_title' => 'Suppression programmée',
             'scheduled_deletion_text' => 'Votre page publique de réservation sera masquée immédiatement après la programmation de la suppression. Toutes les données du compte seront supprimées définitivement après 7 jours, sauf si vous annulez la demande.',

@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Zichtbaarheid van de boekingspagina',
             'public_booking_page_title' => 'Openbare boekingspagina',
             'public_booking_page_text' => 'Wanneer dit is ingeschakeld, kunnen bezoekers uw boekingspagina openen via de openbare URL. Wanneer dit is uitgeschakeld, blijft de pagina verborgen voor bezoekers.',
+			'booking_mode_title' => 'Boekingsmodus',
+			'booking_mode_coming_soon' => 'binnenkort beschikbaar',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Accountverwijdering inplannen',
             'cancel_deletion' => 'Verwijdering annuleren',
         ],
+
+        'mode_warning' => [
+			'title' => 'Waarschuwing moduswijziging',
+			'text' => 'Het wijzigen van de boekingsmodus zal uw volledige werkruimte permanent resetten — inclusief diensten, vestigingen, personeel, prijzen en werktijden. Gekoppelde agenda\'s blijven bewaard.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Accountverwijdering',

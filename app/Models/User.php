@@ -8,6 +8,7 @@ use App\Enums\IntegrationType;
 use App\Models\Auth\ConnectedAccount;
 use App\Models\Identity\UserIdentitySettings;
 use App\Models\Integration\Integration;
+use App\Models\Property\Property;
 use App\Models\Region\UserRegionSetting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -141,6 +142,14 @@ class User extends Authenticatable
     public function branches(): HasMany
     {
         return $this->hasMany(Branch::class);
+    }
+
+    /**
+     * Get all properties owned by the user.
+     */
+    public function properties(): HasMany
+    {
+        return $this->hasMany(Property::class);
     }
 
     /**

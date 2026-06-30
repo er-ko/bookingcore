@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Visibilidade da página de reservas',
             'public_booking_page_title' => 'Página pública de reservas',
             'public_booking_page_text' => 'Quando ativada, os visitantes podem acessar sua página de reservas pelo respectivo URL público. Quando desativada, a página permanece oculta aos visitantes.',
+			'booking_mode_title' => 'Modo de reserva',
+			'booking_mode_coming_soon' => 'em breve',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Agendar exclusão da conta',
             'cancel_deletion' => 'Cancelar exclusão',
         ],
+
+        'mode_warning' => [
+			'title' => 'Aviso de alteração de modo',
+			'text' => 'Alterar o modo de reserva redefinirá permanentemente todo o seu espaço de trabalho — incluindo serviços, filiais, equipe, preços e horários de funcionamento. Seus calendários conectados serão preservados.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Exclusão da conta',

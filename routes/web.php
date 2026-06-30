@@ -12,6 +12,12 @@ use App\Http\Controllers\Branch\Web\{
     StoreBranchController,
     UpdateBranchController,
 };
+use App\Http\Controllers\Property\Web\{
+    DeletePropertyController,
+    PropertyPageController,
+    StorePropertyController,
+    UpdatePropertyController,
+};
 use App\Http\Controllers\Dashboard\Web\{
     CancelBookingController,
     CreateBookingController,
@@ -106,6 +112,17 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', [DashboardPageController::class, 'index'])->name('index');
                 Route::post('/{booking}/cancel', CancelBookingController::class)->name('cancel');
                 Route::patch('/{booking}/status', UpdateBookingStatusController::class)->name('status');
+            });
+
+        Route::prefix('properties')
+            ->name('properties.')
+            ->group(function () {
+                Route::get('/', [PropertyPageController::class, 'index'])->name('index');
+                Route::get('/create', [PropertyPageController::class, 'create'])->name('create');
+                Route::post('/', StorePropertyController::class)->name('store');
+                Route::get('/{property}/edit', [PropertyPageController::class, 'edit'])->name('edit');
+                Route::patch('/{property}', UpdatePropertyController::class)->name('update');
+                Route::delete('/{property}', DeletePropertyController::class)->name('destroy');
             });
 
         Route::prefix('branches')

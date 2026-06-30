@@ -2,6 +2,7 @@
 
 namespace App\Application\Identity\Queries;
 
+use App\Enums\BookingMode;
 use App\Models\Identity\UserIdentitySettings;
 use App\Models\Region\Country;
 use App\Models\Region\Currency;
@@ -52,6 +53,8 @@ final class IdentityPageQuery
                 ->select(['iso_alpha2', 'name', 'official_name', 'flag_emoji'])
                 ->orderBy('official_name')
                 ->get(),
+
+            'bookingModes' => BookingMode::options(),
         ];
     }
 }

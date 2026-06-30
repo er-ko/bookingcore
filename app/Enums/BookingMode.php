@@ -53,7 +53,7 @@ enum BookingMode: string
      * - holiday homes
      * - short-term stays
      */
-    case PropertyRental = 'property_rental';
+    case Properties = 'properties';
 
     /**
      * Get all enum values as a plain string list.
@@ -67,4 +67,41 @@ enum BookingMode: string
     {
         return array_column(self::cases(), 'value');
     }
+
+    public function label(): string
+    {
+        return __("enums.booking_mode.{$this->value}.label");
+    }
+
+    public function description(): string
+    {
+        return __("enums.booking_mode.{$this->value}.description");
+    }
+
+    public function isAvailable(): bool
+    {
+        return match ($this) {
+            self::Services      => true,
+            self::Properties    => false,
+            default             => false,
+        };
+    }
+
+    public static function options(): array
+    {
+        $options = array_map(fn($case) => [
+            'value'       => $case->value,
+            'label'       => $case->label(),
+            'description' => $case->description(),
+            'available'   => $case->isAvailable(),
+        ], self::cases());
+
+        usort($options, fn($a, $b) =>
+            $b['available'] <=> $a['available']
+            ?: strcasecmp($a['label'], $b['label'])
+        );
+
+        return $options;
+    }
+
 }

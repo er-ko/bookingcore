@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Viditeľnosť rezervačnej stránky',
             'public_booking_page_title' => 'Verejná rezervačná stránka',
             'public_booking_page_text' => 'Keď je táto možnosť povolená, návštevníci môžu pristupovať k Vašej rezervačnej stránke pomocou jej verejnej URL adresy. Keď je vypnutá, stránka zostane pre návštevníkov skrytá.',
+			'booking_mode_title' => 'Režim rezervácie',
+			'booking_mode_coming_soon' => 'čoskoro',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Naplánovať odstránenie účtu',
             'cancel_deletion' => 'Zrušiť odstránenie',
         ],
+
+        'mode_warning' => [
+			'title' => 'Upozornenie na zmenu režimu',
+			'text' => 'Zmena režimu rezervácie trvalo resetuje celý Váš pracovný priestor — vrátane služieb, pobočiek, zamestnancov, cenníka a pracovných hodín. Pripojené kalendáre budú zachované.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Odstránenie účtu',

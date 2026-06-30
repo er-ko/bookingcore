@@ -27,6 +27,10 @@ const props = defineProps({
         type: Array,
         default: () => ([]),
     },
+    bookingModes: {
+        type: Array,
+        default: () => ([]),
+    },
     translations: {
         type: Object,
         required: true,
@@ -93,55 +97,71 @@ function cancelDeletion() {
                 </div>
 
                 <div class="grid gap-6 xl:grid-cols-[0.95fr_1.55fr]">
-                    <aside class="h-fit overflow-hidden rounded-3xl border border-black/10 backdrop-blur-sm dark:border-white/10">
-                        <div class="border-b border-black/10 px-6 py-4 dark:border-white/10">
-                            <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
-                                {{ translations.overview.title }}
-                            </h2>
-                        </div>
-
-                        <div class="space-y-7 px-6 py-6">
-                            <div>
-                                <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                    {{ translations.overview.brand_title }}
-                                </div>
-
-                                <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
-                                    {{ translations.overview.brand_text }}
-                                </p>
+                    <div class="space-y-6">
+                        <aside class="h-fit overflow-hidden rounded-3xl border border-black/10 backdrop-blur-sm dark:border-white/10">
+                            <div class="border-b border-black/10 px-6 py-4 dark:border-white/10">
+                                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-black/55 dark:text-white/55">
+                                    {{ translations.overview.title }}
+                                </h2>
                             </div>
 
-                            <div>
-                                <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                    {{ translations.overview.public_url_title }}
+                            <div class="space-y-7 px-6 py-6">
+                                <div>
+                                    <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                        {{ translations.overview.brand_title }}
+                                    </div>
+
+                                    <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ translations.overview.brand_text }}
+                                    </p>
                                 </div>
 
-                                <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
-                                    {{ translations.overview.public_url_text.replace(':slug', publicUrlExample) }}
-                                </p>
-                            </div>
+                                <div>
+                                    <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                        {{ translations.overview.public_url_title }}
+                                    </div>
 
-                            <div>
-                                <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                    {{ translations.overview.defaults_title }}
+                                    <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ translations.overview.public_url_text.replace(':slug', publicUrlExample) }}
+                                    </p>
                                 </div>
 
-                                <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
-                                    {{ translations.overview.defaults_text }}
-                                </p>
-                            </div>
+                                <div>
+                                    <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                        {{ translations.overview.defaults_title }}
+                                    </div>
 
-                            <div>
-                                <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
-                                    {{ translations.overview.visibility_title }}
+                                    <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ translations.overview.defaults_text }}
+                                    </p>
                                 </div>
 
-                                <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
-                                    {{ translations.overview.visibility_text }}
+                                <div>
+                                    <div class="text-[11px] font-medium uppercase tracking-[0.2em] text-black/40 dark:text-white/40">
+                                        {{ translations.overview.visibility_title }}
+                                    </div>
+
+                                    <p class="mt-1 text-sm leading-6 text-black/60 dark:text-white/60">
+                                        {{ translations.overview.visibility_text }}
+                                    </p>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <aside class="overflow-hidden rounded-3xl border border-red-500/20 backdrop-blur-sm dark:border-red-400/15">
+                            <div class="border-b border-red-500/20 px-6 py-4 dark:border-red-400/15">
+                                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-red-700 dark:text-red-400">
+                                    {{ translations.mode_warning.title }}
+                                </h2>
+                            </div>
+
+                            <div class="px-6 py-6">
+                                <p class="text-sm leading-6 text-black/60 dark:text-white/60">
+                                    {{ translations.mode_warning.text }}
                                 </p>
                             </div>
-                        </div>
-                    </aside>
+                        </aside>
+                    </div>
 
                     <div class="space-y-6">
                         <IdentityForm
@@ -149,12 +169,13 @@ function cancelDeletion() {
                             :languages="languages"
                             :currencies="currencies"
                             :countries="countries"
+                            :booking-modes="bookingModes"
                             :translations="translations"
                         />
 
                         <aside class="overflow-hidden rounded-3xl border border-red-500/15 backdrop-blur-sm dark:border-red-400/15">
                             <div class="border-b border-red-500/15 px-6 py-4 dark:border-red-400/15">
-                                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-red-700 dark:text-red-300">
+                                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-red-700 dark:text-red-400">
                                     {{ translations.deletion.account_removal_title }}
                                 </h2>
                             </div>
@@ -197,7 +218,7 @@ function cancelDeletion() {
                                     <button
                                         v-if="!hasPendingDeletion"
                                         type="button"
-                                        class="inline-flex items-center justify-center rounded-full border border-red-500/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-red-700 transition hover:cursor-pointer hover:border-red-500/40 hover:text-red-800 dark:border-red-400/20 dark:text-red-300 dark:hover:border-red-400/40 dark:hover:text-red-200"
+                                        class="inline-flex items-center justify-center rounded-full border border-red-500/20 px-5 py-2.5 text-sm font-medium text-nowrap select-none text-red-700 transition hover:cursor-pointer hover:border-red-500/40 hover:text-red-800 dark:border-red-400/20 dark:text-red-300 dark:hover:border-red-400/40 dark:hover:text-red-400"
                                         @click="scheduleDeletion"
                                     >
                                         {{ translations.actions.schedule_account_deletion }}

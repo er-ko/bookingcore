@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Visibilità della pagina di prenotazione',
             'public_booking_page_title' => 'Pagina pubblica di prenotazione',
             'public_booking_page_text' => 'Quando è attiva, i visitatori possono accedere alla sua pagina di prenotazione tramite il relativo URL pubblico. Quando è disattivata, la pagina resta nascosta ai visitatori.',
+			'booking_mode_title' => 'Modalità di prenotazione',
+			'booking_mode_coming_soon' => 'prossimamente',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Programma eliminazione account',
             'cancel_deletion' => 'Annulla eliminazione',
         ],
+
+        'mode_warning' => [
+			'title' => 'Avviso cambio modalità',
+			'text' => 'La modifica della modalità di prenotazione ripristinerà permanentemente l\'intero spazio di lavoro — inclusi servizi, filiali, personale, prezzi e orari di lavoro. I calendari collegati verranno conservati.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Eliminazione account',

@@ -11,6 +11,7 @@ export function useIdentityForm(route, options = {}) {
     })
 
     const form = useForm({
+        mode: identity?.mode ?? 'services',
         brand_name: identity?.brand_name ?? '',
         slug: identity?.slug ?? '',
         default_language_code: identity?.default_language_code ?? '',

@@ -13,6 +13,7 @@ final class IdentityTranslations
             'form' => self::form(),
             'validation' => self::validation(),
             'actions' => self::actions(),
+            'mode_warning' => self::modeWarning(),
             'deletion' => self::deletion(),
             'meta' => self::meta(),
         ];
@@ -45,6 +46,8 @@ final class IdentityTranslations
         return [
             'identity_settings' => __('identity.view.form.identity_settings'),
             'base_configuration' => __('identity.view.form.base_configuration'),
+            'booking_mode_title' => __('identity.view.form.booking_mode_title'),
+            'booking_mode_coming_soon' => __('identity.view.form.booking_mode_coming_soon'),
             'brand_name_title' => __('identity.view.form.brand_name_title'),
             'brand_name_placeholder' => __('identity.view.form.brand_name_placeholder'),
             'public_slug_title' => __('identity.view.form.public_slug_title'),
@@ -82,6 +85,14 @@ final class IdentityTranslations
             'saving' => __('identity.view.actions.saving'),
             'schedule_account_deletion' => __('identity.view.actions.schedule_account_deletion'),
             'cancel_deletion' => __('identity.view.actions.cancel_deletion'),
+        ];
+    }
+
+    private static function modeWarning(): array
+    {
+        return [
+            'title' => __('identity.view.mode_warning.title'),
+            'text' => __('identity.view.mode_warning.text'),
         ];
     }
 

@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Booking page visibility',
             'public_booking_page_title' => 'Public booking page',
             'public_booking_page_text' => 'When enabled, visitors can access your booking page using its public URL. When disabled, the page remains hidden from visitors.',
+			'booking_mode_title' => 'Booking mode',
+			'booking_mode_coming_soon' => 'coming soon',
         ],
 
         'actions' => [
@@ -79,7 +81,12 @@ return [
             'cancel_deletion' => 'Cancel deletion',
         ],
 
-        'deletion' => [
+        'mode_warning' => [
+			'title' => 'Mode change warning',
+			'text' => 'Changing your booking mode will permanently reset your entire workspace — including services, branches, staff, pricing, and working hours. Your connected calendars will be preserved.',
+		],
+
+		'deletion' => [
             'account_removal_title' => 'Account removal',
             'scheduled_deletion_title' => 'Scheduled deletion',
             'scheduled_deletion_text' => 'Your public booking page will be hidden immediately after scheduling deletion. All account data will be permanently removed after 7 days unless you cancel the request.',

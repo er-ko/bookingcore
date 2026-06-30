@@ -69,6 +69,8 @@ return [
             'booking_page_visibility_title' => 'Widoczność strony rezerwacji',
             'public_booking_page_title' => 'Publiczna strona rezerwacji',
             'public_booking_page_text' => 'Po włączeniu tej opcji odwiedzający mogą uzyskać dostęp do Państwa strony rezerwacji za pomocą jej publicznego adresu URL. Po wyłączeniu strona pozostaje ukryta przed odwiedzającymi.',
+			'booking_mode_title' => 'Tryb rezerwacji',
+			'booking_mode_coming_soon' => 'wkrótce',
         ],
 
         'actions' => [
@@ -78,6 +80,11 @@ return [
             'schedule_account_deletion' => 'Zaplanuj usunięcie konta',
             'cancel_deletion' => 'Anuluj usunięcie',
         ],
+
+        'mode_warning' => [
+			'title' => 'Ostrzeżenie o zmianie trybu',
+			'text' => 'Zmiana trybu rezerwacji trwale zresetuje całą Państwa przestrzeń roboczą — w tym usługi, oddziały, personel, cennik i godziny pracy. Podłączone kalendarze zostaną zachowane.',
+		],
 
         'deletion' => [
             'account_removal_title' => 'Usunięcie konta',
